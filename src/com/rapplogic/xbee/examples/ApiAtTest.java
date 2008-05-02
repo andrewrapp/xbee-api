@@ -1,0 +1,111 @@
+package com.rapplogic.xbee.examples;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
+import com.rapplogic.xbee.api.AtCommand;
+import com.rapplogic.xbee.api.AtCommandResponse;
+import com.rapplogic.xbee.api.XBee;
+import com.rapplogic.xbee.api.XBeeException;
+import com.rapplogic.xbee.api.XBeeResponse;
+import com.rapplogic.xbee.api.zigbee.AssociationStatus;
+import com.rapplogic.xbee.util.ByteUtils;
+
+/** 
+ * The AtCommand/AtCommandResponse classes are supported by both znet and wpan XBees but certain
+ * commands are specific to znet or wpan.
+ * 
+ * @author andrew
+ *
+ */
+public class ApiAtTest {
+
+	private final static Logger log = Logger.getLogger(ApiAtTest.class);
+	
+	private XBee xbee = new XBee();
+	
+	private ApiAtTest() throws XBeeException {
+			
+		try {
+			xbee.open("COM6", 9600);	
+//			this.sendCommand(new AtCommand("AP"));
+//			this.sendCommand(new AtCommand("NI"));
+			
+//			// set D1 analog input
+//			this.sendCommand(new AtCommand("D1", 2));
+//			// set D2 digital input
+//			this.sendCommand(new AtCommand("D2", 3));
+//			// send sample every 5 seconds
+//			this.sendCommand(new AtCommand("IR", new int[] {0x13, 0x88}));
+			
+//			log.info("MY is " + xbee.sendAtCommand(new AtCommand("MY")));
+//			log.info("SH is " + xbee.sendAtCommand(new AtCommand("SH")));
+//			log.info("SL is " + xbee.sendAtCommand(new AtCommand("SL")));
+//			
+//			AtCommandResponse children = (AtCommandResponse) xbee.sendAtCommand(new AtCommand("NC"));
+//			log.info("This coordinator has " + children.getValue()[0] + " children");
+//			
+//			AtCommandResponse assoc = (AtCommandResponse) xbee.sendAtCommand(new AtCommand("AI"));
+//			
+//			if (assoc.getValue()[0] == 0) {
+//				log.info("The coordinator is associated");	
+//			}
+			
+//			xbee.sendAsynchronous(new AtCommand("NI", ni));
+//			XBeeResponse response1 = xbee.getResponse();
+			
+			// set to escape characters
+//			xbee.sendAsynchronous(new AtCommand("AP", 0x02));
+//			XBeeResponse response1 = xbee.getResponse();
+			
+			// Send network restart
+			//xbee.sendAsynchronous(new AtCommand("NR"));
+			
+			// get assoc indicator
+			xbee.sendAsynchronous(new AtCommand("AI"));
+			xbee.getPacketList().clear();
+			XBeeResponse response = xbee.getResponse();
+			log.info("AI response is " + AssociationStatus.get(((AtCommandResponse)response).getValue()[0]));
+			
+//			// Send node discover
+//			xbee.sendAsynchronous(new AtCommand("ND"));
+			
+			// I just have one end device
+//			XBeeResponse response = xbee.getResponse(true);
+//			log.info("received response: " + response.toString());
+//
+//			NodeDiscover nd = NodeDiscover.parse((AtCommandResponse)response);
+//			log.info("nd is " + nd.toString());
+			
+//			AtCommandResponse response2 = (AtCommandResponse) xbee.sendAtCommand(new AtCommand("SL"));
+//			log.debug("received response " + response2.toString());
+		} finally {
+			xbee.close();
+		}
+	}
+	
+	// use sparingly!!!!
+	private void save() throws XBeeException {
+		xbee.sendAsynchronous(new AtCommand("WR"));
+		this.logResponse(xbee.getResponse());
+	}
+	
+	private void sendCommand(AtCommand at) throws XBeeException {
+		xbee.sendAsynchronous(at);
+		this.logResponse(xbee.getResponse());
+	}
+	
+	private void logResponse(XBeeResponse response) {
+		try {
+			AtCommandResponse atResponse = (AtCommandResponse) response;
+			log.info("response success is " + atResponse.isOk() + ", command issued is " + atResponse.getCommand() + ", command value is [" + ByteUtils.toBase16(atResponse.getValue()) + "]");
+		} catch (ClassCastException e) {
+			log.error("Expected AT command response but instead got " + response.toString());
+		}
+	}
+	
+	public static void main(String[] args) throws XBeeException {
+		PropertyConfigurator.configure("log4j.properties");
+		new ApiAtTest();
+	}
+}
