@@ -1,6 +1,6 @@
 package com.rapplogic.xbee.util;
 
-
+//TODO replace with nio.IntBuffer
 public class IntArrayInputStream implements IIntArrayInputStream {
 
 	private int[] source;

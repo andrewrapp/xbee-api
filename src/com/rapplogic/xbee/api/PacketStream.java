@@ -411,9 +411,14 @@ public class PacketStream implements IIntArrayInputStream {
 				
 			((RxBaseResponse)response).setSourceAddress(this.parseAddress16());
 		} else {
-			// TODO 16/64 bit versions
 			response = new RxResponseIoSample();
-			((RxBaseResponse)response).setSourceAddress(this.parseAddress64());
+			
+			if (apiId == XBeeResponse.RX_16_IO_RESPONSE) {
+				((RxBaseResponse)response).setSourceAddress(this.parseAddress16());	
+			} else {
+				// TODO test 64 bit address
+				((RxBaseResponse)response).setSourceAddress(this.parseAddress64());
+			}	
 		}
 		
 		int rssi = this.read();
