@@ -18,6 +18,13 @@
 	</target>
 	
 	<target name="compile" depends="init">
+
+    		<available property="jdk1.3+" classname="java.lang.StrictMath"/>
+    		<available property="jdk1.4+" classname="java.lang.CharSequence"/>
+    		<available property="jdk1.5+" classname="java.lang.Readable"/>
+    
+  		<fail unless="jdk1.5+" message="This software requires Java 1.5.  Please obtain the Java 1.5 SDK, update your JAVA_HOME, and try again"/>
+  		
 		<javac 
 			classpathref="compile-classpath" 
 			debug="true" 
@@ -47,6 +54,7 @@
 				<include name="*.so"/>
 				<include name=".classpath"/>
 				<include name=".project"/>
+				<include name="COPYING"/>
 			</fileset>
 		</copy>
 		
