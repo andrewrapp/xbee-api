@@ -37,7 +37,7 @@ public class ZNetRemoteAtRequest extends XBeeRequest {
 	 * @param awkFrameId
 	 * @param macAddress
 	 * @param znetAddress
-	 * @param applyChanges I'm guessing this is equivalent to ATWR, so only applicable to write operations
+	 * @param applyChanges If your command changes the state of the remote XBee, it will not be applied until one of three things happen: 1. You set this (applyChanges) to true  2.  You issue an AC command.  3.  You issue WR + FR commands
 	 * @param command
 	 * @param value
 	 */
