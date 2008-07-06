@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project default="compile" name="XBee-API">
+	<property file="build.properties"/>
+	<property name="build.dir" value="build"/>
+	<property name="src.dir" value="src"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="dist.dir" value="dist"/>
+
+   	<path id="compile-classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="init">
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+	</target>
+	
+	<target name="compile" depends="init">
+		<javac 
+			classpathref="compile-classpath" 
+			debug="true" 
+			destdir="${build.dir}" 
+			srcdir="${src.dir}" 
+			failonerror="true">
+			<include name="*/**"/>
+		</javac>
+	</target>
+	
+	<target name="dist" depends="compile">
+		
+		<jar basedir="${build.dir}" destfile="${dist.dir}/xbee-api.jar"/>
+		
+		<!-- copy thirdparty libs -->
+		<copy todir="${dist.dir}/lib">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+
+		<!-- copy rxtx native lib -->
+		<copy todir="${dist.dir}">
+			<fileset dir=".">
+				<include name="*.jnilib"/>
+				<include name="*.dll"/>
+				<include name="*.so"/>
+				<include name=".classpath"/>
+				<include name=".project"/>
+			</fileset>
+		</copy>
+		
+		<copy file="log4j.properties" todir="${dist.dir}"/>
+
+		<copy todir="${dist.dir}/src">
+			<fileset dir="src">
+				<exclude name="svn*"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${dist.dir}/resources">
+			<fileset dir="resources">
+				<include name="XBee-*manual.pdf"/>
+			</fileset>
+		</copy>
+	
+		<zip basedir="${dist.dir}" destfile="xbee-api-0.3.1.zip"/>
+	</target>
+	
+	<target name="clean">
+		<delete includeEmptyDirs="yes" failonerror="no">
+			<fileset dir="${build.dir}" includes="**/*"/>
+			<fileset dir="${dist.dir}" includes="**/*"/>
+		</delete>
+	</target>
+		
+</project>

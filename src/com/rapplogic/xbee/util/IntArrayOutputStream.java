@@ -3,7 +3,7 @@ package com.rapplogic.xbee.util;
 import java.util.ArrayList;
 import java.util.List;
 
-
+// TODO replace with nio.IntBuffer
 public class IntArrayOutputStream {
 
 	private List<Integer> intList = new ArrayList<Integer>();
