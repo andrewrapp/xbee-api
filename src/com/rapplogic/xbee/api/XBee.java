@@ -10,7 +10,7 @@ import com.rapplogic.xbee.RxTxSerialComm;
 import com.rapplogic.xbee.util.ExceptionHandler;
 
 /**
- *  Copyright (c) 2008 Andrew Rapp
+ *  Copyright (c) 2008 Andrew Rapp. All rights reserved.
  *  
  *  This file is part of XBee-API.
  *  
