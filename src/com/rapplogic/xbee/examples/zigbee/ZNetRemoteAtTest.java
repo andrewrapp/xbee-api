@@ -1,3 +1,22 @@
+/**
+ * Copyright (c) 2008 Andrew Rapp. All rights reserved.
+ *  
+ * This file is part of XBee-API.
+ *  
+ * XBee-API is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *  
+ * XBee-API is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *  
+ * You should have received a copy of the GNU General Public License
+ * along with XBee-API.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.rapplogic.xbee.examples.zigbee;
 
 import org.apache.log4j.Logger;
@@ -13,29 +32,11 @@ import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtRequest;
 import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtResponse;
 
 /** 
- *  Copyright (c) 2008 Andrew Rapp. All rights reserved.
- *  
- *  This file is part of XBee-API.
- *  
- *  XBee-API is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  XBee-API is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with XBee-API.  If not, see <http://www.gnu.org/licenses/>.
- *  
- *  
  * Here are some examples of API usage.  Most of these examples rely on a pre-existing configuration
  * and should not be run blindly.
  * 
  * 
- * Crashed RXTX oops #
+ * Crashed RXTX oops:
 # An unexpected error has been detected by HotSpot Virtual Machine:
 #
 #  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x10009e69, pid=1820, tid=6480

@@ -1,3 +1,22 @@
+/**
+ * Copyright (c) 2008 Andrew Rapp. All rights reserved.
+ *  
+ * This file is part of XBee-API.
+ *  
+ * XBee-API is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *  
+ * XBee-API is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *  
+ * You should have received a copy of the GNU General Public License
+ * along with XBee-API.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.rapplogic.xbee.api;
 
 import java.io.IOException;
@@ -10,26 +29,6 @@ import com.rapplogic.xbee.RxTxSerialComm;
 import com.rapplogic.xbee.util.ExceptionHandler;
 
 /**
- *  Copyright (c) 2008 Andrew Rapp. All rights reserved.
- *  
- *  This file is part of XBee-API.
- *  
- *  XBee-API is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  XBee-API is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License
- *  along with XBee-API.  If not, see <http://www.gnu.org/licenses/>.
- *  
- *  
- *  
- *  
  * This is an API for XBee 802.15.4 and ZNet radios
  * 
  * Objectives: 
@@ -249,12 +248,18 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 		return newPacketNotification;
 	}
 
+	/**
+	 * TODO this should not be public
+	 */
 	public void handlePacket(XBeeResponse packet) {
 		packetCount++;
 		synchronousSendPacketList.add(packet);
 		packetList.add(packet);
 	}
 
+	/**
+	 * TODO this should not be public
+	 */
 	public void error(Throwable th) {
 		errorList.add(th);
 	}
