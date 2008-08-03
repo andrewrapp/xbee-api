@@ -50,9 +50,7 @@ public abstract class XBeeResponse {
 
 	private XBeePacketLength length;
 	
-	// TODO create Error/ErrorList object
 	private boolean error = false;
-	private String errorMsg;
 		
 	public XBeeResponse() {
 
@@ -82,6 +80,11 @@ public abstract class XBeeResponse {
 		this.checksum = checksum;
 	}
 	
+	/**
+	 * If true then this is an instance of ErrorResponse
+	 * 
+	 * @return
+	 */
 	public boolean isError() {
 		return error;
 	}
@@ -89,20 +92,11 @@ public abstract class XBeeResponse {
 	public void setError(boolean error) {
 		this.error = error;
 	}
-
-	public String getErrorMsg() {
-		return errorMsg;
-	}
-
-	public void setErrorMsg(String errorMsg) {
-		this.errorMsg = errorMsg;
-	}
 	
 	public String toString() {
 		return "apiId=" + ByteUtils.toBase16(this.apiId) +
 			",length=" + length.get16BitValue() + 
 			",checksum=" + ByteUtils.toBase16(checksum) +
-			",error=" + this.error +
-			",errorMessage=" + this.errorMsg;
+			",error=" + this.error;
 	}
 }

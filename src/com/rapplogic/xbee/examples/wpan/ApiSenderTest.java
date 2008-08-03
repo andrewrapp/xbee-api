@@ -45,7 +45,7 @@ public class ApiSenderTest {
 	private ApiSenderTest() throws Exception {
 
 		XBee xbee = new XBee();
-		xbee.setTimeout(20000);
+		xbee.setSendSynchronousTimeout(20000);
 
 		final int sleep = 500;
 

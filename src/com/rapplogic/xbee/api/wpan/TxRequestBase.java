@@ -34,8 +34,8 @@ public abstract class TxRequestBase extends XBeeRequest {
 	
 	public enum Option {
 		
-		DEFAULT_OPTION (1),
-		DISABLE_ACK_OPTION (2),
+		DEFAULT_OPTION (0),
+		DISABLE_ACK_OPTION (1),
 		BROADCAST_OPTIONI(4);
 		
 		private static final Map<Integer,Option> lookup = new HashMap<Integer,Option>();

@@ -48,12 +48,6 @@ import com.rapplogic.xbee.util.IIntArrayInputStream;
  * jumpers may be set to the USB or XBee position; however if in the XBee position, the Arduino
  * program must contain the Serial.begin(baudRate) statement in setup().
  * 
- * Using 2.1K resistor with photoresistor (150-10K?); 300 is desk lighting
- * 
- * Don't forget to connect VCC to VREF prior to using Analog/Digial inputs
- * 
- * TODO set PWM0 to RSSI and attach LED for visual RSSI
- * 
  * 
 Example RX (Receive) Packet: 16-bit Address I/O Data Format
 
@@ -87,7 +81,7 @@ else
 13  ADC LSB
 14. Checksum
 
-* Escaped bytes increase packet length but packet stated length doesn't seem to account for this
+* Escaped bytes increase packet length but packet stated length only indicates un-escaped bytes.
 * Length includes all bytes after Length bytes, not including the checksum
  * 
  * @author Andrew Rapp
@@ -113,12 +107,18 @@ public class PacketStream implements IIntArrayInputStream {
 		this.in = in;
 	}
 	
-	public XBeeResponse parsePacket() throws IOException {
+	/**
+	 * This method is guaranteed (unless I screwed up) to return an instance of XBeeResponse and should never throw an exception
+	 * If an exception occurs, it will be packaged and returned as an ErrorResponse. 
+	 * 
+	 * @return
+	 */
+	public XBeeResponse parsePacket() {
 		
 		Exception exception = null;
 		
 		try {
-			// TODO length doesn't account for escaped bytes WTF!!!
+			// BTW, length doesn't account for escaped bytes
 			int msbLength = this.read("Length MSB");
 			int lsbLength = this.read("Length LSB");
 			
@@ -127,7 +127,7 @@ public class PacketStream implements IIntArrayInputStream {
 
 			log.debug("packet length is " + ByteUtils.formatByte(length.getLength()));
 			
-//			// real packet length = stated length + 1 start byte + 1 checksum byte + 2 length bytes
+			// total packet length = stated length + 1 start byte + 1 checksum byte + 2 length bytes
 			
 			this.apiId = this.read("API ID");
 			
@@ -191,26 +191,22 @@ public class PacketStream implements IIntArrayInputStream {
 			response.setChecksum(this.read("Checksum"));
 			
 			if (!this.isDone()) {
-				// TODO this is not the answer!
-				throw new XBeeParseException("Packet stream is not finished yet we seem to think it is");
+				throw new XBeeParseException("There are remaining bytes according to stated packet length but we have read all the bytes we thought were required for this packet (if that makes sense)");
 			}
 		} catch (Exception e) {
-			log.error("Failed due to exception",e);
+			log.error("Failed due to exception.  Returning ErrorResponse", e);
 			exception = e;
-		}
-
-		if (response == null) {
+			
 			response = new ErrorResponse();
-		} 
+			
+			// TODO this is redundant
+			((ErrorResponse)response).setErrorMsg(exception.getMessage());	
+			// but this isn't
+			((ErrorResponse)response).setException(e);
+		}
 		
 		response.setLength(length);
 		response.setApiId(apiId);
-		
-		if (exception != null) {
-			response.setError(true);
-			response.setErrorMsg(exception.getMessage());	
-//			response.setException(e);
-		}
 
 		return response;
 	}
@@ -222,7 +218,7 @@ public class PacketStream implements IIntArrayInputStream {
 	}
 	
 	/**
-	 * TODO implement as class that extends inputstream?
+	 * TODO implement as class that extends input stream?
 	 * 
 	 * This method reads bytes from the underlying input stream and performs the following tasks:
 	 * keeps track of how many bytes we've read, un-escapes bytes if necessary and verifies the checksum.

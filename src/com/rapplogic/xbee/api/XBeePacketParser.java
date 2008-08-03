@@ -45,6 +45,7 @@ public class XBeePacketParser implements Runnable {
 		this.newPacketNotification = lock;
 		
 		thread = new Thread(this);
+		thread.setName("XBee Packet Parser Thread");
 		thread.start();
 		
 		log.debug("starting reader thread");
@@ -71,14 +72,7 @@ public class XBeePacketParser implements Runnable {
 						response = packetStream.parsePacket();
 						
 						log.debug("Response is " + response.toString());
-						
-						// wrap around entire parse routine
-						synchronized (this.newPacketNotification) {							
-							// add to handler and newPacketNotification
-							handler.handlePacket(response);
-							log.debug("Notifying API user that packets are ready");
-							newPacketNotification.notifyAll();
-						}
+						newPacketNotification(response);
 					} else {
 						log.warn("expected start byte but got this " + ByteUtils.toBase16(val) + ", discarding");
 					}
@@ -93,14 +87,15 @@ public class XBeePacketParser implements Runnable {
 							continue;
 						}
 						
-						// serial event will wake us up
+						// this timeout is probably not necessary but it will prevent a lockup in the chance that we 
+						// are not notified of new data
 						this.wait(timeout);
 					}
 					
 					if (System.currentTimeMillis() - start >= timeout) {
 						log.debug("timeout expired.. checking for data");
 					} else {
-						log.info("packet parser thread woken up");
+						log.info("packet parser thread woken up by RXTX");
 					}
 				}
 			} catch(InterruptedException ie) {
@@ -109,26 +104,24 @@ public class XBeePacketParser implements Runnable {
 			} catch (Exception e) {
 				// handling exceptions in a thread is a bit dicey.  the rest of the packet will be discarded
 				log.error("Exception in reader thread", e);
-				handler.error(e);
 				
-				synchronized (this.newPacketNotification) {
-					newPacketNotification.notify();
-				}
+				ErrorResponse error = new ErrorResponse();
+				error.setException(e);
+				
+				// not exactly what they were expecting but hey..
+				this.newPacketNotification(response);
 			}				
 		}
 	}
 
-	public int getTimeout() {
-		return timeout;
-	}
-
-	/**
-	 * This is how long we wait until we check for new data in the event RXTX fails to notify us.
-	 * 
-	 * @param timeout
-	 */
-	public void setTimeout(int timeout) {
-		this.timeout = timeout;
+	private void newPacketNotification(XBeeResponse response) {
+		// wrap around entire parse routine
+		synchronized (this.newPacketNotification) {							
+			// add to handler and newPacketNotification
+			handler.handlePacket(response);
+			log.debug("Notifying API user that packets are ready");
+			newPacketNotification.notifyAll();
+		}
 	}
 
 	public void setDone(boolean done) {

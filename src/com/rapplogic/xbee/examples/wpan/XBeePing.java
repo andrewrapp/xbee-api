@@ -20,6 +20,7 @@
 package com.rapplogic.xbee.examples.wpan;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import com.rapplogic.xbee.transparent.SerialAsciiComm;
 
@@ -53,6 +54,7 @@ public class XBeePing extends SerialAsciiComm {
 	}
 
 	public static void main(String[] args) throws Exception {
+		PropertyConfigurator.configure("log4j.properties");
 		new XBeePing(args);
 	}
 	

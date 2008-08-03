@@ -47,6 +47,7 @@ public class ApiAtTest {
 			
 		try {
 			xbee.open("COM6", 9600);	
+			
 //			this.sendCommand(new AtCommand("AP"));
 //			this.sendCommand(new AtCommand("NI"));
 			
@@ -57,36 +58,11 @@ public class ApiAtTest {
 //			// send sample every 5 seconds
 //			this.sendCommand(new AtCommand("IR", new int[] {0x13, 0x88}));
 			
-//			log.info("MY is " + xbee.sendAtCommand(new AtCommand("MY")));
+			log.info("MY is " + xbee.sendAtCommand(new AtCommand("MY")));
 //			log.info("SH is " + xbee.sendAtCommand(new AtCommand("SH")));
 //			log.info("SL is " + xbee.sendAtCommand(new AtCommand("SL")));
-//			
-//			AtCommandResponse children = (AtCommandResponse) xbee.sendAtCommand(new AtCommand("NC"));
-//			log.info("This coordinator has " + children.getValue()[0] + " children");
-//			
-//			AtCommandResponse assoc = (AtCommandResponse) xbee.sendAtCommand(new AtCommand("AI"));
-//			
-//			if (assoc.getValue()[0] == 0) {
-//				log.info("The coordinator is associated");	
-//			}
 			
-//			xbee.sendAsynchronous(new AtCommand("NI", ni));
-//			XBeeResponse response1 = xbee.getResponse();
-			
-			// set to escape characters
-//			xbee.sendAsynchronous(new AtCommand("AP", 0x02));
-//			XBeeResponse response1 = xbee.getResponse();
-			
-			// Send network restart
-			//xbee.sendAsynchronous(new AtCommand("NR"));
-			
-			// get assoc indicator
-			xbee.sendAsynchronous(new AtCommand("AI"));
-			xbee.getPacketList().clear();
-			XBeeResponse response = xbee.getResponse();
-			log.info("AI response is " + AssociationStatus.get(((AtCommandResponse)response).getValue()[0]));
-			
-//			// Send node discover
+			// Send node discover
 //			xbee.sendAsynchronous(new AtCommand("ND"));
 			
 			// I just have one end device
@@ -95,9 +71,6 @@ public class ApiAtTest {
 //
 //			NodeDiscover nd = NodeDiscover.parse((AtCommandResponse)response);
 //			log.info("nd is " + nd.toString());
-			
-//			AtCommandResponse response2 = (AtCommandResponse) xbee.sendAtCommand(new AtCommand("SL"));
-//			log.debug("received response " + response2.toString());
 		} finally {
 			xbee.close();
 		}

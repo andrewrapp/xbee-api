@@ -25,8 +25,9 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import com.rapplogic.xbee.api.XBeeAddress16;
+import com.rapplogic.xbee.api.ErrorResponse;
 import com.rapplogic.xbee.api.XBee;
+import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.api.wpan.RxResponse;
 import com.rapplogic.xbee.api.wpan.RxResponseIoSample;
@@ -63,7 +64,7 @@ public class ApiReceiverTest {
 					count++;
 					
 					if (response.isError()) {
-						log.info("response contains errors: " + response.getErrorMsg());
+						log.info("response contains errors", ((ErrorResponse)response).getException());
 						errors++;
 					}
 					

@@ -21,8 +21,37 @@ package com.rapplogic.xbee.api;
 
 public class ErrorResponse extends XBeeResponse {
 
+	private String errorMsg;
+	private Exception exception;
+	
 	public ErrorResponse() {
 		super();
 		this.setApiId(ERROR_RESPONSE);
+		this.setError(true);
+	}
+
+	/**
+	 * A bit redundant in that it is the same as getException.getMessage()
+	 * 
+	 * @return
+	 */
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
+	
+	public Exception getException() {
+		return exception;
+	}
+
+	public void setException(Exception exception) {
+		this.exception = exception;
+	}
+
+	public String toString() {
+		return super.toString() + ",errorMsg=" + this.errorMsg + ",exception=" + this.exception;
 	}
 }

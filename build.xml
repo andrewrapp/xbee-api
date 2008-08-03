@@ -16,6 +16,8 @@ GNU General Public License for more details.
  
 You should have received a copy of the GNU General Public License
 along with XBee-API.  If not, see <http://www.gnu.org/licenses/>.
+
+TODO provide bin, src, and examples distributions
  -->
 <project default="compile" name="XBee-API">
 	<property file="build.properties"/>
@@ -90,7 +92,7 @@ along with XBee-API.  If not, see <http://www.gnu.org/licenses/>.
 			</fileset>
 		</copy>
 	
-		<zip basedir="${dist.dir}" destfile="xbee-api-0.3.1.zip"/>
+		<zip basedir="${dist.dir}" destfile="xbee-api-0.3.2.zip"/>
 	</target>
 	
 	<target name="clean">
