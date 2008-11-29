@@ -112,6 +112,30 @@ public class IoSample {
 	public boolean isD2On() {
 		return ByteUtils.getBit(dioLsb, 3);
 	}	
+
+	public boolean isD3On() {
+		return ByteUtils.getBit(dioLsb, 4);
+	}
+	
+	public boolean isD4On() {
+		return ByteUtils.getBit(dioLsb, 5);
+	}
+	
+	public boolean isD5On() {
+		return ByteUtils.getBit(dioLsb, 6);
+	}
+	
+	public boolean isD6On() {
+		return ByteUtils.getBit(dioLsb, 7);
+	}
+	
+	public boolean isD7On() {
+		return ByteUtils.getBit(dioLsb, 8);
+	}
+	
+	public boolean isD8On() {
+		return ByteUtils.getBit(dioMsb, 1);
+	}
 	
 	// TODO remaining bits
 	public String toString() {

@@ -39,6 +39,7 @@ public class Checksum {
 	}
 	
 	/**
+	 * Computes checksum and stores in checksum instance variable
 	 * 
 	 * @return
 	 */

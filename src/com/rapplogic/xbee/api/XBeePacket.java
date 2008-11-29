@@ -35,16 +35,16 @@ public class XBeePacket {
 	private int[] packet;
 	
 	/**
-	 * I started off using bytes but quickly realized that java bytes are signed, so effectively only 7 bits.
-	 * We should be able to use int instead.
+	 * Performs the necessary activities to construct an XBee packet from the frame data.
+	 * This includes: computing the checksum, escaping the necessary bytes, adding the start byte and length bytes.
 	 * 
+	 * The format of a packet is as follows:
 	 * 
-	 * @param data
+	 * start byte - msb length byte - lsb length byte - frame data - checksum byte
+	 * 
+	 * @param frameData
 	 */
 	public XBeePacket(int[] frameData) {
-	
-		// save pre escape length
-		int preEscapeLength = frameData.length;
 		
 		// checksum is always computed on pre-escaped packet
 		Checksum checksum = new Checksum();
@@ -59,8 +59,8 @@ public class XBeePacket {
 		packet = new int[frameData.length + 4];
 		packet[0] = START_BYTE;
 		
-		// Packet length does not include escape bytes 
-		XBeePacketLength length = new XBeePacketLength(preEscapeLength);
+		// Packet length does not include escape bytes or start, length and checksum bytes
+		XBeePacketLength length = new XBeePacketLength(frameData.length);
 		
 		// msb length
 		packet[1] = length.getMsb();
@@ -79,22 +79,38 @@ public class XBeePacket {
 		// note: if checksum is not correct, XBee won't send out packet or return error.  ask me how I know.
 
 		packet[packet.length - 1] = checksum.getChecksum();
-
+		
 //		for (int i = 0; i < packet.length; i++) {
 //			log.debug("XBeeApi pre-escape packet byte " + i + " is " + ByteUtils.toBase16(packet[i]));
 //		}
 		
-		packet = this.escapePacket(packet);
+		int preEscapeLength = packet.length;
 		
-		for (int i = 0; i < packet.length; i++) {
-			log.debug("Packet byte " + i + " is " + ByteUtils.toBase16(packet[i]));
-		}
+		packet = escapePacket(packet);
 		
-		if (packet.length >= 34) {
-			log.warn("p.48 indicates DI can handle 100 bytes: RF transmission will also commence after 100 Bytes (maximum packet size) are received in the DI buffer.");
-			// WTF p.48 indicates DI can handle 100 bytes: RF transmission will also commence after 100 Bytes (maximum packet size) are received in the DI buffer.
-			//throw new RuntimeException("This packet exceeds the DI buffer limit of 34 bytes this API does not use Hardware Flow Control (XBee manual p.11)");
+		if (log.isDebugEnabled()) {
+			for (int i = 0; i < packet.length; i++) {
+				log.debug("Packet byte " + i + " is " + ByteUtils.toBase16(packet[i]));
+			}			
 		}
+
+		log.debug("pre-escape packet size is " + preEscapeLength);
+		log.debug("post-escape packet size is " + packet.length);
+		
+		// TODO 10/25/08 testing znet tx packet: max packet size that succeeded is 96.  when sending all escape bytes, pre-escape max is 94
+//		final int maxPacketSize = 94;
+		
+		// This seems like a nice idea but it depends on which radio type is involved and possibly several other factors.
+		// The packet size validation in the TX Request class should suffice.
+		// if you don't get an ACK response back, one explanation is your packet is too large
+
+		//		if (preEscapeLength > maxPacketSize) {
+//			throw new RuntimeException("This packet (pre escape) exceeds the max size of " + maxPacketSize);
+////			log.warn("p.48 indicates DI can handle 100 bytes: RF transmission will also commence after 100 Bytes (maximum packet size) are received in the DI buffer.");
+////			// WTF p.48 indicates DI can handle 100 bytes: RF transmission will also commence after 100 Bytes (maximum packet size) are received in the DI buffer.
+////			throw new RuntimeException("This packet exceeds the DI buffer limit of 34 bytes this API does not use Hardware Flow Control (XBee manual p.11)");
+////			log.warn("packet exceeds max length of 100");
+//		}
 	}
 	
 	/**
@@ -103,7 +119,7 @@ public class XBeePacket {
 	 * @param packet
 	 * @return
 	 */
-	private int[] escapePacket(int[] packet) {
+	private static int[] escapePacket(int[] packet) {
 		int escapeBytes = 0;
 		
 		// escape packet.  start at one so we don't escape the start byte 
@@ -156,6 +172,87 @@ public class XBeePacket {
 	
 	public String toString() {
 		return ByteUtils.toBase16(this.packet);
+	}
+	
+	/**
+	 * Returns true if the packet is valid
+     *
+	 * @param packet
+	 * @return
+	 */
+	public static boolean verify(int[] packet) {
+		boolean valid = true;
+		
+		try {
+			if (packet[0] != START_BYTE) {
+				valid = false;
+			}
+			
+			// first need to unescape packet
+			int[] unEscaped = unEscapePacket(packet);
+	
+			XBeePacketLength len = new XBeePacketLength(unEscaped[1], unEscaped[2]);
+			
+			// stated packet length does not include start byte, length bytes, or checksum and is calculated before escaping
+			
+			int[] frameData = new int[len.get16BitValue()];
+			
+			Checksum checksum = new Checksum();
+			
+			for (int i = 3; i < unEscaped.length - 1; i++) {
+				frameData[i - 3] = unEscaped[i];
+				checksum.addByte(frameData[i - 3]);
+			}
+			
+			// add checksum byte to verify -- the last byte
+			checksum.addByte(unEscaped[unEscaped.length - 1]);
+			
+			if (!checksum.verify()) {
+				valid = false;
+			}
+		} catch (Exception e) {
+			valid = false;
+		}
+
+		return valid;
+	}
+	
+	/**
+	 * TODO untested
+	 * 
+	 * @param packet
+	 * @return
+	 */
+	private static int[] unEscapePacket(int[] packet) {
+	
+		int escapeBytes = 0;
+		
+		for (int i = 0; i < packet.length; i++) {
+			if (i == XBeePacket.ESCAPE) {
+				escapeBytes++;
+			}
+		}
+		
+		if (escapeBytes == 0) {
+			return packet;
+		}
+		
+		int[] unEscapedPacket = new int[packet.length - escapeBytes];
+		
+		int pos = 0;
+		
+		for (int i = 0; i < packet.length; i++) {
+			if (i == XBeePacket.ESCAPE) {
+				// discard escape byte and un-escape following byte
+				unEscapedPacket[pos] = 0x20 ^ packet[++i];
+			} else {
+				unEscapedPacket[pos] = packet[i];
+			}
+			
+			pos++;
+		}
+		
+		return unEscapedPacket;
 	}
 	
 	public static void main(String[] args) {

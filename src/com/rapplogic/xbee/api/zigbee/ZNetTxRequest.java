@@ -31,7 +31,10 @@ public class ZNetTxRequest extends XBeeRequest {
 	
 	private final static Logger log = Logger.getLogger(ZNetTxRequest.class);
 
-	public final static int MAX_DATA_SIZE = 72;
+	// 10/28/08 API states 72 is maximum size data portion of packet but I was able to push 75 through successfully, 
+	// even with all bytes as escape bytes (a total post-escape packet size of 169!).
+	// I'm sticking with the manual.. close enough anyhow
+	public final static int MAX_PAYLOAD_SIZE = 72;
 	public final static int DEFAULT_BROADCAST_RADIUS = 0;
 	
 	public final static int UNICAST_OPTION = 0;
@@ -75,8 +78,9 @@ public class ZNetTxRequest extends XBeeRequest {
 	}
 	
 	public int[] getFrameData() {
-		if (payload.length > MAX_DATA_SIZE) {
-			throw new IllegalArgumentException("Payload cannot exceed " + MAX_DATA_SIZE + " bytes.  Please package into multiple packets");
+		// TODO verify max frame data size
+		if (payload.length > MAX_PAYLOAD_SIZE) {
+			throw new IllegalArgumentException("Payload cannot exceed " + MAX_PAYLOAD_SIZE + " bytes.  Please package into multiple packets");
 		}
 		
 		IntArrayOutputStream out = new IntArrayOutputStream();

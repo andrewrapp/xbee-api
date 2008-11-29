@@ -45,6 +45,12 @@ public abstract class XBeeResponse {
 	
 	public final static int ERROR_RESPONSE = -1;
 
+	// the raw (escaped) bytes of this packet (minus start byte)
+	// this is the most compact representation of the packet;
+	// useful for sending the packet over a wire (e.g. xml),
+	// for later reconstitution
+	private int[] packetBytes;
+
 	private int apiId;
 	private int checksum;
 
@@ -91,6 +97,14 @@ public abstract class XBeeResponse {
 
 	public void setError(boolean error) {
 		this.error = error;
+	}
+	
+	public int[] getPacketBytes() {
+		return packetBytes;
+	}
+
+	public void setPacketBytes(int[] packetBytes) {
+		this.packetBytes = packetBytes;
 	}
 	
 	public String toString() {

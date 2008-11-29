@@ -28,11 +28,18 @@ import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeException;
 import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.api.zigbee.AssociationStatus;
+import com.rapplogic.xbee.api.zigbee.NodeDiscover;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /** 
- * The AtCommand/AtCommandResponse classes are supported by both znet and wpan XBees but certain
- * commands are specific to znet or wpan.
+ * The AtCommand/AtCommandResponse classes are supported by both ZNet and WPAN XBees but certain
+ * commands are specific to ZNet or WPAN.  
+ * 
+ * Commands that are ZNet specific are located in the ZNetApiAtTest.
+ * 
+ * Refer to the manual for more information on available commands
+ * 
+ * TODO split class in to WPAN class
  * 
  * @author andrew
  *
@@ -43,13 +50,16 @@ public class ApiAtTest {
 	
 	private XBee xbee = new XBee();
 	
-	private ApiAtTest() throws XBeeException {
+	public ApiAtTest() throws XBeeException {
 			
 		try {
-			xbee.open("COM6", 9600);	
-			
-//			this.sendCommand(new AtCommand("AP"));
-//			this.sendCommand(new AtCommand("NI"));
+			// replace with port and baud rate of your XBee
+			//xbee.open("COM6", 9600);	
+			// my coordinator com/baud
+			//xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
+			// my end device
+			xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
+
 			
 //			// set D1 analog input
 //			this.sendCommand(new AtCommand("D1", 2));
@@ -62,32 +72,28 @@ public class ApiAtTest {
 //			log.info("SH is " + xbee.sendAtCommand(new AtCommand("SH")));
 //			log.info("SL is " + xbee.sendAtCommand(new AtCommand("SL")));
 			
-			// Send node discover
-//			xbee.sendAsynchronous(new AtCommand("ND"));
-			
-			// I just have one end device
-//			XBeeResponse response = xbee.getResponse(true);
-//			log.info("received response: " + response.toString());
-//
-//			NodeDiscover nd = NodeDiscover.parse((AtCommandResponse)response);
-//			log.info("nd is " + nd.toString());
 		} finally {
 			xbee.close();
 		}
 	}
 	
 	// use sparingly!!!!
-	private void save() throws XBeeException {
+	public void save() throws XBeeException {
 		xbee.sendAsynchronous(new AtCommand("WR"));
 		this.logResponse(xbee.getResponse());
 	}
 	
-	private void sendCommand(AtCommand at) throws XBeeException {
+	public void sendCommand(AtCommand at) throws XBeeException {
 		xbee.sendAsynchronous(at);
 		this.logResponse(xbee.getResponse());
 	}
 	
-	private void logResponse(XBeeResponse response) {
+	public AtCommandResponse getAtResponse(AtCommand at) throws XBeeException {
+		xbee.sendAsynchronous(at);
+		return (AtCommandResponse) xbee.getResponse();
+	}
+
+	public void logResponse(XBeeResponse response) {
 		try {
 			AtCommandResponse atResponse = (AtCommandResponse) response;
 			log.info("response success is " + atResponse.isOk() + ", command issued is " + atResponse.getCommand() + ", command value is [" + ByteUtils.toBase16(atResponse.getValue()) + "]");

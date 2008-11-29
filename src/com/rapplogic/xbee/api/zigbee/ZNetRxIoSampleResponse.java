@@ -60,7 +60,7 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
 
 	/**
 	 * This method is a bit non standard since it needs to parse a sample
-	 * from either a io sample or remote at response (IS).
+	 * from either an IO sample or remote at response (IS).
 	 * 
 	 * @param ps
 	 * @throws IOException
@@ -219,6 +219,7 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
 		return ByteUtils.getBit(dioLsb, 1);
 	}
 
+	// consider using underscore for readability (isD1_On)
 	public boolean isD1On() {
 		return ByteUtils.getBit(dioLsb, 2);
 	}

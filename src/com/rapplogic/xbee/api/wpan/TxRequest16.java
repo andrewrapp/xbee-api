@@ -39,7 +39,7 @@ public class TxRequest16 extends TxRequestBase {
 	/**
 	 * 16 bit Tx Request with default frame id and awk option
 	 * 
-	 * @param destinationAddress
+	 * @param remoteAddr16
 	 * @param payload
 	 */
 	public TxRequest16(XBeeAddress16 remoteAddr16, int[] payload) {
@@ -54,8 +54,8 @@ public class TxRequest16 extends TxRequestBase {
 	 * 
 	 * Payload size is limited to 100 bytes, according to MaxStream documentation.
 	 * 
-	 * @param destinationAddress
-	 * @param awkFrameId
+	 * @param remoteAddr16
+	 * @param frameId
 	 * @param payload
 	 */
 	public TxRequest16(XBeeAddress16 remoteAddr16, int frameId, int[] payload) {
@@ -65,21 +65,19 @@ public class TxRequest16 extends TxRequestBase {
 	/**
 	 * Note: if option is DISABLE_ACK_OPTION you will not get a ack response and you must use the asynchronous send method
 	 * 
-	 * @param destinationAddress
+	 * @param remoteAddr16
 	 * @param frameId
 	 * @param payload
 	 * @param option
 	 */
-	public TxRequest16(XBeeAddress16 remoteAddr16, int frameId, Option option, int[] payload) {
+	public TxRequest16(XBeeAddress16 remoteAddr16, int frameId, Option option, int[] payload) {		
 		this.remoteAddr16 = remoteAddr16;
 		this.setFrameId(frameId);
 		this.setOption(option);
 		this.setPayload(payload);
 	}
 
-	public int[] getFrameData() {
-		super.getFrameData();
-		
+	public int[] getFrameData() {	
 		// response does not imply ack
 		if (remoteAddr16.equals(XBeeAddress16.BROADCAST) && this.getOption() != Option.DISABLE_ACK_OPTION) {
 			throw new RuntimeException("When sending a broadcast packet you cannot get an ACK and so your option must equal: " + Option.DISABLE_ACK_OPTION);

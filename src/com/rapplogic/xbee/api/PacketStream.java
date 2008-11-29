@@ -40,6 +40,8 @@ import com.rapplogic.xbee.api.zigbee.ZNetTxStatusResponse;
 import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.DoubleByte;
 import com.rapplogic.xbee.util.IIntArrayInputStream;
+import com.rapplogic.xbee.util.InputStreamWrapper;
+import com.rapplogic.xbee.util.IntArrayOutputStream;
 
 /**
  * Reads a packet from the input stream, verifies checksum and creates an XBeeResponse object
@@ -90,8 +92,9 @@ else
 public class PacketStream implements IIntArrayInputStream {
 
 	private final static Logger log = Logger.getLogger(PacketStream.class);
+
+	private IIntArrayInputStream in;
 	
-	private InputStream in;
 	private XBeePacketLength length;
 	private Checksum checksum = new Checksum();
 	
@@ -102,8 +105,16 @@ public class PacketStream implements IIntArrayInputStream {
 
 	private XBeeResponse response;
 	private int apiId;
-
+	
+	// experiment to preserve original byte array for transfer over network
+	private IntArrayOutputStream out = new IntArrayOutputStream();
+               
 	public PacketStream(InputStream in) {
+		this.in = new InputStreamWrapper(in);
+	}
+	
+	// for parsing a packet from a byte array
+	public PacketStream(IIntArrayInputStream in) {
 		this.in = in;
 	}
 	
@@ -207,10 +218,16 @@ public class PacketStream implements IIntArrayInputStream {
 		
 		response.setLength(length);
 		response.setApiId(apiId);
+		
+		// preserve original byte array for transfer over networks
+		response.setPacketBytes(out.getIntArray());
 
 		return response;
 	}
 	
+	/**
+	 * Same as read() but logs the byte read.  useful for debugging
+	 */
 	public int read(String context) throws IOException {
 		int b = this.read();
 		log.debug("Read " + context + " byte, val is " + ByteUtils.formatByte(b));
@@ -218,8 +235,19 @@ public class PacketStream implements IIntArrayInputStream {
 	}
 	
 	/**
-	 * TODO implement as class that extends input stream?
+	 * Only this method should call in.read()
 	 * 
+	 * @throws IOException
+	 */
+	private int readFromStream() throws IOException {
+		int b = in.read();
+		// save raw bytes to transfer via network
+		out.write(b);		
+		
+		return b;
+	}
+	
+	/**
 	 * This method reads bytes from the underlying input stream and performs the following tasks:
 	 * keeps track of how many bytes we've read, un-escapes bytes if necessary and verifies the checksum.
 	 */
@@ -229,8 +257,9 @@ public class PacketStream implements IIntArrayInputStream {
 			throw new XBeeParseException("Packet has read all of its bytes");
 		}
 		
-		int b = in.read();
+		int b = this.readFromStream();
 
+		
 		if (b == -1) {
 			throw new XBeeParseException("Read -1 from input stream while reading packet!");
 		}
@@ -241,7 +270,8 @@ public class PacketStream implements IIntArrayInputStream {
 			if (b == XBeePacket.ESCAPE) {
 				log.debug("found escape byte");
 				// read next byte
-				b = in.read();
+				b = this.readFromStream();
+				
 				log.debug("next byte is " + ByteUtils.formatByte(b));
 				b = 0x20 ^ b;
 				log.debug("unescaped (xor) byte is " + ByteUtils.formatByte(b));

@@ -50,15 +50,6 @@ public class ZNetRemoteAtRequest extends XBeeRequest {
 		this(frameId, macAddress, znetAddress, applyChanges, command, null);
 	}
 	
-	/**
-	 * 
-	 * @param awkFrameId
-	 * @param macAddress
-	 * @param znetAddress
-	 * @param applyChanges If your command changes the state of the remote XBee, it will not be applied until one of three things happen: 1. You set this (applyChanges) to true  2.  You issue an AC command.  3.  You issue WR + FR commands
-	 * @param command
-	 * @param value
-	 */
 	public ZNetRemoteAtRequest(int frameId, XBeeAddress64 dest64, XBeeAddress16 dest16, boolean applyChanges, String command, int[] value) {
 		this.setFrameId(frameId);
 		this.remoteAddr64 = dest64;

@@ -23,6 +23,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.rapplogic.xbee.api.AtCommandResponse;
+
 public enum AssociationStatus {
 	SUCCESS (0, "Successful completion - Coordinator started or Router/End Device found and joined with a parent."),
 	NO_PAN (0x21, "Scan found no PANs"),
@@ -43,6 +45,10 @@ public enum AssociationStatus {
 	
 	public static AssociationStatus get(int value) { 
 		return lookup.get(value); 
+	}
+	
+	public static AssociationStatus get(AtCommandResponse response) { 
+		return AssociationStatus.get(response.getValue()[0]); 
 	}
 	
     private final int value;

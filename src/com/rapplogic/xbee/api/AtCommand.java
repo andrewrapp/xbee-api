@@ -78,7 +78,7 @@ public class AtCommand extends XBeeRequest {
 		out.write((int) command.substring(1, 2).toCharArray()[0]);
 
 		// int value is up to four bytes to represent command value
-		if (value != null) {		
+		if (value != null) {
 			out.write(value);
 		}
 		

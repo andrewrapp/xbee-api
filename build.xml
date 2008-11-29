@@ -17,6 +17,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with XBee-API.  If not, see <http://www.gnu.org/licenses/>.
 
+Subversion release copy command: svn copy -m "0.4 release" https://xbee-api.googlecode.com/svn/trunk https://xbee-api.googlecode.com/svn/tags/releases/0.4
+
 TODO provide bin, src, and examples distributions
  -->
 <project default="compile" name="XBee-API">
@@ -25,6 +27,8 @@ TODO provide bin, src, and examples distributions
 	<property name="src.dir" value="src"/>
 	<property name="lib.dir" value="lib"/>
 	<property name="dist.dir" value="dist"/>
+	<property name="javadoc.dir" value="docs/api"/>
+	<property name="release" value="0.4.1"/>
 
    	<path id="compile-classpath">
 		<fileset dir="${lib.dir}">
@@ -35,13 +39,14 @@ TODO provide bin, src, and examples distributions
 	<target name="init">
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${javadoc.dir}"/>
 	</target>
 	
 	<target name="compile" depends="init">
 
-    		<available property="jdk1.3+" classname="java.lang.StrictMath"/>
-    		<available property="jdk1.4+" classname="java.lang.CharSequence"/>
-    		<available property="jdk1.5+" classname="java.lang.Readable"/>
+    	<available property="jdk1.3+" classname="java.lang.StrictMath"/>
+    	<available property="jdk1.4+" classname="java.lang.CharSequence"/>
+    	<available property="jdk1.5+" classname="java.lang.Readable"/>
     
   		<fail unless="jdk1.5+" message="This software requires Java 1.5.  Please obtain the Java 1.5 SDK, update your JAVA_HOME, and try again"/>
   		
@@ -55,7 +60,7 @@ TODO provide bin, src, and examples distributions
 		</javac>
 	</target>
 	
-	<target name="dist" depends="compile">
+	<target name="dist" depends="compile,javadoc">
 		
 		<jar basedir="${build.dir}" destfile="${dist.dir}/xbee-api.jar"/>
 		
@@ -92,13 +97,24 @@ TODO provide bin, src, and examples distributions
 			</fileset>
 		</copy>
 	
-		<zip basedir="${dist.dir}" destfile="xbee-api-0.3.2.zip"/>
+		<zip basedir="${dist.dir}" destfile="xbee-api-${release}.zip"/>
+	</target>
+	
+	<target name="javadoc">
+		  <javadoc sourcepath="src"
+		  		   classpathref="compile-classpath" 
+		           excludepackagenames="*.examples.*"
+		           destdir="${javadoc.dir}"
+		           author="true"
+		           version="true">
+		  </javadoc>
 	</target>
 	
 	<target name="clean">
 		<delete includeEmptyDirs="yes" failonerror="no">
 			<fileset dir="${build.dir}" includes="**/*"/>
 			<fileset dir="${dist.dir}" includes="**/*"/>
+			<fileset dir="${javadoc.dir}" includes="**/*"/>
 		</delete>
 	</target>
 		

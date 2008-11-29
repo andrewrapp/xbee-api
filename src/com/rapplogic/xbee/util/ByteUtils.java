@@ -230,8 +230,6 @@ public class ByteUtils {
 	/**
 	 * Parses a 10-bit analog value from the input stream
 	 * 
-	 * @param pos relative position in packet (for logging only)
-	 * 
 	 * @return
 	 * @throws IOException
 	 */

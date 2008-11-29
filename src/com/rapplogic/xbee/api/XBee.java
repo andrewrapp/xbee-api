@@ -72,6 +72,8 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	// Default timeout of 5 seconds
 	public final int DEFAULT_TIMEOUT = 5000;
 	
+	private final int maxPacketListSize = 100;
+	
 	private Object newPacketNotification = new Object();
 
 	private int sendSynchronousTimeout = DEFAULT_TIMEOUT;
@@ -104,11 +106,29 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 		}
 	}
 
+	/**
+	 * NOTE: This method is not thread safe. 
+	 * 
+	 * If multiple threads send simultaneously, it's possible for the packets to get interspersed.  
+	 * It is responsibility of the client to provide synchronization if multiple threads are sending.
+	 * 
+	 * @param packet
+	 * @throws IOException
+	 */
 	public void sendPacket(XBeePacket packet) throws IOException {
-		log.debug("sending packet " + packet.toString());
-		
-		for (int i = 0; i < packet.getPacket().length; i++) {
-			this.getOutputStream().write(packet.getPacket()[i]);
+		log.debug("sending packet " + packet.toString());		
+		this.sendPacket(packet.getPacket());
+	}
+	
+	/**
+	 * This is a bit dangerous and may be removed in a future release.  Intended For XMPP
+	 * 
+	 * @param packet
+	 * @throws IOException
+	 */
+	public void sendPacket(int[] packet)  throws IOException {
+		for (int i = 0; i < packet.length; i++) {
+			this.getOutputStream().write(packet[i]);
 		}
 
 		this.getOutputStream().flush();
@@ -125,11 +145,8 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	public void sendAsynchronous(XBeeRequest frameData) throws XBeeException {
 
 		try {
-			// still need this in case multiple threads are sending packets.. they could get mixed up
-			synchronized (newPacketNotification) {
-				XBeePacket packet = frameData.getXBeePacket();
-				this.sendPacket(packet);
-			}			
+			XBeePacket packet = frameData.getXBeePacket();
+			this.sendPacket(packet);			
 		} catch (Exception e) {
 			throw new XBeeException(e);
 		}
@@ -155,9 +172,11 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	 * 
 	 * You may get unexpected results if you are receiving sample data from radio while using this method.
 	 * 
-	 * WARNING this method should be considered experimental -- use sendAsynchronouse and getResponse for best results.
+	 * WARNING this method should be considered experimental -- use sendAsynchronous and getResponse for best results.
 	 * 
 	 * TODO provide method with timeout arg.  modify this method to not timeout since it does not accept a timeout param.
+	 * 
+	 * NOTE: this method is not thread-safe
 	 * 
 	 * @param xbeeRequest
 	 * 
@@ -167,7 +186,7 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	 * @throws InterruptedException
 	 * @throws XBeeTimeoutException 
 	 */
-	public synchronized XBeeResponse sendSynchronous(XBeeRequest xbeeRequest) throws XBeeException {
+	public XBeeResponse sendSynchronous(XBeeRequest xbeeRequest) throws XBeeException {
 
 		if (xbeeRequest.getFrameId() == XBeeRequest.NO_RESPONSE_FRAME_ID) {
 			throw new XBeeException("Frame Id cannot be 0 for a synchronous call -- it will always timeout as there is no response!");
@@ -178,16 +197,18 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 		XBeeResponse response = null;
 		
 		try {
+			this.sendPacket(txPacket);
+
 			synchronized (newPacketNotification) {
-	
-				// first remove any old packets
-				synchronousSendPacketList.clear();
+				// start accumulating packets
 				this.synchronousCollect = true;
 				
-				this.sendPacket(txPacket);
-	
-				long now = System.currentTimeMillis();
+				// first remove any old packets
+				synchronousSendPacketList.clear();
+				
 				// log.debug("waiting");
+				
+				long now = System.currentTimeMillis();
 				
 				// releases newPacketNotification and waits for next packet
 				newPacketNotification.wait(sendSynchronousTimeout);
@@ -199,10 +220,7 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 						// didn't think this would happen?
 						throw new RuntimeException("No response!");
 					} else if (synchronousSendPacketList.size() > 1) {
-						// TODO this is likely to occur if radio is sending back
-						// samples
-						// TODO need to synchronize the adding and removing of
-						// packets on packetlist
+						// TODO this is likely to occur if radio is sending back samples
 	
 						boolean waited = false;
 						
@@ -216,7 +234,7 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 							}	
 	
 							if (response == null) {
-								// we didn't get the right packet.. we will
+								// hmm we didn't a packet.. we will
 								// wait a bit more if this is the first time around
 								
 								if (!waited) {
@@ -229,7 +247,7 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 									
 									waited = true;
 								} else {
-									throw new RuntimeException("Packets were received but not a TX_16_STATUS_RESPONSE");
+									throw new XBeeException("Packets were received but not a TX_16_STATUS_RESPONSE");
 								}
 							}
 						}
@@ -237,7 +255,7 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 						response = (XBeeResponse) synchronousSendPacketList.get(0);
 	
 						if (response == null) {
-							throw new RuntimeException("response is null");
+							throw new XBeeException("I'm at a loss of words.  the response is null");
 						}
 					}
 				}
@@ -249,6 +267,7 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 				throw new XBeeException(e);	
 			}
 		} finally {
+			// indicate we are not accumulating packets anymore
 			this.synchronousCollect = false;
 		}
 			
@@ -269,8 +288,8 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 
 	/**
 	 * Called by the XBeePacketParser when a new packet has arrived
-	 * notifyAll is called on newPacketNotification to alert all threads
-	 * waiting for packets
+	 * After this method returns, notifyAll is called on newPacketNotification 
+	 * to alert all threads waiting for packets
 	 * 
 	 * This method is called within a synchronized block
 	 * 
@@ -283,12 +302,20 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 			synchronousSendPacketList.add(packet);	
 		}
 		
+		if (packetList.size() == maxPacketListSize) {
+			packetList.remove(maxPacketListSize - 1);
+		}
+		
 		packetList.add(packet);
 		this.lastResponse = packet;
 	}
 
 	/**
 	 * Called by RXTX to notify us that data is available to be read.
+	 * 
+	 * This method calls notify on the parser to indicate it should start
+	 * consuming packets.
+	 * 
 	 */
 	protected void handleSerialData()  {
 		log.info("RXTX serialEvent");
@@ -330,16 +357,60 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 			ExceptionHandler.handleAndThrow(e);
 		}
 	}
+
+	/**
+	 * Same as getResponseBlocking(int) but does not timeout
+	 * 
+	 * @return
+	 * @throws XBeeException
+	 * @throws XBeeTimeoutException
+	 */
+	public XBeeResponse getResponseBlocking() throws XBeeException, XBeeTimeoutException {
+		return this.getResponseBlocking(0);
+	}
 	
 	/**
-	 * Blocks until a packet is available and removes the packet from the packetList 
-
-	 * Returns immediately with the zero-eth item, if getPacketList().size() is greater than 0, it 
-	 * otherwise, waits on the getNewPacketNotification() object for the next response. 
-	 * Be sure to clear the packetlist prior to calling this if you are looking for new responses
+	 * This method blocks until a response is received or a timeout occurs.
+	 * This method will not return packets in the packetBuffer.
+	 * This method is guaranteed to return a response object or throw an Exception
+	 * This method is thread-safe.  each thread that acquires the lock prior to notification
+	 * will receive the same response object
 	 * 
-	 * WARNING: If you call this method from multiple threads, each XBeeResponse
-	 * will be returned to only one thread!
+	 * @param timeout
+	 * @return
+	 * @throws XBeeException
+	 * @throws XBeeTimeoutException
+	 */
+	public XBeeResponse getResponseBlocking(int timeout) throws XBeeException, XBeeTimeoutException {
+		try {
+			synchronized (this.getNewPacketNotification()) {
+				
+				long now = System.currentTimeMillis();
+				// wait for packets
+				this.getNewPacketNotification().wait(timeout);
+					
+				if (timeout > 0 && (System.currentTimeMillis() - now >= timeout)) {
+					throw new XBeeTimeoutException();
+				}
+				
+				// we got notified
+				if (lastResponse == null) {
+					throw new XBeeException("newPacketNotification was notified but no packets are available");
+				}
+				
+				return this.lastResponse;
+			}
+		} catch (Exception e) {
+			ExceptionHandler.handleAndThrow(e);
+		}
+		
+		// to satisfy eclipse compiler
+		return null;		
+	}
+	
+	
+	/**
+	 * Same as getResponse(int) but does not timeout
 	 * 
 	 * @return
 	 * @throws XBeeException 
@@ -349,14 +420,23 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	}
 	
 	/**
-	 * Same as getResponse but allows for a timeout to be specified
+	 * This method returns immediately with the zero-eth response (FIFO), if getPacketList().size() is greater than 0;
+	 * otherwise it waits on the getNewPacketNotification() object until the next response arrives.
+	 *  
+	 * Be sure to clear the packetList prior to calling this if you are looking for new responses
+	 * 
+	 * WARNING: If you call this method from multiple threads, each XBeeResponse 
+	 * will be returned to only one thread!
+	 * 
+	 * Consider a sendAndReceive method that returns that first response 
+	 * Consider a separate thread that reads from the packetlist and notifies waiters
 	 * 
 	 * @param timeout
 	 * @return
 	 * @throws XBeeException
 	 * @throws XBeeTimeoutException if timeout occurs before a response is received
 	 */
-	public synchronized XBeeResponse getResponse(int timeout) throws XBeeException, XBeeTimeoutException {
+	public XBeeResponse getResponse(int timeout) throws XBeeException, XBeeTimeoutException {
 		try {
 			synchronized (this.getNewPacketNotification()) {
 				
@@ -386,10 +466,10 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 		// to satisfy eclipse compiler
 		return null;
 	}
-
+	
 	/**
-	 * You need to remove packets from this list either manually or through getResponse; 
-	 * otherwise the list will consume memory, unbounded, as it grows,  
+	 * This list holds maximum of maxPacketListSize packets and discards
+	 * older packets when the maximum limit is reached.  
 	 * 
 	 * @return
 	 */
@@ -464,7 +544,7 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	 * This affects how long we wait for a response during a synchronous call before giving up
 	 * and throwing a timeout exception
 	 * 
-	 * @param timeout
+	 * @param sendSynchronousTimeout
 	 */
 	public void setSendSynchronousTimeout(int sendSynchronousTimeout) {
 		this.sendSynchronousTimeout = sendSynchronousTimeout;

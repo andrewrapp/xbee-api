@@ -32,24 +32,11 @@ import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtRequest;
 import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtResponse;
 
 /** 
- * Here are some examples of API usage.  Most of these examples rely on a pre-existing configuration
- * and should not be run blindly.
+ * Here are some examples of turning on/off outputs via the Remote AT feature.  
+ * This example should be run on a coordinator that is associated to at least one end device
+ *
+ * Note: if your coordinator is powered on and receiving I/O samples, make sure you power off/on to drain the traffic before running this example.§
  * 
- * 
- * Crashed RXTX oops:
-# An unexpected error has been detected by HotSpot Virtual Machine:
-#
-#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x10009e69, pid=1820, tid=6480
-#
-# Java VM: Java HotSpot(TM) Client VM (1.5.0_06-b05 mixed mode, sharing)
-# Problematic frame:
-# C  [rxtxSerial.dll+0x9e69]
-#
-# An error report file with more information is saved as hs_err_pid1820.log
-#
-# If you would like to submit a bug report, please visit:
-#   http://java.sun.com/webapps/bugreport/crash.jsp
-#
  * @author andrew
  *
  */
@@ -62,13 +49,16 @@ public class ZNetRemoteAtTest {
 		XBee xbee = new XBee();
 		
 		try {
-			xbee.open("COM5", 9600);			
+			// replace with your coordinator com/baud
+			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
+			// xbee.open("COM5", 9600);			
 			
+			// replace with SH + SL of your end device
 			XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x0a, 0x3e, 0x02);
 			
-			// coordinator SL is 0x40 0x3e 0x0f 0x30, SH same as remote
+			// my coordinator SL is 0x40 0x3e 0x0f 0x30, SH same as remote
 			
-			// turn on D0 (Digital output high) 
+			// turn on end device D0 (Digital output high = 5) 
 			ZNetRemoteAtRequest request = new ZNetRemoteAtRequest(XBeeRequest.DEFAULT_FRAME_ID, addr64, XBeeAddress16.ZNET_BROADCAST, true, "D0", new int[] {5});
 			xbee.sendAsynchronous(request);
 			XBeeResponse response = xbee.getResponse();
@@ -77,10 +67,11 @@ public class ZNetRemoteAtTest {
 				ZNetRemoteAtResponse remote = (ZNetRemoteAtResponse) response;
 				log.info("turn on D0 remote at command status is " + remote.getStatus());
 			}
-			
+	
+			// wait a bit
 			Thread.sleep(5000);
 //			
-//			// turn on D0 off 
+//			// turn off end device D0 
 			request = new ZNetRemoteAtRequest(XBeeRequest.DEFAULT_FRAME_ID, addr64, XBeeAddress16.ZNET_BROADCAST, true, "D0", new int[] {4});
 			xbee.sendAsynchronous(request);
 			response = xbee.getResponse();
