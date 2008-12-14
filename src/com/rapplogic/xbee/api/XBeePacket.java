@@ -19,19 +19,47 @@
 
 package com.rapplogic.xbee.api;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 
 import com.rapplogic.xbee.util.ByteUtils;
 
 public class XBeePacket {
+
+	public enum SpecialByte {
+		START_BYTE (0x7e),
+		ESCAPE (0x7d),
+		XON (0x11),
+		XOFF (0x13);
+		
+		private static final Map<Integer,SpecialByte> lookup = new HashMap<Integer,SpecialByte>();
+		
+		static {
+			for(SpecialByte s : EnumSet.allOf(SpecialByte.class)) {
+				lookup.put(s.getValue(), s);
+			}
+		}
+		
+		public static SpecialByte get(int value) { 
+			return lookup.get(value); 
+		}
+		
+	    private final int value;
+	    
+	    SpecialByte(int value) {
+	        this.value = value;
+	    }
+
+		public int getValue() {
+			return value;
+		}
+	}
 	
 	private final static Logger log = Logger.getLogger(XBeePacket.class);
-	
-	public final static int START_BYTE = 0x7e;
-	public final static int ESCAPE = 0x7d;
-	public final static int XON = 0x11;
-	public final static int XOFF = 0x13;
-	
+		
 	private int[] packet;
 	
 	/**
@@ -57,7 +85,7 @@ public class XBeePacket {
 		
 		// packet size is frame data + start byte + 2 length bytes + checksum byte
 		packet = new int[frameData.length + 4];
-		packet[0] = START_BYTE;
+		packet[0] = SpecialByte.START_BYTE.getValue();
 		
 		// Packet length does not include escape bytes or start, length and checksum bytes
 		XBeePacketLength length = new XBeePacketLength(frameData.length);
@@ -139,11 +167,11 @@ public class XBeePacket {
 			
 			int pos = 1;
 			
-			escapePacket[0] = START_BYTE;
+			escapePacket[0] = SpecialByte.START_BYTE.getValue();
 				
 			for (int i = 1; i < packet.length; i++) {
 				if (isSpecialByte(packet[i])) {
-					escapePacket[pos] = ESCAPE;
+					escapePacket[pos] = SpecialByte.ESCAPE.getValue();
 					escapePacket[++pos] = 0x20 ^ packet[i];
 					
 					log.debug("escapeFrameData: xor'd byte is 0x" + Integer.toHexString(escapePacket[pos]));
@@ -163,7 +191,8 @@ public class XBeePacket {
 	}
 	
 	public static boolean isSpecialByte(int b) {
-		if (b == XBeePacket.START_BYTE || b == XBeePacket.ESCAPE || b == XBeePacket.XON || b == XBeePacket.XOFF) {
+		if (b == SpecialByte.START_BYTE.getValue() || b == SpecialByte.ESCAPE.getValue() || b == SpecialByte.XON.getValue() || 
+				b == SpecialByte.XOFF.getValue()) {
 			return true;
 		}
 		
@@ -184,7 +213,7 @@ public class XBeePacket {
 		boolean valid = true;
 		
 		try {
-			if (packet[0] != START_BYTE) {
+			if (packet[0] != SpecialByte.START_BYTE.getValue()) {
 				valid = false;
 			}
 			
@@ -228,7 +257,7 @@ public class XBeePacket {
 		int escapeBytes = 0;
 		
 		for (int i = 0; i < packet.length; i++) {
-			if (i == XBeePacket.ESCAPE) {
+			if (i == SpecialByte.ESCAPE.getValue()) {
 				escapeBytes++;
 			}
 		}
@@ -242,7 +271,7 @@ public class XBeePacket {
 		int pos = 0;
 		
 		for (int i = 0; i < packet.length; i++) {
-			if (i == XBeePacket.ESCAPE) {
+			if (i == SpecialByte.ESCAPE.getValue()) {
 				// discard escape byte and un-escape following byte
 				unEscapedPacket[pos] = 0x20 ^ packet[++i];
 			} else {

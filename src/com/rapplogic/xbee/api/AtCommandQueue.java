@@ -35,7 +35,7 @@ public class AtCommandQueue extends AtCommand {
 		super(command, value, frameId);
 	}
 
-	public int getApiId() {
-		return AT_COMMAND_QUEUE;
+	public ApiId getApiId() {
+		return ApiId.AT_COMMAND_QUEUE;
 	}
 }

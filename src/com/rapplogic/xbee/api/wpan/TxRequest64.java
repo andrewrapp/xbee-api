@@ -21,6 +21,7 @@ package com.rapplogic.xbee.api.wpan;
 
 import org.apache.log4j.Logger;
 
+import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.util.IntArrayOutputStream;
 
@@ -88,7 +89,7 @@ public class TxRequest64 extends TxRequestBase {
 		IntArrayOutputStream out = new IntArrayOutputStream();
 		
 		// api id
-		out.write(this.getApiId());
+		out.write(this.getApiId().getValue());
 		// frame id (arbitrary byte that will be sent back with ack)
 		out.write(this.getFrameId());
 		// destination high (broadcast is 0xFFFF)
@@ -103,8 +104,8 @@ public class TxRequest64 extends TxRequestBase {
 		return out.getIntArray();	
 	}
 	
-	public int getApiId() {
-		return TX_REQUEST_64;
+	public ApiId getApiId() {
+		return ApiId.TX_REQUEST_64;
 	}
 
 	public XBeeAddress64 getRemoteAddr64() {
@@ -117,7 +118,7 @@ public class TxRequest64 extends TxRequestBase {
 	
 	public String toString() {
 		return super.toString() + 
-			"remoteAddress64=" + this.remoteAddr64.toString();
+			",remoteAddress64=" + this.remoteAddr64.toString();
 	}
 
 }

@@ -21,6 +21,7 @@ package com.rapplogic.xbee.api.zigbee;
 
 import org.apache.log4j.Logger;
 
+import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.util.ByteUtils;
@@ -54,7 +55,7 @@ public class ZNetExplicitTxRequest extends ZNetTxRequest {
 		IntArrayOutputStream frameData = this.getFrameDataAsIntArrayOutputStream();
 		
 		// overwrite api id
-		frameData.getInternalList().set(0, this.getApiId());
+		frameData.getInternalList().set(0, this.getApiId().getValue());
 		
 		// insert explicit bytes
 		
@@ -64,7 +65,7 @@ public class ZNetExplicitTxRequest extends ZNetTxRequest {
 		frameData.getInternalList().add(13, this.getDestinationEndpoint());
 		// reserved byte
 		frameData.getInternalList().add(14, this.getReserved());
-		// cluster id
+		// cluster id -- manual says one byte in request, but two bytes in response??
 		frameData.getInternalList().add(15, this.getClusterId());
 		// profile id
 		frameData.getInternalList().add(16, this.getProfileId().getMsb());
@@ -75,8 +76,8 @@ public class ZNetExplicitTxRequest extends ZNetTxRequest {
 		return frameData.getIntArray();
 	}
 	
-	public int getApiId() {
-		return ZNET_EXPLICIT_TX_REQUEST;
+	public ApiId getApiId() {
+		return ApiId.ZNET_EXPLICIT_TX_REQUEST;
 	}
 
 	public int getReserved() {
@@ -120,8 +121,7 @@ public class ZNetExplicitTxRequest extends ZNetTxRequest {
 			",sourceEndpoint=" + ByteUtils.toBase16(this.getSourceEndpoint()) +
 			",destinationEndpoint=" + ByteUtils.toBase16(this.getDestinationEndpoint()) +
 			",reserved byte=" + ByteUtils.toBase16(this.getReserved()) +
-			",clusterId=" + ByteUtils.toBase16(this.getClusterId()) + 
-			",profileId (MSB)=" + ByteUtils.toBase16(this.getProfileId().getMsb()) +
-			",profileId (LSB)=" + ByteUtils.toBase16(this.getProfileId().getLsb());
+			",clusterId=" + ByteUtils.toBase16(this.getClusterId()) +
+			",profileId=" + Integer.toHexString((this.getProfileId().get16BitValue()));
 	}
 }

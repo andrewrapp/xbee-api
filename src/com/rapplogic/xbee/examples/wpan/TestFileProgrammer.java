@@ -20,8 +20,6 @@
 package com.rapplogic.xbee.examples.wpan;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.util.Properties;
 
 import org.apache.log4j.PropertyConfigurator;
 
@@ -54,9 +52,7 @@ public class TestFileProgrammer {
 
 	public static void main(String[] args) throws Exception {
 		// init log4j
-		Properties props = new Properties();
-		props.load(new FileInputStream("log4j.properties"));
-		PropertyConfigurator.configure(props);
+		PropertyConfigurator.configure("log4j.properties");
 		
 		new TestFileProgrammer();
 	}

@@ -22,6 +22,7 @@ package com.rapplogic.xbee.examples.zigbee;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.ErrorResponse;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeAddress16;
@@ -153,7 +154,7 @@ public class ZNetSenderTest {
 				
 				if (response.isError()) {
 					log.error("we got a bad packet", ((ErrorResponse)response).getException());
-				} else if (response.getApiId() == XBeeResponse.ZNET_TX_STATUS_RESPONSE) {
+				} else if (response.getApiId() == ApiId.ZNET_TX_STATUS_RESPONSE) {
 					// a tx status response is returned by the local xbee
 					ZNetTxStatusResponse txStatus = (ZNetTxStatusResponse) response;
 

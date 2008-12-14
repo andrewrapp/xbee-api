@@ -19,9 +19,6 @@
 
 package com.rapplogic.xbee.examples.wpan;
 
-import java.io.FileInputStream;
-import java.util.Properties;
-
 import org.apache.log4j.PropertyConfigurator;
 
 import com.rapplogic.xbee.transparent.XBeeSerialProgrammer;
@@ -65,10 +62,7 @@ public class TestSerialProgrammer {
 
 	public static void main(String[] args) throws Exception {
 		// init log4j
-		Properties props = new Properties();
-		props.load(new FileInputStream("log4j.properties"));
-		PropertyConfigurator.configure(props);		
-		
+		PropertyConfigurator.configure("log4j.properties");	
 		new TestSerialProgrammer(args);
 	}
 }

@@ -21,6 +21,7 @@ package com.rapplogic.xbee.api.zigbee;
 
 import org.apache.log4j.Logger;
 
+import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.api.XBeeRequest;
@@ -86,7 +87,7 @@ public class ZNetTxRequest extends XBeeRequest {
 		IntArrayOutputStream out = new IntArrayOutputStream();
 		
 		// api id
-		out.write(this.getApiId()); 
+		out.write(this.getApiId().getValue()); 
 		
 		// frame id (arbitrary byte that will be sent back with ack)
 		out.write(this.getFrameId());
@@ -112,8 +113,8 @@ public class ZNetTxRequest extends XBeeRequest {
 		return this.getFrameDataAsIntArrayOutputStream().getIntArray();
 	}
 	
-	public int getApiId() {
-		return ZNET_TX_REQUEST;
+	public ApiId getApiId() {
+		return ApiId.ZNET_TX_REQUEST;
 	}
 	
 	public XBeeAddress64 getDestAddr64() {
@@ -157,10 +158,11 @@ public class ZNetTxRequest extends XBeeRequest {
 	}
 	
 	public String toString() {
-		return super.toString() + ",destAddr64=" + this.destAddr64 +
-			"destAddr16=" + this.destAddr16 +
-			"broadcastRadius=" + this.broadcastRadius + 
-			"option=" + this.option +
-			"payload=" + ByteUtils.toBase16(this.payload);
+		return super.toString() + 
+			",destAddr64=" + this.destAddr64 +
+			",destAddr16=" + this.destAddr16 +
+			",broadcastRadius=" + this.broadcastRadius + 
+			",option=" + this.option +
+			",payload=" + ByteUtils.toBase16(this.payload);
 	}
 }

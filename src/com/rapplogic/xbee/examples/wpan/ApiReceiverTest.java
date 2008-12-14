@@ -19,12 +19,10 @@
 
 package com.rapplogic.xbee.examples.wpan;
 
-import java.io.FileInputStream;
-import java.util.Properties;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.ErrorResponse;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeAddress16;
@@ -68,7 +66,7 @@ public class ApiReceiverTest {
 						errors++;
 					}
 					
-					if (response.getApiId() == XBeeResponse.RX_16_IO_RESPONSE) {
+					if (response.getApiId() == ApiId.RX_16_IO_RESPONSE) {
 						RxResponseIoSample ioSample = (RxResponseIoSample)response;
 						
 						if (ioSample.containsAnalog()) {
@@ -85,7 +83,7 @@ public class ApiReceiverTest {
 		
 						// TODO take moving average to determine trend
 						// TODO upload to google spreadsheet to use visualization api
-					} else if (response.getApiId() == XBeeResponse.TX_16_STATUS_RESPONSE) {
+					} else if (response.getApiId() == ApiId.TX_16_STATUS_RESPONSE) {
 						
 						TxStatusResponse txResponse = (TxStatusResponse) response;
 						
@@ -102,7 +100,7 @@ public class ApiReceiverTest {
 						} else {
 							//log.info("Received Tx status packet");
 						}
-					} else if (response.getApiId() == XBeeResponse.RX_16_RESPONSE) {
+					} else if (response.getApiId() == ApiId.RX_16_RESPONSE) {
 						RxResponse rxResponse = (RxResponse) response;
 						
 						if (rxResponse.getData().length == 2 && rxResponse.getData()[0] == 0xff && rxResponse.getData()[1] == 0xaa) {
@@ -140,7 +138,7 @@ public class ApiReceiverTest {
 	}
 
 	/**
-	 * Stole from arduino client
+	 * Calculates temperature of Vishay thermistor (NTCLE100E3103JB0) with Steinhart-Hart equation 
 	 * 
 	 * @param v10bit
 	 * @param vSupply
@@ -182,12 +180,8 @@ public class ApiReceiverTest {
 	}
 
 	public static void main(String[] args) throws Exception {
-
 		// init log4j
-		Properties props = new Properties();
-		props.load(new FileInputStream("log4j.properties"));
-		PropertyConfigurator.configure(props);
-
+		PropertyConfigurator.configure("log4j.properties");
 		new ApiReceiverTest();
 	}
 }

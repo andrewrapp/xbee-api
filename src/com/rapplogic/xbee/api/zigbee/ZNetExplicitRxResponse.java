@@ -70,7 +70,6 @@ public class ZNetExplicitRxResponse extends ZNetRxResponse {
 			",sourceEndpoint=" + ByteUtils.toBase16(this.getSourceEndpoint()) +
 			",destinationEndpoint=" + ByteUtils.toBase16(this.getDestinationEndpoint()) +
 			",clusterId=" + ByteUtils.toBase16(this.getClusterId()) + 
-			",profileId (MSB)=" + ByteUtils.toBase16(this.getProfileId().getMsb()) +
-			",profileId (LSB)=" + ByteUtils.toBase16(this.getProfileId().getLsb());
+			",profileId=" + Integer.toHexString(this.getProfileId().get16BitValue());
 	}
 }

@@ -26,7 +26,7 @@ public class ErrorResponse extends XBeeResponse {
 	
 	public ErrorResponse() {
 		super();
-		this.setApiId(ERROR_RESPONSE);
+		this.setApiId(ApiId.ERROR_RESPONSE);
 		this.setError(true);
 	}
 

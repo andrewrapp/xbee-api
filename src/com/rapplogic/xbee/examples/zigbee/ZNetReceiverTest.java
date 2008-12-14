@@ -22,15 +22,11 @@ package com.rapplogic.xbee.examples.zigbee;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.AtCommand;
 import com.rapplogic.xbee.api.AtCommandResponse;
 import com.rapplogic.xbee.api.XBee;
-import com.rapplogic.xbee.api.XBeeAddress16;
-import com.rapplogic.xbee.api.XBeeAddress64;
-import com.rapplogic.xbee.api.XBeeRequest;
 import com.rapplogic.xbee.api.XBeeResponse;
-import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtRequest;
-import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRxResponse;
 import com.rapplogic.xbee.util.ByteUtils;
@@ -70,7 +66,7 @@ public class ZNetReceiverTest {
 					
 					log.info("received response " + response.toString());
 					
-					if (response.getApiId() == XBeeResponse.ZNET_RX_RESPONSE) {
+					if (response.getApiId() == ApiId.ZNET_RX_RESPONSE) {
 						// we received a packet from ZNetSenderTest.java
 						ZNetRxResponse rx = (ZNetRxResponse) response;
 						
@@ -81,13 +77,13 @@ public class ZNetReceiverTest {
 						xbee.sendAsynchronous(at);
 						XBeeResponse atResponse = xbee.getResponse();
 						
-						if (atResponse.getApiId() == XBeeResponse.AT_RESPONSE) {
+						if (atResponse.getApiId() == ApiId.AT_RESPONSE) {
 							log.info("RSSI of last response is " + ((AtCommandResponse)atResponse).getValue()[0]);
 						} else {
 							// we didn't get an AT response
 							log.info("expected RSSI, but received " + atResponse.toString());
 						}
-					} else if (response.getApiId() == XBeeResponse.ZNET_IO_SAMPLE_RESPONSE) {
+					} else if (response.getApiId() == ApiId.ZNET_IO_SAMPLE_RESPONSE) {
 						// This is a I/O sample response.  You will only get this is you are connected to a Coordinator that is configured to
 						// receive I/O samples from a remote XBee.
 						

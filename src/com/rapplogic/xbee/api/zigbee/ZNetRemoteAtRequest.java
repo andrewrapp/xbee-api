@@ -21,6 +21,7 @@ package com.rapplogic.xbee.api.zigbee;
 
 import org.apache.log4j.Logger;
 
+import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.api.XBeeRequest;
@@ -63,7 +64,7 @@ public class ZNetRemoteAtRequest extends XBeeRequest {
 		IntArrayOutputStream out = new IntArrayOutputStream();
 		
 		// api id
-		out.write(this.getApiId());
+		out.write(this.getApiId().getValue());
 		// frame id (arbitrary byte that will be sent back with ack)
 		out.write(this.getFrameId());
 		
@@ -91,8 +92,8 @@ public class ZNetRemoteAtRequest extends XBeeRequest {
 		return out.getIntArray();
 	}
 	
-	public int getApiId() {
-		return ZNET_REMOTE_AT_REQUEST;
+	public ApiId getApiId() {
+		return ApiId.ZNET_REMOTE_AT_REQUEST;
 	}
 	
 	public XBeeAddress64 getRemoteAddr64() {

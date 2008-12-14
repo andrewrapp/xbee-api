@@ -105,7 +105,7 @@ public class PacketStream implements IIntArrayInputStream {
 	private int escapeBytes;
 
 	private XBeeResponse response;
-	private int apiId;
+	private ApiId apiId;
 	
 	// experiment to preserve original byte array for transfer over network
 	private IntArrayOutputStream out = new IntArrayOutputStream();
@@ -141,67 +141,46 @@ public class PacketStream implements IIntArrayInputStream {
 			
 			// total packet length = stated length + 1 start byte + 1 checksum byte + 2 length bytes
 			
-			this.apiId = this.read("API ID");
+			int intApiId = this.read("API ID");
+			
+			this.apiId = ApiId.get(intApiId);
+			
+			if (apiId == null) {
+				throw new XBeeParseException("Unhandled Api id: " + ByteUtils.toBase16(intApiId));	
+			}
+			
+			log.info("Handling ApiId: " + apiId);
 			
 			// TODO handle other api ids
 			// TODO parse I/O data page 12. 82 API Identifier Byte for 64 bit address A/D data (83 is for 16bit A/D data)
 			// TODO XBeeResponse subclasses should implement a parse method
 			
-			switch (apiId) {
-				case XBeeResponse.MODEM_STATUS_RESPONSE:
-					log.info("Handling MODEM_STATUS_RESPONSE");
-					parseModemStatusResponse();
-					break;
-				case XBeeResponse.RX_16_RESPONSE:
-					log.info("Handling RX_16_RESPONSE");
-					parseRxResponse();
-					break;
-				case XBeeResponse.RX_16_IO_RESPONSE:
-					log.info("Handling RX_16_IO_RESPONSE");
-					parseRxResponse();
-					break;
-				case XBeeResponse.RX_64_RESPONSE:
-					log.info("Handling RX_64_RESPONSE");
-					parseRxResponse();
-					break;
-				case XBeeResponse.RX_64_IO_RESPONSE:
-					log.info("Handling RX_64_IO_RESPONSE");
-					parseRxResponse();
-					break;					
-				case XBeeResponse.AT_RESPONSE:
-					log.info("Handling AT_RESPONSE");
-					parseAtResponse();
-					break;
-				case XBeeResponse.TX_16_STATUS_RESPONSE:
-					log.info("Handling TX_16_STATUS_RESPONSE");
-					parseTxStatusResponse();
-					break;
-				case XBeeResponse.ZNET_REMOTE_AT_RESPONSE:
-					log.info("Handling ZNET_REMOTE_AT_RESPONSE");
-					parseRemoteAtResponse();
-					break;
-				case XBeeResponse.ZNET_TX_STATUS_RESPONSE: 
-					log.info("Handling ZNET_TX_STATUS_RESPONSE");
-					parseZNetTxStatusResponse();
-					break;
-				case XBeeResponse.ZNET_RX_RESPONSE: 
-					log.info("Handling ZNET_RX_RESPONSE");
-					parseZNetRxResponse();
-					break;
-				case XBeeResponse.ZNET_EXPLICIT_RX_RESPONSE:
-					log.info("Handling ZNET_EXPLICIT_RX_RESPONSE");
-					parseZNetRxResponse();
-					break;					
-				case XBeeResponse.ZNET_IO_SAMPLE_RESPONSE: 
-					log.info("Handling ZNET_IO_SAMPLE_RESPONSE");
-					parseZNetRxResponse();
-					break;
-				case XBeeResponse.ZNET_IO_NODE_IDENTIFIER_RESPONSE: 
-					log.info("Handling ZNET_IO_NODE_IDENTIFIER_RESPONSE");
-					parseZNetNodeIdentifierResponse();
-					break;	
-				default:
-					throw new XBeeParseException("Unhandled Api id: " + ByteUtils.toBase16(apiId));	
+			if (apiId == ApiId.MODEM_STATUS_RESPONSE) {
+				parseModemStatusResponse();
+			} else if (apiId == ApiId.RX_16_RESPONSE) {
+				parseRxResponse();
+			} else if (apiId == ApiId.RX_16_IO_RESPONSE) {
+				parseRxResponse();
+			} else if (apiId == ApiId.RX_64_RESPONSE) {
+				parseRxResponse();
+			} else if (apiId == ApiId.RX_64_IO_RESPONSE) {
+				parseRxResponse();
+			} else if (apiId == ApiId.AT_RESPONSE) {
+				parseAtResponse();
+			} else if (apiId == ApiId.TX_16_STATUS_RESPONSE) {
+				parseTxStatusResponse();
+			} else if (apiId == ApiId.ZNET_REMOTE_AT_RESPONSE) {
+				parseRemoteAtResponse();
+			} else if (apiId == ApiId.ZNET_TX_STATUS_RESPONSE) { 
+				parseZNetTxStatusResponse();
+			} else if (apiId == ApiId.ZNET_RX_RESPONSE) {
+				parseZNetRxResponse();
+			} else if (apiId == ApiId.ZNET_EXPLICIT_RX_RESPONSE) {
+				parseZNetRxResponse();
+			} else if (apiId == ApiId.ZNET_IO_SAMPLE_RESPONSE) {
+				parseZNetRxResponse();
+			} else if (apiId == ApiId.ZNET_IO_NODE_IDENTIFIER_RESPONSE) {
+				parseZNetNodeIdentifierResponse();		
 			}
 			
 			response.setChecksum(this.read("Checksum"));
@@ -272,7 +251,7 @@ public class PacketStream implements IIntArrayInputStream {
 		if (XBeePacket.isSpecialByte(b)) {
 			log.debug("Read special byte that needs to be unescaped"); 
 			
-			if (b == XBeePacket.ESCAPE) {
+			if (b == XBeePacket.SpecialByte.ESCAPE.getValue()) {
 				log.debug("found escape byte");
 				// read next byte
 				b = this.readFromStream();
@@ -371,9 +350,9 @@ public class PacketStream implements IIntArrayInputStream {
 	private void parseZNetRxResponse() throws IOException {
 		
 		// TODO this needs OO refactoring
-		if (this.apiId == XBeeResponse.ZNET_IO_SAMPLE_RESPONSE) {
+		if (this.apiId == ApiId.ZNET_IO_SAMPLE_RESPONSE) {
 			response = new ZNetRxIoSampleResponse();
-		} else if (this.apiId == XBeeResponse.ZNET_RX_RESPONSE){
+		} else if (this.apiId == ApiId.ZNET_RX_RESPONSE){
 			response = new ZNetRxResponse();	
 		} else {
 			//12/13/08 Untested.  When I send an explicit tx request, it is being received as a 90 (RX Response) instead of 91 (Explicit RX Response)
@@ -383,10 +362,13 @@ public class PacketStream implements IIntArrayInputStream {
 		((ZNetRxBaseResponse)response).setRemoteAddress64(this.parseAddress64());
 		((ZNetRxBaseResponse)response).setRemoteAddress16(this.parseAddress16());
 		
-		if (this.apiId == XBeeResponse.ZNET_EXPLICIT_RX_RESPONSE) {
+		if (this.apiId == ApiId.ZNET_EXPLICIT_RX_RESPONSE) {
 			((ZNetExplicitRxResponse)response).setSourceEndpoint(this.read("Reading Source Endpoint"));
 			((ZNetExplicitRxResponse)response).setDestinationEndpoint(this.read("Reading Destination Endpoint"));
 			// whoa manual has cluster id as one byte in request and two bytes in response??
+			//DoubleByte clusterId = new DoubleByte();
+			//clusterId.setMsb(this.read("Reading Cluster Id MSB"));
+			//clusterId.setLsb(this.read("Reading Cluster Id LSB"));
 			((ZNetExplicitRxResponse)response).setClusterId(this.read("Reading Cluster Id"));
 			
 			DoubleByte profileId = new DoubleByte();
@@ -397,7 +379,7 @@ public class PacketStream implements IIntArrayInputStream {
 		
 		int option = this.read("ZNet RX Response Option");
 		
-		if (this.apiId == XBeeResponse.ZNET_IO_SAMPLE_RESPONSE) {
+		if (this.apiId == ApiId.ZNET_IO_SAMPLE_RESPONSE) {
 			parseZNetIoSampleResponse((ZNetRxIoSampleResponse)response);
 		} else {
 			// TODO option only set for rx response??
@@ -467,8 +449,8 @@ public class PacketStream implements IIntArrayInputStream {
 	 */
 	private void parseRxResponse() throws IOException {
 
-		if (apiId == XBeeResponse.RX_16_RESPONSE || apiId == XBeeResponse.RX_64_RESPONSE) {
-			if (apiId == XBeeResponse.RX_16_RESPONSE) {
+		if (apiId == ApiId.RX_16_RESPONSE || apiId == ApiId.RX_64_RESPONSE) {
+			if (apiId == ApiId.RX_16_RESPONSE) {
 				response = new RxResponse16();	
 			} else {
 				response = new RxResponse64();
@@ -478,7 +460,7 @@ public class PacketStream implements IIntArrayInputStream {
 		} else {
 			response = new RxResponseIoSample();
 			
-			if (apiId == XBeeResponse.RX_16_IO_RESPONSE) {
+			if (apiId == ApiId.RX_16_IO_RESPONSE) {
 				((RxBaseResponse)response).setSourceAddress(this.parseAddress16());	
 			} else {
 				// TODO test 64 bit address
@@ -495,7 +477,7 @@ public class PacketStream implements IIntArrayInputStream {
 		
 		((RxBaseResponse)response).setOptions(options);
 		
-		if (apiId == XBeeResponse.RX_16_RESPONSE || apiId == XBeeResponse.RX_64_RESPONSE) {
+		if (apiId == ApiId.RX_16_RESPONSE || apiId == ApiId.RX_64_RESPONSE) {
 			int[] payload = new int[length.getLength() - this.getFrameDataBytesRead()];
 			
 			int bytesRead = this.getFrameDataBytesRead();

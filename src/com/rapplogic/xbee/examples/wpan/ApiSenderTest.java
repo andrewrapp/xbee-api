@@ -22,6 +22,7 @@ package com.rapplogic.xbee.examples.wpan;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeePacket;
@@ -68,7 +69,7 @@ public class ApiSenderTest {
 				int frameId = 0x13;
 				// int[] payload = new int[] {1,2,3,4,5,6,7,8};
 				// to verify correct byte escaping, we'll send a start byte
-				int[] payload = new int[] { XBeePacket.START_BYTE };
+				int[] payload = new int[] { XBeePacket.SpecialByte.START_BYTE.getValue() };
 
 				XBeeAddress16 destination = new XBeeAddress16(0x56, 0x78);
 				TxRequest16 tx = new TxRequest16(destination, frameId, payload);
@@ -82,7 +83,7 @@ public class ApiSenderTest {
 					// blocks until we get response
 					response = xbee.getResponse();
 
-					if (response.getApiId() != XBeeResponse.TX_16_STATUS_RESPONSE) {
+					if (response.getApiId() != ApiId.TX_16_STATUS_RESPONSE) {
 						log.debug("expected tx status but received " + response.toString());
 					} else {
 //						log.debug("got tx status");

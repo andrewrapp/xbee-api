@@ -67,7 +67,7 @@ public class XBeePacketParser implements Runnable {
 					
 					log.debug("Read " + ByteUtils.formatByte(val) + " from input stream");
 					
-					if (val == XBeePacket.START_BYTE) {
+					if (val == XBeePacket.SpecialByte.START_BYTE.getValue()) {
 						packetStream = new PacketStream(in);
 						response = packetStream.parsePacket();
 						

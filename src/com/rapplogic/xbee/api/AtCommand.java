@@ -69,7 +69,7 @@ public class AtCommand extends XBeeRequest {
 		IntArrayOutputStream out = new IntArrayOutputStream();
 		
 		// api id
-		out.write(this.getApiId());
+		out.write(this.getApiId().getValue());
 		// frame id
 		out.write(this.getFrameId());
 		// at command byte 1
@@ -85,8 +85,8 @@ public class AtCommand extends XBeeRequest {
 		return out.getIntArray();
 	}
 
-	public int getApiId() {
-		return AT_COMMAND;
+	public ApiId getApiId() {
+		return ApiId.AT_COMMAND;
 	}
 	
 	public String getCommand() {

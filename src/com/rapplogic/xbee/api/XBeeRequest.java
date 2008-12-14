@@ -19,6 +19,7 @@
 
 package com.rapplogic.xbee.api;
 
+
 /**
  * Constructs frame data portion of an XBee packet
  * 
@@ -27,22 +28,15 @@ package com.rapplogic.xbee.api;
  * @author andrew
  *
  */
+	
 public abstract class XBeeRequest {
-	
-	// TODO enum these
-	public static final int TX_REQUEST_64 = 0;
-	public static final int TX_REQUEST_16 = 1;
-	public static final int AT_COMMAND = 0x08;
-	public static final int AT_COMMAND_QUEUE = 0x09;
-	public static final int ZNET_REMOTE_AT_REQUEST = 0x17;
-	public static final int ZNET_TX_REQUEST = 0x10;
-	public static final int ZNET_EXPLICIT_TX_REQUEST = 0x11;
-	
+
+	// TODO enum these	
 	public static final int DEFAULT_FRAME_ID = 1;
 	// XBee will not generate a TX Status Packet if this frame id sent
 	public static final int NO_RESPONSE_FRAME_ID = 0;
 	
-	private int apiId;
+	private ApiId apiId;
 	private int frameId;
 	
 	public XBeeRequest() {
@@ -63,7 +57,7 @@ public abstract class XBeeRequest {
 
 	public abstract int[] getFrameData();
 
-	public int getApiId() {
+	public ApiId getApiId() {
 		return apiId;
 	}
 
@@ -75,7 +69,7 @@ public abstract class XBeeRequest {
 		return "apiId=" + this.getApiId() + ",frameId=" + this.getFrameId();
 	}
 
-	public void setApiId(int apiId) {
+	public void setApiId(ApiId apiId) {
 		this.apiId = apiId;
 	}
 

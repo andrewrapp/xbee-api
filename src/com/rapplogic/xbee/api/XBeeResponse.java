@@ -30,21 +30,6 @@ import com.rapplogic.xbee.util.ByteUtils;
 public abstract class XBeeResponse {
 	
 	// TODO enum these
-	public final static int RX_64_RESPONSE = 0x80;
-	public final static int RX_16_RESPONSE = 0x81;
-	public final static int RX_64_IO_RESPONSE = 0x82;
-	public final static int RX_16_IO_RESPONSE = 0x83;
-	public final static int AT_RESPONSE = 0x88;
-	public final static int TX_16_STATUS_RESPONSE = 0x89;
-	public final static int MODEM_STATUS_RESPONSE = 0x8a;
-	public final static int ZNET_RX_RESPONSE = 0x90;
-	public final static int ZNET_EXPLICIT_RX_RESPONSE = 0x91;
-	public final static int ZNET_TX_STATUS_RESPONSE = 0x8b;
-	public final static int ZNET_REMOTE_AT_RESPONSE = 0x97;
-	public final static int ZNET_IO_SAMPLE_RESPONSE = 0x92;
-	public final static int ZNET_IO_NODE_IDENTIFIER_RESPONSE = 0x95;
-
-	public final static int ERROR_RESPONSE = -1;
 
 	// the raw (escaped) bytes of this packet (minus start byte)
 	// this is the most compact representation of the packet;
@@ -52,7 +37,7 @@ public abstract class XBeeResponse {
 	// for later reconstitution
 	private int[] packetBytes;
 
-	private int apiId;
+	private ApiId apiId;
 	private int checksum;
 
 	private XBeePacketLength length;
@@ -71,11 +56,11 @@ public abstract class XBeeResponse {
 		this.length = length;
 	}
 
-	public int getApiId() {
+	public ApiId getApiId() {
 		return apiId;
 	}
 
-	public void setApiId(int apiId) {
+	public void setApiId(ApiId apiId) {
 		this.apiId = apiId;
 	}
 
@@ -109,7 +94,7 @@ public abstract class XBeeResponse {
 	}
 	
 	public String toString() {
-		return "apiId=" + ByteUtils.toBase16(this.apiId) +
+		return "apiId=" + this.apiId +
 			",length=" + length.get16BitValue() + 
 			",checksum=" + ByteUtils.toBase16(checksum) +
 			",error=" + this.error;

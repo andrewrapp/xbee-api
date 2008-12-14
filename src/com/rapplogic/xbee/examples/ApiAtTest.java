@@ -27,8 +27,6 @@ import com.rapplogic.xbee.api.AtCommandResponse;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeException;
 import com.rapplogic.xbee.api.XBeeResponse;
-import com.rapplogic.xbee.api.zigbee.AssociationStatus;
-import com.rapplogic.xbee.api.zigbee.NodeDiscover;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /** 

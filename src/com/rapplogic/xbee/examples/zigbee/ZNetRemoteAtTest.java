@@ -22,6 +22,7 @@ package com.rapplogic.xbee.examples.zigbee;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
@@ -63,7 +64,7 @@ public class ZNetRemoteAtTest {
 			xbee.sendAsynchronous(request);
 			XBeeResponse response = xbee.getResponse();
 			
-			if (response.getApiId() == XBeeResponse.ZNET_REMOTE_AT_RESPONSE) {
+			if (response.getApiId() == ApiId.ZNET_REMOTE_AT_RESPONSE) {
 				ZNetRemoteAtResponse remote = (ZNetRemoteAtResponse) response;
 				log.info("turn on D0 remote at command status is " + remote.getStatus());
 			}
@@ -76,7 +77,7 @@ public class ZNetRemoteAtTest {
 			xbee.sendAsynchronous(request);
 			response = xbee.getResponse();
 			
-			if (response.getApiId() == XBeeResponse.ZNET_REMOTE_AT_RESPONSE) {
+			if (response.getApiId() == ApiId.ZNET_REMOTE_AT_RESPONSE) {
 				ZNetRemoteAtResponse remote = (ZNetRemoteAtResponse) response;
 				log.info("turn off D0 remote at command status is " + remote.getStatus());
 			}			
