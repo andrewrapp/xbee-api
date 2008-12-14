@@ -92,7 +92,7 @@ import com.rapplogic.xbee.util.ByteUtils;
  * 
  * Java is nice in that it runs on many platforms.  I use mac/windows and linux (server) and the com port is different on all there.
  * On the mac it appears as /dev/tty.usbserial-A6005v5M on my machine.  I just plug in each XBee one at a time and check the /dev dir
- * to match the XBee to the device name: ls -l /dev/tty.u (hit tab twice to so all entries)
+ * to match the XBee to the device name: ls -l /dev/tty.u (hit tab twice to see all entries)
  *
  * On Windows you can simply select Start->My Computer->Manage, select Device Manager and expand "Ports" 
  * 

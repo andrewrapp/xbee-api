@@ -56,8 +56,7 @@ public class ZNetReceiverTest {
 		XBee xbee = new XBee();		
 
 		try {			
-			// replace with the com port or your receiving XBee
-			// my coordinator com/baud
+			// replace with the com port of your receiving XBee
 			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
 			
 			// this is the com port of my end device on my mac

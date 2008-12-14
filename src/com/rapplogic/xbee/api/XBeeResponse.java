@@ -38,11 +38,12 @@ public abstract class XBeeResponse {
 	public final static int TX_16_STATUS_RESPONSE = 0x89;
 	public final static int MODEM_STATUS_RESPONSE = 0x8a;
 	public final static int ZNET_RX_RESPONSE = 0x90;
+	public final static int ZNET_EXPLICIT_RX_RESPONSE = 0x91;
 	public final static int ZNET_TX_STATUS_RESPONSE = 0x8b;
 	public final static int ZNET_REMOTE_AT_RESPONSE = 0x97;
 	public final static int ZNET_IO_SAMPLE_RESPONSE = 0x92;
 	public final static int ZNET_IO_NODE_IDENTIFIER_RESPONSE = 0x95;
-	
+
 	public final static int ERROR_RESPONSE = -1;
 
 	// the raw (escaped) bytes of this packet (minus start byte)

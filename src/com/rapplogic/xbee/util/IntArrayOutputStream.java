@@ -56,4 +56,8 @@ public class IntArrayOutputStream {
 		
 		return intArr;
 	}
+
+	public List<Integer> getInternalList() {
+		return intList;
+	}	
 }

@@ -77,7 +77,7 @@ public class ZNetTxRequest extends XBeeRequest {
 		this.payload = payload;
 	}
 	
-	public int[] getFrameData() {
+	protected IntArrayOutputStream getFrameDataAsIntArrayOutputStream() {
 		// TODO verify max frame data size
 		if (payload.length > MAX_PAYLOAD_SIZE) {
 			throw new IllegalArgumentException("Payload cannot exceed " + MAX_PAYLOAD_SIZE + " bytes.  Please package into multiple packets");
@@ -105,7 +105,11 @@ public class ZNetTxRequest extends XBeeRequest {
 		
 		out.write(payload);
 		
-		return out.getIntArray();
+		return out;
+	}
+	
+	public int[] getFrameData() {
+		return this.getFrameDataAsIntArrayOutputStream().getIntArray();
 	}
 	
 	public int getApiId() {

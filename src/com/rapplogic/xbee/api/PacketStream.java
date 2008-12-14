@@ -31,6 +31,7 @@ import com.rapplogic.xbee.api.wpan.RxResponse16;
 import com.rapplogic.xbee.api.wpan.RxResponse64;
 import com.rapplogic.xbee.api.wpan.RxResponseIoSample;
 import com.rapplogic.xbee.api.wpan.TxStatusResponse;
+import com.rapplogic.xbee.api.zigbee.ZNetExplicitRxResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetNodeIdentificationResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRxBaseResponse;
@@ -184,9 +185,13 @@ public class PacketStream implements IIntArrayInputStream {
 					parseZNetTxStatusResponse();
 					break;
 				case XBeeResponse.ZNET_RX_RESPONSE: 
-					log.info("Handling ZNET_TX_STATUS_RESPONSE");
+					log.info("Handling ZNET_RX_RESPONSE");
 					parseZNetRxResponse();
 					break;
+				case XBeeResponse.ZNET_EXPLICIT_RX_RESPONSE:
+					log.info("Handling ZNET_EXPLICIT_RX_RESPONSE");
+					parseZNetRxResponse();
+					break;					
 				case XBeeResponse.ZNET_IO_SAMPLE_RESPONSE: 
 					log.info("Handling ZNET_IO_SAMPLE_RESPONSE");
 					parseZNetRxResponse();
@@ -194,7 +199,7 @@ public class PacketStream implements IIntArrayInputStream {
 				case XBeeResponse.ZNET_IO_NODE_IDENTIFIER_RESPONSE: 
 					log.info("Handling ZNET_IO_NODE_IDENTIFIER_RESPONSE");
 					parseZNetNodeIdentifierResponse();
-					break;					
+					break;	
 				default:
 					throw new XBeeParseException("Unhandled Api id: " + ByteUtils.toBase16(apiId));	
 			}
@@ -368,12 +373,27 @@ public class PacketStream implements IIntArrayInputStream {
 		// TODO this needs OO refactoring
 		if (this.apiId == XBeeResponse.ZNET_IO_SAMPLE_RESPONSE) {
 			response = new ZNetRxIoSampleResponse();
-		} else {
+		} else if (this.apiId == XBeeResponse.ZNET_RX_RESPONSE){
 			response = new ZNetRxResponse();	
+		} else {
+			//12/13/08 Untested.  When I send an explicit tx request, it is being received as a 90 (RX Response) instead of 91 (Explicit RX Response)
+			response = new ZNetExplicitRxResponse();
 		}
 		
 		((ZNetRxBaseResponse)response).setRemoteAddress64(this.parseAddress64());
 		((ZNetRxBaseResponse)response).setRemoteAddress16(this.parseAddress16());
+		
+		if (this.apiId == XBeeResponse.ZNET_EXPLICIT_RX_RESPONSE) {
+			((ZNetExplicitRxResponse)response).setSourceEndpoint(this.read("Reading Source Endpoint"));
+			((ZNetExplicitRxResponse)response).setDestinationEndpoint(this.read("Reading Destination Endpoint"));
+			// whoa manual has cluster id as one byte in request and two bytes in response??
+			((ZNetExplicitRxResponse)response).setClusterId(this.read("Reading Cluster Id"));
+			
+			DoubleByte profileId = new DoubleByte();
+			profileId.setMsb(this.read("Reading Profile Id MSB"));
+			profileId.setMsb(this.read("Reading Profile Id LSB"));
+			((ZNetExplicitRxResponse)response).setProfileId(profileId);
+		}
 		
 		int option = this.read("ZNet RX Response Option");
 		

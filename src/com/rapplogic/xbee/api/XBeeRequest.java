@@ -36,6 +36,7 @@ public abstract class XBeeRequest {
 	public static final int AT_COMMAND_QUEUE = 0x09;
 	public static final int ZNET_REMOTE_AT_REQUEST = 0x17;
 	public static final int ZNET_TX_REQUEST = 0x10;
+	public static final int ZNET_EXPLICIT_TX_REQUEST = 0x11;
 	
 	public static final int DEFAULT_FRAME_ID = 1;
 	// XBee will not generate a TX Status Packet if this frame id sent
