@@ -54,7 +54,6 @@ public class ZNetApiAtTest extends ApiAtTest {
 			// my end device
 			xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
 			
-
 			// uncomment to run
 //			this.configureIOSamples(xbee);
 //			this.associationStatus(xbee);

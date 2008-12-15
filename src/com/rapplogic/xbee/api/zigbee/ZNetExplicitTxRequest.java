@@ -19,6 +19,10 @@
 
 package com.rapplogic.xbee.api.zigbee;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 
 import com.rapplogic.xbee.api.ApiId;
@@ -30,20 +34,88 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
 
 public class ZNetExplicitTxRequest extends ZNetTxRequest {
 	
-	private final static Logger log = Logger.getLogger(ZNetExplicitTxRequest.class);
+	public enum Endpoint {
+		ZDO_ENDPOINT(0),
+		COMMAND (0xe6), 
+		DATA (0xe8);
+		
+		private static final Map<Integer,Endpoint> lookup = new HashMap<Integer,Endpoint>();
+		
+		static {
+			for(Endpoint s : EnumSet.allOf(Endpoint.class)) {
+				lookup.put(s.getValue(), s);
+			}
+		}
+		
+		public static Endpoint get(int value) { 
+			return lookup.get(value); 
+		}
+		
+	    private final int value;
+	    
+	    Endpoint(int value) {
+	        this.value = value;
+	    }
+
+		public int getValue() {
+			return value;
+		}
+	}
+
+	public enum ClusterId {
+		TRANSPARENT_SERIAL (Endpoint.DATA, 0x11), 
+		SERIAL_LOOPBACK (Endpoint.DATA, 0x12),
+		IO_SAMPLE (Endpoint.DATA, 0x92),
+		XBEE_SENSOR (Endpoint.DATA, 0x94),
+		NODE_IDENTIFICATION (Endpoint.DATA, 0x95);
+				
+		private static final Map<Integer,ClusterId> lookup = new HashMap<Integer,ClusterId>();
+		
+		static {
+			for(ClusterId s : EnumSet.allOf(ClusterId.class)) {
+				lookup.put(s.getValue(), s);
+			}
+		}
+		
+		public static ClusterId get(int value) { 
+			return lookup.get(value); 
+		}
+		
+	    private final int value;
+	    private final Endpoint endpoint;
+	    
+	    ClusterId(Endpoint endpoint, int value) {
+	    	this.endpoint = endpoint;
+	        this.value = value;
+	    }
+
+		public int getValue() {
+			return value;
+		}
+		
+		public Endpoint getEndpoint() {
+			return this.endpoint;
+		}
+	}
 	
-	private final int reserved = 0;
+	// TODO ZDO commands
+	
+	private final static Logger log = Logger.getLogger(ZNetExplicitTxRequest.class);
 	
 	private int sourceEndpoint;
 	private int destinationEndpoint;
-	private int clusterId;
-	private DoubleByte profileId = new DoubleByte(0xc1, 0x05);
+	private DoubleByte clusterId;
+	private DoubleByte profileId;
+		
+	public final static DoubleByte znetProfileId = new DoubleByte(0xc1, 0x05);
+	public final static DoubleByte zdoProfileId = new DoubleByte(0, 0);
 	
-	public ZNetExplicitTxRequest(int frameId, XBeeAddress64 dest64, XBeeAddress16 dest16, int broadcastRadius, int option, int[] payload, 	int sourceEndpoint, int destinationEndpoint, int clusterId) {
+	public ZNetExplicitTxRequest(int frameId, XBeeAddress64 dest64, XBeeAddress16 dest16, int broadcastRadius, int option, int[] payload, 	int sourceEndpoint, int destinationEndpoint, DoubleByte clusterId, DoubleByte profileId) {
 		super(frameId, dest64, dest16, broadcastRadius, option, payload);
 		this.sourceEndpoint = sourceEndpoint;
 		this.destinationEndpoint = destinationEndpoint;
 		this.clusterId = clusterId;
+		this.profileId = profileId;
 	}
 	
 	/**
@@ -63,10 +135,10 @@ public class ZNetExplicitTxRequest extends ZNetTxRequest {
 		frameData.getInternalList().add(12, this.getSourceEndpoint());
 		// dest endpoint
 		frameData.getInternalList().add(13, this.getDestinationEndpoint());
-		// reserved byte
-		frameData.getInternalList().add(14, this.getReserved());
-		// cluster id -- manual says one byte in request, but two bytes in response??
-		frameData.getInternalList().add(15, this.getClusterId());
+		// cluster id msb
+		frameData.getInternalList().add(14, this.getClusterId().getMsb());
+		// cluster id lsb
+		frameData.getInternalList().add(15, this.getClusterId().getLsb());
 		// profile id
 		frameData.getInternalList().add(16, this.getProfileId().getMsb());
 		frameData.getInternalList().add(17, this.getProfileId().getLsb());
@@ -78,10 +150,6 @@ public class ZNetExplicitTxRequest extends ZNetTxRequest {
 	
 	public ApiId getApiId() {
 		return ApiId.ZNET_EXPLICIT_TX_REQUEST;
-	}
-
-	public int getReserved() {
-		return reserved;
 	}
 
 	public int getSourceEndpoint() {
@@ -100,11 +168,11 @@ public class ZNetExplicitTxRequest extends ZNetTxRequest {
 		this.destinationEndpoint = destinationEndpoint;
 	}
 
-	public int getClusterId() {
+	public DoubleByte getClusterId() {
 		return clusterId;
 	}
 
-	public void setClusterId(int clusterId) {
+	public void setClusterId(DoubleByte clusterId) {
 		this.clusterId = clusterId;
 	}
 
@@ -120,8 +188,7 @@ public class ZNetExplicitTxRequest extends ZNetTxRequest {
 		return super.toString() + 
 			",sourceEndpoint=" + ByteUtils.toBase16(this.getSourceEndpoint()) +
 			",destinationEndpoint=" + ByteUtils.toBase16(this.getDestinationEndpoint()) +
-			",reserved byte=" + ByteUtils.toBase16(this.getReserved()) +
-			",clusterId=" + ByteUtils.toBase16(this.getClusterId()) +
+			",clusterId=" + Integer.toHexString(this.getClusterId().get16BitValue()) +
 			",profileId=" + Integer.toHexString((this.getProfileId().get16BitValue()));
 	}
 }

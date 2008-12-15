@@ -26,7 +26,7 @@ public class ZNetExplicitRxResponse extends ZNetRxResponse {
 	
 	private int sourceEndpoint;
 	private int destinationEndpoint;
-	private int clusterId;
+	private DoubleByte clusterId;
 	private DoubleByte profileId;
 	
 	public ZNetExplicitRxResponse() {
@@ -49,11 +49,11 @@ public class ZNetExplicitRxResponse extends ZNetRxResponse {
 		this.destinationEndpoint = destinationEndpoint;
 	}
 
-	public int getClusterId() {
+	public DoubleByte getClusterId() {
 		return clusterId;
 	}
 
-	public void setClusterId(int clusterId) {
+	public void setClusterId(DoubleByte clusterId) {
 		this.clusterId = clusterId;
 	}
 
@@ -69,7 +69,7 @@ public class ZNetExplicitRxResponse extends ZNetRxResponse {
 		return super.toString() + 
 			",sourceEndpoint=" + ByteUtils.toBase16(this.getSourceEndpoint()) +
 			",destinationEndpoint=" + ByteUtils.toBase16(this.getDestinationEndpoint()) +
-			",clusterId=" + ByteUtils.toBase16(this.getClusterId()) + 
+			",clusterId=" + Integer.toHexString(this.getClusterId().get16BitValue()) + 
 			",profileId=" + Integer.toHexString(this.getProfileId().get16BitValue());
 	}
 }

@@ -365,11 +365,10 @@ public class PacketStream implements IIntArrayInputStream {
 		if (this.apiId == ApiId.ZNET_EXPLICIT_RX_RESPONSE) {
 			((ZNetExplicitRxResponse)response).setSourceEndpoint(this.read("Reading Source Endpoint"));
 			((ZNetExplicitRxResponse)response).setDestinationEndpoint(this.read("Reading Destination Endpoint"));
-			// whoa manual has cluster id as one byte in request and two bytes in response??
-			//DoubleByte clusterId = new DoubleByte();
-			//clusterId.setMsb(this.read("Reading Cluster Id MSB"));
-			//clusterId.setLsb(this.read("Reading Cluster Id LSB"));
-			((ZNetExplicitRxResponse)response).setClusterId(this.read("Reading Cluster Id"));
+			DoubleByte clusterId = new DoubleByte();
+			clusterId.setMsb(this.read("Reading Cluster Id MSB"));
+			clusterId.setLsb(this.read("Reading Cluster Id LSB"));
+			((ZNetExplicitRxResponse)response).setClusterId(clusterId);
 			
 			DoubleByte profileId = new DoubleByte();
 			profileId.setMsb(this.read("Reading Profile Id MSB"));
