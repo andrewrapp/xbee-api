@@ -22,6 +22,7 @@ package com.rapplogic.xbee.api.zigbee;
 import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.DoubleByte;
 
+// TODO deprecate all ZNet* classes and replace with ZigBee*
 public class ZNetExplicitRxResponse extends ZNetRxResponse {
 	
 	private int sourceEndpoint;

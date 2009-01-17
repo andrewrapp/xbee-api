@@ -29,6 +29,7 @@ import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.api.XBeeException;
 import com.rapplogic.xbee.api.XBeeRequest;
 import com.rapplogic.xbee.api.XBeeResponse;
+import com.rapplogic.xbee.api.XBeeTimeoutException;
 import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtRequest;
 import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtResponse;
 
@@ -75,12 +76,19 @@ public class ZNetRemoteAtTest {
 //			// turn off end device D0 
 			request = new ZNetRemoteAtRequest(XBeeRequest.DEFAULT_FRAME_ID, addr64, XBeeAddress16.ZNET_BROADCAST, true, "D0", new int[] {4});
 			xbee.sendAsynchronous(request);
-			response = xbee.getResponse();
 			
-			if (response.getApiId() == ApiId.ZNET_REMOTE_AT_RESPONSE) {
-				ZNetRemoteAtResponse remote = (ZNetRemoteAtResponse) response;
-				log.info("turn off D0 remote at command status is " + remote.getStatus());
-			}			
+			// it's a good idea to set a timeout incase our end device is sleeping or offline
+			try {
+				response = xbee.getResponse(10000);
+				
+				if (response.getApiId() == ApiId.ZNET_REMOTE_AT_RESPONSE) {
+					ZNetRemoteAtResponse remote = (ZNetRemoteAtResponse) response;
+					log.info("turn off D0 remote at command status is " + remote.getStatus());
+				}				
+			} catch (XBeeTimeoutException e) {
+				log.info("remote at request timedout");
+			}
+			
 		} finally {
 			xbee.close();
 		}

@@ -73,7 +73,11 @@ public abstract class XBeeResponse {
 	}
 	
 	/**
-	 * If true then this is an instance of ErrorResponse
+	 * Indicates an error occurred during the parsing of the packet.
+	 * This may indicate a bug in this software or in the XBee firmware.
+	 * Absence of an error does not indicate the request was successful;
+	 * you will need to inspect the status byte of the response object (if available)
+	 * to determine success.
 	 * 
 	 * @return
 	 */

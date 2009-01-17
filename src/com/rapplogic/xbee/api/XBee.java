@@ -29,10 +29,10 @@ import com.rapplogic.xbee.RxTxSerialComm;
 import com.rapplogic.xbee.util.ExceptionHandler;
 
 /**
- * This is an API for XBee 802.15.4 and ZNet radios
+ * This is an API for Digi XBee 802.15.4 and ZigBee radios
  * 
  * Objectives: 
- * 	Focus on support for a single version of firmware for both ZNet and 802.15.4 XBee radios; this would likely be the latest stable. 
+ * 	Focus on support for a single version of firmware for both Zigbee and 802.15.4 XBee radios; this would likely be the latest stable. 
  * 	Implement functionality to meet an expected 80% of usage
  *  Strive for correctness and reliability over percentage of features implemented
  *  
@@ -45,7 +45,6 @@ import com.rapplogic.xbee.util.ExceptionHandler;
  *  This code is provided as is and I do not assume responsibility for any damage it may cause to your hardware or otherwise.
  *  
  * Notes:
- * This API has been developed and tested with rxtx-2.1-7r2 on windows mac, and linux. Other versions/OSes may work.
  * 
  * The API mode classes are designed for escaped byte mode (AP=2).  This applies to both varieties of XBee (ZigBee and 802.14.5).
  *  
@@ -56,7 +55,7 @@ import com.rapplogic.xbee.util.ExceptionHandler;
  * Please send feedback to email address listed below
  * 
  * TODO Expose XBee object as a service to share coordinator with multiple apps
- * TODO testNG framework for unit tests
+ * TODO testNG framework for unit tests 
  * 
  * Windows users: To locate your COM port on windows, go to Start->(right-click)My Computer->Manage, then Select Device Manager and Ports
  * 
@@ -69,21 +68,14 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 
 	private final static Logger log = Logger.getLogger(XBee.class);
 
-	// Default timeout of 5 seconds
-	public final int DEFAULT_TIMEOUT = 5000;
-	
-	private final int maxPacketListSize = 100;
-	
+	// object to synchronize on to protect access to sendPacket
+	private Object sendPacketBlock = new Object();
 	private Object newPacketNotification = new Object();
 
-	private int sendSynchronousTimeout = DEFAULT_TIMEOUT;
+	private final int maxPacketListSize = 100;
+	private final List<XBeeResponse> packetList = new ArrayList<XBeeResponse>();
 
-	// TODO clear this list after it reaches a certain size
-	private List<XBeeResponse> packetList = new ArrayList<XBeeResponse>();
-
-	private List<XBeeResponse> synchronousSendPacketList = new ArrayList<XBeeResponse>();
-	// flag used to only accumulate packets when the synchronousSend method is in use
-	private boolean synchronousCollect = false;
+	private final List<PacketListener> packetListenerList = new ArrayList<PacketListener>();
 
 	private XBeePacketParser parser;
 	
@@ -92,7 +84,7 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	private int sequentialFrameId = 0xff;
 	
 	private XBeeResponse lastResponse;
-
+	
 	public XBee() {
 
 	}
@@ -106,12 +98,22 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 		}
 	}
 
-	/**
-	 * NOTE: This method is not thread safe. 
+	public void addPacketListener(PacketListener packetListener) {
+		this.packetListenerList.add(packetListener);
+	}
+
+	public void removePacketListener(PacketListener packetListener) {
+		this.packetListenerList.remove(packetListener);
+	}
+	
+	/** 
+	 * It's possible for packets to get intersperse if multiple threads send simultaneously.  
+	 * This method is not thread-safe becaue doing so would introduce a synchronized performance penalty 
+	 * for the vast majority of users that will not never need thread safety.
+	 * That said, it is responsibility of the user to provide synchronization if multiple threads are sending.
 	 * 
-	 * If multiple threads send simultaneously, it's possible for the packets to get interspersed.  
-	 * It is responsibility of the client to provide synchronization if multiple threads are sending.
-	 * 
+	 * Not thread safe.
+	 *  
 	 * @param packet
 	 * @throws IOException
 	 */
@@ -122,6 +124,8 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	
 	/**
 	 * This is a bit dangerous and may be removed in a future release.  Intended For XMPP
+	 * 
+	 * Not Thread Safe
 	 * 
 	 * @param packet
 	 * @throws IOException
@@ -139,6 +143,8 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	 * it will return immediately, without waiting for a response.
 	 * Refer to the getResponse method for obtaining a response
 	 * 
+	 * Not thread safe
+	 * 
 	 * @param frameData
 	 * @throws XBeeException
 	 */
@@ -155,12 +161,16 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	/**
 	 * Uses sendSynchronous to send an AtCommand and collect the response
 	 * 
+	 * Timeout value is fixed at 5 seconds.
+	 * 
+	 * TODO remove -- this method doesn't provide any value
+	 * 
 	 * @param command
 	 * @return
 	 * @throws XBeeException
 	 */
 	public XBeeResponse sendAtCommand(AtCommand command) throws XBeeException {
-		return this.sendSynchronous(command);
+		return this.sendSynchronous(command, 5000);
 	}
 	
 	/**
@@ -170,13 +180,16 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	 * This method should only be called with requests that receive a response of
 	 * type XBeeFrameIdResponse and you should attempt to use a unique frame id (see getNextFrameId)
 	 * 
-	 * You may get unexpected results if you are receiving sample data from radio while using this method.
+	 * This method either returns the matching response object or throws a timeout exception
 	 * 
-	 * WARNING this method should be considered experimental -- use sendAsynchronous and getResponse for best results.
+	 * TX requests send status responses (ACK) that indicate if the packet was delivered.  
+	 * In my brief testing with series 2 radios in a simple 2 radio network, I got a status 
+	 * response of ADDRESS_NOT_FOUND in about 3 seconds when my end device is powered off.  
+	 * Keep in mind that you'll want to make sure your timeout is always larger than this 
+	 * value in order to receive status responses.
 	 * 
-	 * TODO provide method with timeout arg.  modify this method to not timeout since it does not accept a timeout param.
-	 * 
-	 * NOTE: this method is not thread-safe
+	 * NOTE: this method is thread-safe because it's not possible for the user to easily
+	 * make it thread safe and perform well 
 	 * 
 	 * @param xbeeRequest
 	 * 
@@ -186,92 +199,61 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	 * @throws InterruptedException
 	 * @throws XBeeTimeoutException 
 	 */
-	public XBeeResponse sendSynchronous(XBeeRequest xbeeRequest) throws XBeeException {
+	public XBeeResponse sendSynchronous(final XBeeRequest xbeeRequest, int timeout) throws XBeeTimeoutException, XBeeException {
 
 		if (xbeeRequest.getFrameId() == XBeeRequest.NO_RESPONSE_FRAME_ID) {
 			throw new XBeeException("Frame Id cannot be 0 for a synchronous call -- it will always timeout as there is no response!");
-		}
+		}		
 
-		XBeePacket txPacket = xbeeRequest.getXBeePacket();
-
-		XBeeResponse response = null;
+		PacketListener pl = null;
 		
 		try {
-			this.sendPacket(txPacket);
+			XBeePacket txPacket = xbeeRequest.getXBeePacket();
 
-			synchronized (newPacketNotification) {
-				// start accumulating packets
-				this.synchronousCollect = true;
-				
-				// first remove any old packets
-				synchronousSendPacketList.clear();
-				
-				// log.debug("waiting");
-				
-				long now = System.currentTimeMillis();
-				
-				// releases newPacketNotification and waits for next packet
-				newPacketNotification.wait(sendSynchronousTimeout);
-				
-				if ((System.currentTimeMillis() - now) >= sendSynchronousTimeout && synchronousSendPacketList.size() == 0) {
-					throw new XBeeTimeoutException();
-				} else {
-					if (synchronousSendPacketList.size() == 0) {
-						// didn't think this would happen?
-						throw new RuntimeException("No response!");
-					} else if (synchronousSendPacketList.size() > 1) {
-						// TODO this is likely to occur if radio is sending back samples
-	
-						boolean waited = false;
+			// this makes it thread safe -- prevents multiple threads from writing to output stream simulataneously
+			synchronized (sendPacketBlock) {
+				this.sendPacket(txPacket);	
+			}
+			
+			final List<XBeeResponse> responseList = new ArrayList<XBeeResponse>();
+			
+			// TODO verify that there is no possibility the response could be received in the milliseconds after sending packet and before listener is registered.
+			
+			pl = new PacketListener() {
+				public void processResponse(XBeeResponse response) {
+					if (response instanceof XBeeFrameIdResponse && ((XBeeFrameIdResponse)response).getFrameId() == xbeeRequest.getFrameId()) {
+						// frame id matches -- yay we found it
+						responseList.add(response);
 						
-						while (response == null) {
-							for (XBeeResponse rxResponse : synchronousSendPacketList) {
-								if (rxResponse instanceof XBeeFrameIdResponse && ((XBeeFrameIdResponse)rxResponse).getFrameId() == xbeeRequest.getFrameId()) {
-									// frame id matches -- yay we found it
-									response = rxResponse;
-									break;	
-								}
-							}	
-	
-							if (response == null) {
-								// hmm we didn't a packet.. we will
-								// wait a bit more if this is the first time around
-								
-								if (!waited) {
-									// the radio may be receiving I/O samples at
-									// a high rate.. wait just a bit longer
-									
-									// TODO this is still not entirely correct since this gets notified once per packet
-									// we should wait an arbitrary amount of time or # packets, whichever occurs first before giving up
-									newPacketNotification.wait(250);
-									
-									waited = true;
-								} else {
-									throw new XBeeException("Packets were received but not a TX_16_STATUS_RESPONSE");
-								}
-							}
+						synchronized(responseList) {
+							responseList.notify();	
 						}
-					} else {
-						response = (XBeeResponse) synchronousSendPacketList.get(0);
-	
-						if (response == null) {
-							throw new XBeeException("I'm at a loss of words.  the response is null");
-						}
+						
 					}
 				}
-			}
-		} catch (Exception e) {
-			if (e instanceof XBeeException) {
-				throw (XBeeException) e;
-			} else {
-				throw new XBeeException(e);	
-			}
-		} finally {
-			// indicate we are not accumulating packets anymore
-			this.synchronousCollect = false;
-		}
+			};
 			
-		return response;
+			this.addPacketListener(pl);
+			
+			synchronized (responseList) {
+				try {
+					responseList.wait(timeout);
+				} catch (InterruptedException e) { }
+			}
+			
+			if (responseList.size() == 0) {
+				// we didn't find a matching packet
+				throw new XBeeTimeoutException();
+			}
+			
+			return (XBeeResponse) responseList.get(0);
+		} catch (IOException io) {
+			throw new XBeeException(io);
+		} finally {
+			if (pl != null) {
+				this.removePacketListener(pl);
+			}
+		}
 	}
 
 	/**
@@ -298,12 +280,21 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	public void handlePacket(XBeeResponse packet) {
 		packetCount++;
 		
-		if (synchronousCollect) {
-			synchronousSendPacketList.add(packet);	
+		for (PacketListener pl : packetListenerList) {
+			try {
+				if (pl != null) {
+					pl.processResponse(packet);	
+				} else {
+					log.warn("PacketListener is null, size is " + packetListenerList.size());
+				}
+			} catch (Throwable th) {
+				log.warn("Exception in packet listener", th);
+			}
 		}
 		
-		if (packetList.size() == maxPacketListSize) {
-			packetList.remove(maxPacketListSize - 1);
+		while (packetList.size() >= maxPacketListSize) {
+			// remove the tail of the list
+			packetList.remove(packetList.size() - 1);
 		}
 		
 		packetList.add(packet);
@@ -534,19 +525,5 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	 */
 	public XBeeResponse getLastResponse() {
 		return lastResponse;
-	}
-
-	public int getSendSynchronousTimeout() {
-		return sendSynchronousTimeout;
-	}
-
-	/**
-	 * This affects how long we wait for a response during a synchronous call before giving up
-	 * and throwing a timeout exception
-	 * 
-	 * @param sendSynchronousTimeout
-	 */
-	public void setSendSynchronousTimeout(int sendSynchronousTimeout) {
-		this.sendSynchronousTimeout = sendSynchronousTimeout;
 	}
 }

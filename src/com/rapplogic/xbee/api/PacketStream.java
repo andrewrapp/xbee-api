@@ -189,7 +189,8 @@ public class PacketStream implements IIntArrayInputStream {
 				throw new XBeeParseException("There are remaining bytes according to stated packet length but we have read all the bytes we thought were required for this packet (if that makes sense)");
 			}
 		} catch (Exception e) {
-			log.error("Failed due to exception.  Returning ErrorResponse", e);
+			// added bytes read for troubleshooting
+			log.error("Failed due to exception.  Returning ErrorResponse.  bytes read: " + ByteUtils.toBase16(out.getIntArray()), e);
 			exception = e;
 			
 			response = new ErrorResponse();
@@ -210,7 +211,7 @@ public class PacketStream implements IIntArrayInputStream {
 	}
 	
 	/**
-	 * Same as read() but logs the byte read.  useful for debugging
+	 * Same as read() but logs the context of the byte being read.  useful for debugging
 	 */
 	public int read(String context) throws IOException {
 		int b = this.read();
@@ -355,7 +356,6 @@ public class PacketStream implements IIntArrayInputStream {
 		} else if (this.apiId == ApiId.ZNET_RX_RESPONSE){
 			response = new ZNetRxResponse();	
 		} else {
-			//12/13/08 Untested.  When I send an explicit tx request, it is being received as a 90 (RX Response) instead of 91 (Explicit RX Response)
 			response = new ZNetExplicitRxResponse();
 		}
 		
@@ -523,15 +523,15 @@ public class PacketStream implements IIntArrayInputStream {
 		// create i/o samples array
 		response.setSamples(new IoSample[samples]);
 		
-		// adc channel indicator
-		response.setAdcChannelIndicator(this.read("Channel Indicator 1 (adc)"));
+		// channel indicator 1
+		response.setChannelIndicator1(this.read("Channel Indicator 1"));
 		
-		log.debug("adcHeader is " + ByteUtils.formatByte(response.getAdcChannelIndicator()));
+		log.debug("channel indicator 1 is " + ByteUtils.formatByte(response.getChannelIndicator1()));
 		
-		// dio channel indicator
-		response.setDioChannelIndicator(this.read("Channel Indicator 2 (dio)"));
+		// channel indicator 2 (dio)
+		response.setChannelIndicator2(this.read("Channel Indicator 2"));
 		
-		log.debug("dioHeader is " + ByteUtils.formatByte(response.getDioChannelIndicator()));	
+		log.debug("channel indicator 2 is " + ByteUtils.formatByte(response.getChannelIndicator2()));	
 		
 		// collect each sample
 		for (int i = 0; i < response.getSamples().length; i++) {
@@ -547,7 +547,7 @@ public class PacketStream implements IIntArrayInputStream {
 	
 	private IoSample parseIoSample(RxResponseIoSample response) throws IOException {
 
-		IoSample sample = new IoSample();
+		IoSample sample = new IoSample(response);
 		
 		// DIO 8 occupies the first bit of the adcHeader
 		if (response.containsDigital()) {
@@ -557,9 +557,6 @@ public class PacketStream implements IIntArrayInputStream {
 			log.debug("Digital I/O was received");
 			
 			sample.setDioMsb(this.read("DIO MSB"));
-			
-//			boolean d8on = ByteUtils.getBit(dioMsb, 1);
-
 			sample.setDioLsb(this.read("DIO LSB"));
 		}
 		
@@ -570,38 +567,38 @@ public class PacketStream implements IIntArrayInputStream {
 			
 			log.debug("Analog input was received");
 			
-			// 10-bit values are read two bytes per input
+			// 10-bit values are read two bytes per sample
 			
 			int analog = 0;
 			
 			// Analog inputs A0-A5 are bits 2-7 of the adcHeader
 			
-			if (ByteUtils.getBit(response.getAdcChannelIndicator(), 2)) {
+			if (response.isA0Enabled()) {
 				sample.setAnalog0(ByteUtils.parse10BitAnalog(this, analog));
-				analog++;
+				analog++;				
 			}
 
-			if (ByteUtils.getBit(response.getAdcChannelIndicator(), 3)) {
+			if (response.isA1Enabled()) {
 				sample.setAnalog1(ByteUtils.parse10BitAnalog(this, analog));
 				analog++;
 			}
 
-			if (ByteUtils.getBit(response.getAdcChannelIndicator(), 4)) {
+			if (response.isA2Enabled()) {
 				sample.setAnalog2(ByteUtils.parse10BitAnalog(this, analog));
 				analog++;
 			}
 
-			if (ByteUtils.getBit(response.getAdcChannelIndicator(), 5)) {
+			if (response.isA3Enabled()) {
 				sample.setAnalog3(ByteUtils.parse10BitAnalog(this, analog));
 				analog++;
 			}
 
-			if (ByteUtils.getBit(response.getAdcChannelIndicator(), 6)) {
+			if (response.isA4Enabled()) {
 				sample.setAnalog4(ByteUtils.parse10BitAnalog(this, analog));
 				analog++;
 			}
 			
-			if (ByteUtils.getBit(response.getAdcChannelIndicator(), 7)) {
+			if (response.isA5Enabled()) {
 				sample.setAnalog5(ByteUtils.parse10BitAnalog(this, analog));
 				analog++;
 			}

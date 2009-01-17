@@ -149,6 +149,6 @@ public class ZNetRemoteAtResponse extends XBeeFrameIdResponse {
 			",remoteAddress16=" + this.remoteAddress16 +
 			",command=" + this.commandName +
 			",status=" + this.status + 
-			",commandReponse=" + ByteUtils.toBase16(this.commandData);
+			",commandResponse=" + ByteUtils.toBase16(this.commandData);
 	}
 }

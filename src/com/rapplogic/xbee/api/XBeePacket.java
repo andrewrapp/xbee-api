@@ -209,17 +209,17 @@ public class XBeePacket {
 	 * @param packet
 	 * @return
 	 */
-	public static boolean verify(int[] packet) {
+	public static boolean verify(int[] packet) throws XBeeException {
 		boolean valid = true;
 		
 		try {
 			if (packet[0] != SpecialByte.START_BYTE.getValue()) {
-				valid = false;
+				return false;
 			}
-			
+					
 			// first need to unescape packet
 			int[] unEscaped = unEscapePacket(packet);
-	
+
 			XBeePacketLength len = new XBeePacketLength(unEscaped[1], unEscaped[2]);
 			
 			// stated packet length does not include start byte, length bytes, or checksum and is calculated before escaping
@@ -240,14 +240,16 @@ public class XBeePacket {
 				valid = false;
 			}
 		} catch (Exception e) {
-			valid = false;
+			XBeeException x = new XBeeException("packet verification failed with error: ");
+			x.setCause(e);
+			
+			throw x;
 		}
 
 		return valid;
 	}
 	
 	/**
-	 * TODO untested
 	 * 
 	 * @param packet
 	 * @return
@@ -257,7 +259,7 @@ public class XBeePacket {
 		int escapeBytes = 0;
 		
 		for (int i = 0; i < packet.length; i++) {
-			if (i == SpecialByte.ESCAPE.getValue()) {
+			if (packet[i] == SpecialByte.ESCAPE.getValue()) {
 				escapeBytes++;
 			}
 		}
@@ -271,7 +273,7 @@ public class XBeePacket {
 		int pos = 0;
 		
 		for (int i = 0; i < packet.length; i++) {
-			if (i == SpecialByte.ESCAPE.getValue()) {
+			if (packet[i] == SpecialByte.ESCAPE.getValue()) {
 				// discard escape byte and un-escape following byte
 				unEscapedPacket[pos] = 0x20 ^ packet[++i];
 			} else {
@@ -282,20 +284,5 @@ public class XBeePacket {
 		}
 		
 		return unEscapedPacket;
-	}
-	
-	public static void main(String[] args) {
-		int[] payload = new int[4];
-		
-		payload[0] = 0x08;
-		payload[1] = 0x52;
-		payload[2] = 0x44;
-		payload[3] = 0x4c;
-		
-//		for (int i = 0; i < payload.length; i++) {
-//			payload[i] = (i + 245);
-//		}
-		
-		new XBeePacket(payload);
 	}
 }

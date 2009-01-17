@@ -132,6 +132,7 @@ public class ZNetApiAtTest extends ApiAtTest {
 
 	/**
 	 * This assumes an end device that is already has the configureEndDevice configuration
+	 * Does not save configuration! -- use WR
 	 * 
 	 * @param xbee
 	 * @throws XBeeException

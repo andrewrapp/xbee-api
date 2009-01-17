@@ -86,6 +86,10 @@ public class ByteUtils {
 
 	public static String toBase16(int[] arr) {
 		
+		if (arr == null) {
+			return "";
+		}
+		
 		StringBuffer sb = new StringBuffer();
 		
 		for (int i = 0; i < arr.length; i++) {
@@ -100,6 +104,10 @@ public class ByteUtils {
 	}
 
 	public static String toBase2(int[] arr) {
+
+		if (arr == null) {
+			return "";
+		}
 		
 		StringBuffer sb = new StringBuffer();
 		
@@ -116,6 +124,10 @@ public class ByteUtils {
 
 	public static String toBase10(int[] arr) {
 		
+		if (arr == null) {
+			return "";
+		}
+		
 		StringBuffer sb = new StringBuffer();
 		
 		for (int i = 0; i < arr.length; i++) {
@@ -130,6 +142,10 @@ public class ByteUtils {
 	}
 	
 	public static String toChar(int[] arr) {
+		
+		if (arr == null) {
+			return "";
+		}
 		
 		StringBuffer sb = new StringBuffer();
 		

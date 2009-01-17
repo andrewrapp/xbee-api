@@ -35,9 +35,8 @@ import java.util.TooManyListenersException;
 import org.apache.log4j.Logger;
 
 /** 
- * If you are using your Arduino+XBee shield as a PC->XBee bridge, be sure to 
- * remove your atmega168 IC prior to connecting XBeeApi shield.  
- * When replacing the atmega168, the dot on the chip is closest to the end of the board.
+ * This class encapsulates a RXTX serial port, providing access to input/output streams,
+ * and notifying the subclass of new data events via the handleSerialData method.
  * 
  * @author andrew
  * 
@@ -138,11 +137,12 @@ public abstract class RxTxSerialComm implements SerialPortEventListener {
 						log.debug("serialEvent: " + inputStream.available() + " bytes available");
 						handleSerialData();
 					} catch (Exception e) {
-						throw new RuntimeException("serialEvent error ", e);
+						log.error("Error in handleSerialData method", e);
 					}				
 				}
 			} catch (IOException ex) {
-				throw new RuntimeException("error", ex);
+				// it's best not to throw the exception because the RXTX thread may not be prepared to handle
+				log.error("RXTX error in serialEvent method", ex);
 			}
 		}
 	}

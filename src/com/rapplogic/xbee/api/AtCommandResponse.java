@@ -83,7 +83,7 @@ public class AtCommandResponse extends XBeeFrameIdResponse {
 	}
 	
 	public String toString() {
-		return super.toString() + 
+		return super.toString() + ",command=" + this.getCommand() +
 			",status=" + this.getStatus() + ",value=" + 
 			(this.value == null ? "null" : ByteUtils.toBase16(this.getValue()));
 	}

@@ -19,6 +19,13 @@
 
 package com.rapplogic.xbee.api;
 
+/**
+ * If an exception occurs during the parsing of the packet, an instance of this
+ * class will be returned.
+ * 
+ * @author andrew
+ *
+ */
 public class ErrorResponse extends XBeeResponse {
 
 	private String errorMsg;
