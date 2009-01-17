@@ -72,7 +72,6 @@ public abstract class TxRequestBase extends XBeeRequest {
 	}
 
 	public void setPayload(int[] payload) {
-		// TODO verify max payload size?
 	
 		if (payload.length > MAX_PAYLOAD_SIZE) {
 			throw new IllegalArgumentException("Payload cannot exceed " + MAX_PAYLOAD_SIZE + " bytes.  Please re-package into multiple packets");

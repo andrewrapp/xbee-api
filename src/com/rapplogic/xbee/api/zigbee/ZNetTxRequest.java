@@ -79,7 +79,7 @@ public class ZNetTxRequest extends XBeeRequest {
 	}
 	
 	protected IntArrayOutputStream getFrameDataAsIntArrayOutputStream() {
-		// TODO verify max frame data size
+
 		if (payload.length > MAX_PAYLOAD_SIZE) {
 			throw new IllegalArgumentException("Payload cannot exceed " + MAX_PAYLOAD_SIZE + " bytes.  Please package into multiple packets");
 		}

@@ -63,7 +63,7 @@ public class ZNetRemoteAtResponse extends XBeeFrameIdResponse {
 	
 	private XBeeAddress64 remoteAddress64;
 	private XBeeAddress16 remoteAddress16;
-	// TODO need ATCommand class with enum of commands instead of boring old string
+	// TODO need AtCommand class with enum of commands instead of boring old string
 	private String commandName;
 	private Status status;
 	private int[] commandData;

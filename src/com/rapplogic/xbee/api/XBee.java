@@ -61,7 +61,7 @@ import com.rapplogic.xbee.util.ExceptionHandler;
  * 
  * This is disappointing (from the znet manual): "The WR command should be used sparingly. The EM250 supports a limited number of write cycles.“ How many is limited??
 
- * @author Andrew Rapp a l r a p p [4t] yahoo
+ * @author Andrew Rapp <andrew.rapp at gmail>
  * 
  */
 public class XBee extends RxTxSerialComm implements XBeePacketHandler {
@@ -98,17 +98,21 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 		}
 	}
 
-	public void addPacketListener(PacketListener packetListener) {
-		this.packetListenerList.add(packetListener);
+	public void addPacketListener(PacketListener packetListener) { 
+		synchronized (packetListenerList) {
+			this.packetListenerList.add(packetListener);	
+		}
 	}
 
 	public void removePacketListener(PacketListener packetListener) {
-		this.packetListenerList.remove(packetListener);
+		synchronized (packetListenerList) {
+			this.packetListenerList.remove(packetListener);
+		}
 	}
 	
 	/** 
-	 * It's possible for packets to get intersperse if multiple threads send simultaneously.  
-	 * This method is not thread-safe becaue doing so would introduce a synchronized performance penalty 
+	 * It's possible for packets to get interspersed if multiple threads send simultaneously.  
+	 * This method is not thread-safe because doing so would introduce a synchronized performance penalty 
 	 * for the vast majority of users that will not never need thread safety.
 	 * That said, it is responsibility of the user to provide synchronization if multiple threads are sending.
 	 * 
@@ -210,7 +214,7 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 		try {
 			XBeePacket txPacket = xbeeRequest.getXBeePacket();
 
-			// this makes it thread safe -- prevents multiple threads from writing to output stream simulataneously
+			// this makes it thread safe -- prevents multiple threads from writing to output stream simultaneously
 			synchronized (sendPacketBlock) {
 				this.sendPacket(txPacket);	
 			}
@@ -280,17 +284,22 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	public void handlePacket(XBeeResponse packet) {
 		packetCount++;
 		
-		for (PacketListener pl : packetListenerList) {
-			try {
-				if (pl != null) {
-					pl.processResponse(packet);	
-				} else {
-					log.warn("PacketListener is null, size is " + packetListenerList.size());
+		// must synchronize to avoid  java.util.ConcurrentModificationException at java.util.AbstractList$Itr.checkForComodification(Unknown Source)
+		// this occurs if packet listener add/remove is called while we are iterating
+		synchronized (packetListenerList) {
+			for (PacketListener pl : packetListenerList) {
+				try {
+					if (pl != null) {
+						pl.processResponse(packet);	
+					} else {
+						log.warn("PacketListener is null, size is " + packetListenerList.size());
+					}
+				} catch (Throwable th) {
+					log.warn("Exception in packet listener", th);
 				}
-			} catch (Throwable th) {
-				log.warn("Exception in packet listener", th);
-			}
+			}			
 		}
+
 		
 		while (packetList.size() >= maxPacketListSize) {
 			// remove the tail of the list
@@ -519,7 +528,6 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	 * Returns the last XBeeResponse that was received
 	 * 
 	 * If this is called after waitForResponse returns (without timeout), this *should* be the corresponding response
-	 * TODO need a bulletproof mechanism for client threads block until a response is ready 
 	 * 
 	 * @return
 	 */

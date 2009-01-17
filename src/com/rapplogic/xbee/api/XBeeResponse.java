@@ -22,14 +22,11 @@ package com.rapplogic.xbee.api;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /**
- * TODO RX_64_RESPONSE, RX_64_IO_RESPONSE
  * 
  * @author andrew
  *
  */
 public abstract class XBeeResponse {
-	
-	// TODO enum these
 
 	// the raw (escaped) bytes of this packet (minus start byte)
 	// this is the most compact representation of the packet;

@@ -77,12 +77,7 @@ public class ZNetSynchronousSendTest {
 
 					if (txStatus.getDeliveryStatus() != ZNetTxStatusResponse.DeliveryStatus.SUCCESS) {
 						log.error("packet failed. status: " + txStatus.getDeliveryStatus());
-					}	
-
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {	}
-					
+					}
 				} catch (XBeeTimeoutException to) {
 					log.error("request timed out");
 				}

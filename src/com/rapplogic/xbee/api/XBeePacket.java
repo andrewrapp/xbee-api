@@ -125,7 +125,7 @@ public class XBeePacket {
 		log.debug("pre-escape packet size is " + preEscapeLength);
 		log.debug("post-escape packet size is " + packet.length);
 		
-		// TODO 10/25/08 testing znet tx packet: max packet size that succeeded is 96.  when sending all escape bytes, pre-escape max is 94
+		// 10/25/08 testing znet tx packet: max packet size that succeeded is 96.  when sending all escape bytes, pre-escape max is 94
 //		final int maxPacketSize = 94;
 		
 		// This seems like a nice idea but it depends on which radio type is involved and possibly several other factors.

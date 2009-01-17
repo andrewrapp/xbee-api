@@ -151,7 +151,6 @@ public class PacketStream implements IIntArrayInputStream {
 			
 			log.info("Handling ApiId: " + apiId);
 			
-			// TODO handle other api ids
 			// TODO parse I/O data page 12. 82 API Identifier Byte for 64 bit address A/D data (83 is for 16bit A/D data)
 			// TODO XBeeResponse subclasses should implement a parse method
 			
@@ -609,7 +608,6 @@ public class PacketStream implements IIntArrayInputStream {
 		return sample;
 	}
 	
-	// TODO verify
 	private int[] readRemainingBytes() throws IOException {
 		int[] value = new int[length.getLength() - this.getFrameDataBytesRead()];
 		

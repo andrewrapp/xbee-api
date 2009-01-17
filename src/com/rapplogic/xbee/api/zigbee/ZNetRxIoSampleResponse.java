@@ -327,8 +327,6 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
 	/**
 	 * Returns true if this sample contains data from digital inputs
 	 * 
-	 * TODO could be simplified by: if channel mask 1 or 2 is > 0
-	 * 
 	 * See manual page 68 for byte bit mapping
 	 * 
 	 * @return

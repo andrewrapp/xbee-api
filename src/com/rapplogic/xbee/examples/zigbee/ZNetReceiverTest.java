@@ -107,7 +107,6 @@ public class ZNetReceiverTest {
 //						XBeeResponse sampleResponse = xbee.getResponse();
 //						
 //						if (sampleResponse.getApiId() == XBeeResponse.ZNET_REMOTE_AT_RESPONSE && ((ZNetRemoteAtResponse)sampleResponse).isOk())  {
-//							// TODO need to parse IS response into IO sample
 //							ZNetRemoteAtResponse remoteAt = (ZNetRemoteAtResponse)sampleResponse;
 //							log.info("sample rate response succeeded. command data is " + ByteUtils.toBase16(((ZNetRemoteAtResponse)remoteAt).getCommandData()));
 //							log.info("sample analog1 is " + remoteAt.parseIsSample().getAnalog1());

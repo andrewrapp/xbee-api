@@ -28,7 +28,7 @@ TODO provide bin, src, and examples distributions
 	<property name="lib.dir" value="lib"/>
 	<property name="dist.dir" value="dist"/>
 	<property name="javadoc.dir" value="docs/api"/>
-	<property name="release" value="0.4.1"/>
+	<property name="release" value="0.5"/>
 
    	<path id="compile-classpath">
 		<fileset dir="${lib.dir}">
@@ -62,7 +62,7 @@ TODO provide bin, src, and examples distributions
 	
 	<target name="dist" depends="compile,javadoc">
 		
-		<jar basedir="${build.dir}" destfile="${dist.dir}/xbee-api.jar"/>
+		<jar basedir="${build.dir}" destfile="${dist.dir}/xbee-api-${release}.jar"/>
 		
 		<!-- copy thirdparty libs -->
 		<copy todir="${dist.dir}/lib">
@@ -96,7 +96,11 @@ TODO provide bin, src, and examples distributions
 				<include name="XBee-*manual.pdf"/>
 			</fileset>
 		</copy>
-	
+
+		<copy todir="${dist.dir}/docs">
+			 <fileset dir="docs"/>
+		</copy>
+				
 		<zip basedir="${dist.dir}" destfile="xbee-api-${release}.zip"/>
 	</target>
 	

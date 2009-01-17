@@ -80,9 +80,6 @@ public class ApiReceiverTest {
 							// afaik there isn't a way to detect change detect (CD) packets except that they don't send analog data, so turn on a analog pin, even if not using to detect CD
 							log.info("change detect: breadboard switch is " + (ioSample.getSamples()[0].isD2On() ? "on" : "off"));
 						}
-		
-						// TODO take moving average to determine trend
-						// TODO upload to google spreadsheet to use visualization api
 					} else if (response.getApiId() == ApiId.TX_16_STATUS_RESPONSE) {
 						
 						TxStatusResponse txResponse = (TxStatusResponse) response;
