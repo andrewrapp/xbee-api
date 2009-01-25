@@ -450,11 +450,11 @@ public class PacketStream implements IIntArrayInputStream {
 		if (apiId == ApiId.RX_16_RESPONSE || apiId == ApiId.RX_64_RESPONSE) {
 			if (apiId == ApiId.RX_16_RESPONSE) {
 				response = new RxResponse16();	
+				((RxBaseResponse)response).setSourceAddress(this.parseAddress16());
 			} else {
 				response = new RxResponse64();
+				((RxBaseResponse)response).setSourceAddress(this.parseAddress64());
 			}
-				
-			((RxBaseResponse)response).setSourceAddress(this.parseAddress16());
 		} else {
 			response = new RxResponseIoSample();
 			

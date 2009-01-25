@@ -22,7 +22,9 @@ package com.rapplogic.xbee.api.wpan;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /**
- * Provides access to XBee's 9 Digital (0-8) and 6 Analog (0-5) IO pins
+ * Provides access to XBee's 8 Digital (0-7) and 6 Analog (0-5) IO pins
+ * 
+ * TODO according to manual, D8 is disabled.  verify
  * 
  * @author andrew
  *
@@ -172,13 +174,18 @@ public class IoSample {
 	}
 	
 	public Boolean isD7On() {
-		if (this.isD7On()) {
+		if (this.parent.isD7Enabled()) {
 			return ByteUtils.getBit(dioLsb, 8);	
 		}
 		
 		return null;
 	}
 	
+	/**
+	 * This pin is not currently not supported in firmware (current as of 1/22/09)
+	 * 
+	 * @return
+	 */
 	public Boolean isD8On() {
 		if (this.parent.isD8Enabled()) {
 			return ByteUtils.getBit(dioMsb, 1);	

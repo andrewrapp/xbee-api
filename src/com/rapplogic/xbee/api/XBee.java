@@ -503,6 +503,8 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	 * It will return frame ids in a sequential manner until the maximum is reached (0xff)
 	 * and it flips to 1 and starts over.
 	 * 
+	 * Not Thread-safe
+	 * 
 	 * @return
 	 */
 	public int getNextFrameId() {
@@ -516,6 +518,12 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 		return sequentialFrameId;
 	}
 	
+	/**
+	 * Updates the frame id.  Any value between 1 and ff is valid
+	 * 
+	 * @param val
+	 * Jan 24, 2009
+	 */
 	public void updateFrameId(int val) {
 		if (val <=0 || val > 0xff) {
 			throw new IllegalArgumentException("invalid frame id");
