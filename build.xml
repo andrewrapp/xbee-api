@@ -28,7 +28,7 @@ TODO provide bin, src, and examples distributions
 	<property name="lib.dir" value="lib"/>
 	<property name="dist.dir" value="dist"/>
 	<property name="javadoc.dir" value="docs/api"/>
-	<property name="release" value="0.5"/>
+	<property name="release" value="0.5.1"/>
 
    	<path id="compile-classpath">
 		<fileset dir="${lib.dir}">
