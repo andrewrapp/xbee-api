@@ -37,11 +37,12 @@ public class XBeePin {
 	private String name;
 	private Integer pin;
 	private String atCommand;
+	private Integer atPin;
 	
 	private Capability defaultCapability;
 	private String description;
 
-	private List<XBeePin> capabilities = new ArrayList<XBeePin>();
+	private List<Capability> capabilities = new ArrayList<Capability>();
 	
 	/**
 	 * Contains all possible pin configurations and the associated AT command value
@@ -74,12 +75,29 @@ public class XBeePin {
 		public int getValue() {
 			return value;
 		}
+		
+		public static String printAll(String delimiter) {
+			StringBuffer sb = new StringBuffer();
+			
+			for (Capability cap : Capability.values()) {
+				sb.append(System.getProperty("line.separator"));
+				sb.append(delimiter);
+				sb.append(cap);
+				sb.append(delimiter);
+				sb.append("0x" + cap.getValue());
+				sb.append(cap.getValue());
+				sb.append(delimiter);
+			}
+			
+			return sb.toString();
+		}
 	}
 	
-	public XBeePin(String name, Integer pin, String atCommand, Capability defaultCapability, String description, Capability... capabilityArr) {
+	public XBeePin(String name, Integer pin, String atCommand, Integer atPin, Capability defaultCapability, String description, Capability... capabilityArr) {
 		this.setName(name);
 		this.setPin(pin);
 		this.setAtCommand(atCommand);
+		this.setAtPin(atPin);
 		this.setDefaultCapability(defaultCapability);
 		this.setDescription(description);
 		
@@ -128,12 +146,20 @@ public class XBeePin {
 		this.description = description;
 	}
 
-	public List getCapabilities() {
+	public List<Capability> getCapabilities() {
 		return capabilities;
 	}
 
-	public void setCapabilities(List capabilities) {
+	public void setCapabilities(List<Capability> capabilities) {
 		this.capabilities = capabilities;
+	}
+	
+	public Integer getAtPin() {
+		return atPin;
+	}
+
+	public void setAtPin(Integer atPin) {
+		this.atPin = atPin;
 	}
 	
 	private final static List<XBeePin> zigBeePins = new ArrayList<XBeePin>();
@@ -141,31 +167,31 @@ public class XBeePin {
 	static {
 		// notes: DIO13/DIO8/DIO9 not supported
 		// TODO P0/P1 is missing pwm output option?? could it be 0x2?
-		zigBeePins.add(new XBeePin("PWM0/RSSI/DIO10", 6, "P0", Capability.RSSI_PWM, "PWM Output 0 / RX Signal Strength Indicator / Digital IO", 
+		zigBeePins.add(new XBeePin("PWM0/RSSI/DIO10", 6, "P0", 10, Capability.RSSI_PWM, "PWM Output 0 / RX Signal Strength Indicator / Digital IO", 
 				Capability.DISABLED, Capability.RSSI_PWM, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, 
 				Capability.DIGITAL_OUTPUT_HIGH));
-		zigBeePins.add(new XBeePin("PWM/DIO11", 7, "P1", Capability.UNMONITORED_INPUT, "Digital I/O 11", Capability.UNMONITORED_INPUT, 
+		zigBeePins.add(new XBeePin("PWM/DIO11", 7, "P1", 1, Capability.UNMONITORED_INPUT, "Digital I/O 11", Capability.UNMONITORED_INPUT, 
 				Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		zigBeePins.add(new XBeePin("DIO12", 4, "P2", Capability.UNMONITORED_INPUT, "Digital I/O 12", Capability.UNMONITORED_INPUT, 
+		zigBeePins.add(new XBeePin("DIO12", 4, "P2", 2, Capability.UNMONITORED_INPUT, "Digital I/O 12", Capability.UNMONITORED_INPUT, 
 				Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		zigBeePins.add(new XBeePin("AD0/DIO0/Commissioning Button", 20, "D0", Capability.NODE_ID_ENABLED, 
+		zigBeePins.add(new XBeePin("AD0/DIO0/Commissioning Button", 20, "D0", 0, Capability.NODE_ID_ENABLED, 
 				"Analog Input 0, Digital IO 0, or Commissioning Button", Capability.DISABLED, Capability.NODE_ID_ENABLED, 
 				Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		zigBeePins.add(new XBeePin("AD1/DIO1", 19, "D1", Capability.DISABLED, "Analog Input 1 or Digital I/O 1", Capability.DISABLED, 
+		zigBeePins.add(new XBeePin("AD1/DIO1", 19, "D1", 1, Capability.DISABLED, "Analog Input 1 or Digital I/O 1", Capability.DISABLED, 
 				Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		zigBeePins.add(new XBeePin("AD2/DIO2", 18, "D2", Capability.DISABLED, "Analog Input 2 or Digital I/O 2", Capability.DISABLED, 
+		zigBeePins.add(new XBeePin("AD2/DIO2", 18, "D2", 2, Capability.DISABLED, "Analog Input 2 or Digital I/O 2", Capability.DISABLED, 
 				Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		zigBeePins.add(new XBeePin("AD3/DIO3", 17, "D3", Capability.DISABLED, "Analog Input 3 or Digital I/O 3", Capability.DISABLED, 
+		zigBeePins.add(new XBeePin("AD3/DIO3", 17, "D3", 3, Capability.DISABLED, "Analog Input 3 or Digital I/O 3", Capability.DISABLED, 
 				Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		zigBeePins.add(new XBeePin("DIO4", 11, "D4", Capability.DISABLED, "Digital I/O 4", Capability.DISABLED, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		zigBeePins.add(new XBeePin("Associate/DIO5", 15, "D5", Capability.ASSOC_LED, "Associated Indicator, Digital I/O 5", 
+		zigBeePins.add(new XBeePin("DIO4", 11, "D4", 4, Capability.DISABLED, "Digital I/O 4", Capability.DISABLED, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
+		zigBeePins.add(new XBeePin("Associate/DIO5", 15, "D5", 5, Capability.ASSOC_LED, "Associated Indicator, Digital I/O 5", 
 				Capability.DISABLED, Capability.ASSOC_LED, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, 
 				Capability.DIGITAL_OUTPUT_HIGH));
-		zigBeePins.add(new XBeePin("CTS/DIO7", 12, "D7", Capability.CTS_FLOW_CTRL, "Clear-to-Send Flow Control or Digital I/O 7", 
+		zigBeePins.add(new XBeePin("CTS/DIO7", 12, "D7", 7, Capability.CTS_FLOW_CTRL, "Clear-to-Send Flow Control or Digital I/O 7", 
 				Capability.DISABLED, Capability.CTS_FLOW_CTRL, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, 
 				Capability.DIGITAL_OUTPUT_HIGH, Capability.RS485_TX_LOW, Capability.RS485_TX_HIGH));
 		// TODO manual lists only RTS and disabled but x-ctu lists all digital capabilities
-		zigBeePins.add(new XBeePin("RTS/DIO6", 16, "D6", Capability.DISABLED, "Request-to-Send Flow Control, Digital I/O 6", 
+		zigBeePins.add(new XBeePin("RTS/DIO6", 16, "D6", 6, Capability.DISABLED, "Request-to-Send Flow Control, Digital I/O 6", 
 				Capability.DISABLED, Capability.RTS_FLOW_CTRL, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, 
 				Capability.DIGITAL_OUTPUT_HIGH));
 	}
@@ -179,19 +205,99 @@ public class XBeePin {
 	static {
 		// TODO manual is contradictory on pin D8 and says unsupported.  need to check if supported in later firmware 
 		//wpanPins.add(new WpanPin("DI8", 4, "D8", Capability.DISABLED, "Digital Output 8", Capability.DISABLED, Capability.DIGITAL_INPUT));
-		wpanPins.add(new XBeePin("CTS/DIO7", 12, "D7", Capability.CTS_FLOW_CTRL, "Clear-to-Send Flow Control or Digital I/O 7", Capability.DISABLED, Capability.CTS_FLOW_CTRL, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		wpanPins.add(new XBeePin("RTS/AD6/DIO6", 16, "D6", Capability.DISABLED, "Request-to-Send Flow Control, Analog Input 6 or Digital I/O 6", Capability.DISABLED, Capability.RTS_FLOW_CTRL, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		wpanPins.add(new XBeePin("Associate/AD5/DIO5", 15, "D5", Capability.ASSOC_LED, "Associated Indicator, Analog Input 5 or Digital I/O 5", Capability.DISABLED, Capability.ASSOC_LED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		wpanPins.add(new XBeePin("AD4/DIO4", 11, "D4", Capability.DISABLED, "Analog Input 4 or Digital I/O 4", Capability.DISABLED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		wpanPins.add(new XBeePin("AD3/DIO3", 17, "D3", Capability.DISABLED, "Analog Input 3 or Digital I/O 3", Capability.DISABLED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		wpanPins.add(new XBeePin("AD2/DIO2", 18, "D2", Capability.DISABLED, "Analog Input 2 or Digital I/O 2", Capability.DISABLED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		wpanPins.add(new XBeePin("AD1/DIO1", 19, "D1", Capability.DISABLED, "Analog Input 1 or Digital I/O 1", Capability.DISABLED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		wpanPins.add(new XBeePin("AD0/DIO0", 20, "D0", Capability.DISABLED, "Analog Input 0 or Digital I/O 0", Capability.DISABLED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		wpanPins.add(new XBeePin("PWM0/RSSI", 6, "P0", Capability.RSSI_PWM, "PWM Output 0 / RX Signal Strength Indicator", Capability.DISABLED, Capability.RSSI_PWM, Capability.PWM_OUTPUT));
-		wpanPins.add(new XBeePin("PWM1", 7, "P1", Capability.DISABLED, "PWM Output 1", Capability.DISABLED,  Capability.RSSI_PWM, Capability.PWM_OUTPUT));
+		wpanPins.add(new XBeePin("CTS/DIO7", 12, "D7", 7, Capability.CTS_FLOW_CTRL, "Clear-to-Send Flow Control or Digital I/O 7", Capability.DISABLED, Capability.CTS_FLOW_CTRL, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
+		wpanPins.add(new XBeePin("RTS/AD6/DIO6", 16, "D6", 8, Capability.DISABLED, "Request-to-Send Flow Control, Analog Input 6 or Digital I/O 6", Capability.DISABLED, Capability.RTS_FLOW_CTRL, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
+		wpanPins.add(new XBeePin("Associate/AD5/DIO5", 15, "D5", 5, Capability.ASSOC_LED, "Associated Indicator, Analog Input 5 or Digital I/O 5", Capability.DISABLED, Capability.ASSOC_LED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
+		wpanPins.add(new XBeePin("AD4/DIO4", 11, "D4", 4, Capability.DISABLED, "Analog Input 4 or Digital I/O 4", Capability.DISABLED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
+		wpanPins.add(new XBeePin("AD3/DIO3", 17, "D3", 3, Capability.DISABLED, "Analog Input 3 or Digital I/O 3", Capability.DISABLED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
+		wpanPins.add(new XBeePin("AD2/DIO2", 18, "D2", 2, Capability.DISABLED, "Analog Input 2 or Digital I/O 2", Capability.DISABLED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
+		wpanPins.add(new XBeePin("AD1/DIO1", 19, "D1", 1, Capability.DISABLED, "Analog Input 1 or Digital I/O 1", Capability.DISABLED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
+		wpanPins.add(new XBeePin("AD0/DIO0", 20, "D0", 0, Capability.DISABLED, "Analog Input 0 or Digital I/O 0", Capability.DISABLED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
+		wpanPins.add(new XBeePin("PWM0/RSSI", 6, "P0", null, Capability.RSSI_PWM, "PWM Output 0 / RX Signal Strength Indicator", Capability.DISABLED, Capability.RSSI_PWM, Capability.PWM_OUTPUT));
+		wpanPins.add(new XBeePin("PWM1", 7, "P1", null, Capability.DISABLED, "PWM Output 1", Capability.DISABLED,  Capability.RSSI_PWM, Capability.PWM_OUTPUT));
+	}
+	
+	public static String printAll(List<XBeePin> pins, String delimiter) {
+		
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append(delimiter);
+		sb.append("*Pin #*");
+		sb.append(delimiter);
+		sb.append("*AT Command*");
+		sb.append(delimiter);
+		sb.append("*Description*");
+		sb.append(delimiter);
+		sb.append("*Default Configuration*");
+		sb.append(delimiter);
+		sb.append("*Supported Configurations (Value)*");
+		sb.append(delimiter);
+		sb.append("*Analog I/O Method*");
+		sb.append(delimiter);
+		sb.append("*Digital I/O Method*");
+		sb.append(delimiter);
+		
+		for (XBeePin pin : pins) {
+			sb.append(System.getProperty("line.separator"));
+			
+			sb.append(delimiter);
+			sb.append(pin.getPin());
+			sb.append(delimiter);
+			sb.append(pin.getAtCommand());
+			sb.append(delimiter);
+			sb.append(pin.getDescription());
+			sb.append(delimiter);
+			sb.append(pin.getDefaultCapability());
+			sb.append(delimiter);
+			
+			boolean first = false;
+			
+			for (Capability cap : pin.getCapabilities()) {
+				if (!first) {
+					first = true;
+				} else {
+					sb.append(", ");
+				}
+				
+				sb.append(cap + " (0x" + cap.getValue() + ")");
+				//sb.append(cap);
+			}
+		
+			sb.append(delimiter);
+			
+			// analog methods
+			if (pin.getCapabilities().contains(Capability.ANALOG_INPUT)) {
+				sb.append("getAnalog" + pin.getAtPin() + "()");
+			} else {
+				sb.append("n/a");
+			}
+
+			sb.append(delimiter);
+			
+			// digital methods
+			if (pin.getCapabilities().contains(Capability.DIGITAL_INPUT)) {
+				sb.append("isD" + pin.getAtPin() + "On()");
+			} else {
+				sb.append("n/a");
+			}
+			
+			sb.append(delimiter);
+		}
+		
+		return sb.toString();
 	}
 	
 	public static List<XBeePin> getWpanPins() {
 		return wpanPins;
+	}
+	
+	public static void main(String[] args) {
+		// print for wiki table
+		System.out.println(Capability.printAll("|| "));
+		
+		System.out.println("Series 1:");
+		System.out.println(printAll(wpanPins, "|| "));
+		System.out.println("Series 2:");
+		System.out.println(printAll(zigBeePins, "|| "));
 	}
 }
