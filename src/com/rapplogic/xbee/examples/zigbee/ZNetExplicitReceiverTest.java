@@ -27,6 +27,12 @@ import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetExplicitRxResponse;
 
+/**
+ * Set AO=1 for to enable explicit frames for this example
+ * 
+ * @author andrew
+ *
+ */
 public class ZNetExplicitReceiverTest {
 
 	private final static Logger log = Logger.getLogger(ZNetExplicitReceiverTest.class);
@@ -36,11 +42,8 @@ public class ZNetExplicitReceiverTest {
 
 		try {			
 			// replace with the com port or your receiving XBee
-			// my coordinator com/baud
-			//xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
-			xbee.open("COM7", 9600);
 			// this is the com port of my end device on my mac
-			//xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
+			xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
 			
 			while (true) {
 

@@ -85,6 +85,8 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	
 	private XBeeResponse lastResponse;
 	
+	private boolean connected = false;
+	
 	public XBee() {
 
 	}
@@ -92,7 +94,8 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	public void open(String port, int baudRate) throws XBeeException {
 		try {
 			this.openSerialPort(port, baudRate);
-			parser = new XBeePacketParser(this.getInputStream(), this, newPacketNotification);			
+			parser = new XBeePacketParser(this.getInputStream(), this, newPacketNotification);	
+			connected = true;
 		} catch (Exception e) {
 			throw new XBeeException(e);
 		}
@@ -167,7 +170,7 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	 * 
 	 * Timeout value is fixed at 5 seconds.
 	 * 
-	 * TODO remove -- this method doesn't provide any value
+	 * TODO deprecate -- this method doesn't provide any value over sendSynchronous
 	 * 
 	 * @param command
 	 * @return
@@ -224,6 +227,7 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 			// TODO verify that there is no possibility the response could be received in the milliseconds after sending packet and before listener is registered.
 			
 			pl = new PacketListener() {
+				// TODO handle error response as well
 				public void processResponse(XBeeResponse response) {
 					if (response instanceof XBeeFrameIdResponse && ((XBeeFrameIdResponse)response).getFrameId() == xbeeRequest.getFrameId()) {
 						// frame id matches -- yay we found it
@@ -486,6 +490,8 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	 */
 	public void close() {
 		super.close();
+		this.connected = false;
+		
 		// shutdown parser thread
 		if (parser != null) {
 			parser.setDone(true);
@@ -541,5 +547,15 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	 */
 	public XBeeResponse getLastResponse() {
 		return lastResponse;
+	}
+
+	/**
+	 * Indicates if serial port connection has been established
+	 * 
+	 * @return
+	 * Feb 22, 2009
+	 */
+	public boolean isConnected() {
+		return connected;
 	}
 }

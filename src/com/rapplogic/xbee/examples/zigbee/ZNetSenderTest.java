@@ -22,13 +22,11 @@ package com.rapplogic.xbee.examples.zigbee;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import com.rapplogic.xbee.api.ApiId;
-import com.rapplogic.xbee.api.ErrorResponse;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.api.XBeeException;
-import com.rapplogic.xbee.api.XBeeResponse;
+import com.rapplogic.xbee.api.XBeeTimeoutException;
 import com.rapplogic.xbee.api.zigbee.ZNetTxRequest;
 import com.rapplogic.xbee.api.zigbee.ZNetTxStatusResponse;
 import com.rapplogic.xbee.util.ByteUtils;
@@ -38,8 +36,8 @@ import com.rapplogic.xbee.util.ByteUtils;
  * This software requires the XBee to be configured in API mode; if your ZNet radios are flashed with the transparent (AT) firmware, 
  * you will need to re-flash with API firmware to run this software.
  * 
- * I use the Digi X-CTU software to configure my XBee's, but if you don't have a PC, you can still use the configureCoordinator and
- * configureEndDevice methods in ZNetAtCommandTest.java.
+ * I use the Digi X-CTU software to configure my XBee's, but if you don't have Windows (X-CTU only works on Windows), you can still use the configureCoordinator and
+ * configureEndDevice methods in ZNetApiAtTest.java.
  * 
  * There are a few chicken and egg situations where you need to know some basic configuration before you can connect to the XBee.  This
  * includes the baud rate and the API mode.  The default baud rate is 9600 and if you ever change it, you will want to remember the setting.  
@@ -125,8 +123,6 @@ public class ZNetSenderTest {
 			//xbee.open("COM5", 9600);
 			// my coordinator com/baud
 			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
-			// my end device
-			//xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
 			
 			// replace with end device's 64-bit address (SH + SL)
 			XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x0a, 0x3e, 0x02);
@@ -142,46 +138,40 @@ public class ZNetSenderTest {
 //			}
 			
 			// first request we just send 64-bit address.  we get 16-bit network address with status response
-			ZNetTxRequest request = new ZNetTxRequest(xbee.getNextFrameId(), addr64, XBeeAddress16.ZNET_BROADCAST, ZNetTxRequest.DEFAULT_BROADCAST_RADIUS, ZNetTxRequest.UNICAST_OPTION, payload);
+			ZNetTxRequest request = new ZNetTxRequest(addr64, payload);
 			
 			while (true) {
 				long start = System.currentTimeMillis();
 				//log.info("sending tx packet: " + request.toString());
-				xbee.sendAsynchronous(request);
-				// update frame id
-				request.setFrameId(xbee.getNextFrameId());
 				
-				XBeeResponse response = xbee.getResponse();
-				
-				log.info("received response " + response.toString());
-				
-				if (response.isError()) {
-					log.error("we got a bad packet", ((ErrorResponse)response).getException());
-				} else if (response.getApiId() == ApiId.ZNET_TX_STATUS_RESPONSE) {
-					// a tx status response is returned by the local xbee
-					ZNetTxStatusResponse txStatus = (ZNetTxStatusResponse) response;
+				try {
+					ZNetTxStatusResponse response = (ZNetTxStatusResponse) xbee.sendSynchronous(request, 10000);
+					// update frame id for next request
+					request.setFrameId(xbee.getNextFrameId());
+					
+					log.info("received response " + response.toString());
 
-					if (txStatus.getDeliveryStatus() == ZNetTxStatusResponse.DeliveryStatus.SUCCESS) {
+					if (response.getDeliveryStatus() == ZNetTxStatusResponse.DeliveryStatus.SUCCESS) {
 						// the packet was successfully delivered
-						if (txStatus.getRemoteAddress16().equals(XBeeAddress16.ZNET_BROADCAST)) {
+						if (response.getRemoteAddress16().equals(XBeeAddress16.ZNET_BROADCAST)) {
 							// specify 16-bit address for faster routing?.. really only need to do this when it changes
-							request.setDestAddr16(txStatus.getRemoteAddress16());
+							request.setDestAddr16(response.getRemoteAddress16());
 						}							
 					} else {
 						// packet failed.  log error
 						// it's easy to create this error by unplugging/powering off your remote xbee.  when doing so I get: packet failed due to error: ADDRESS_NOT_FOUND  
-						log.error("packet failed due to error: " + txStatus.getDeliveryStatus());
+						log.error("packet failed due to error: " + response.getDeliveryStatus());
 					}
 					
 					// I get the following message: Response in 75, Delivery status is SUCCESS, 16-bit address is 0x08 0xe5, retry count is 0, discovery status is SUCCESS 
-					log.info("Response in " + (System.currentTimeMillis() - start) + ", Delivery status is " + txStatus.getDeliveryStatus() + ", 16-bit address is " + ByteUtils.toBase16(txStatus.getRemoteAddress16().getAddress()) + ", retry count is " +  txStatus.getRetryCount() + ", discovery status is " + txStatus.getDeliveryStatus());
-				} else {
-					log.info("ignoring unexpected packet " + response.toString());
+					log.info("Response in " + (System.currentTimeMillis() - start) + ", Delivery status is " + response.getDeliveryStatus() + ", 16-bit address is " + ByteUtils.toBase16(response.getRemoteAddress16().getAddress()) + ", retry count is " +  response.getRetryCount() + ", discovery status is " + response.getDeliveryStatus());					
+				} catch (XBeeTimeoutException e) {
+					log.warn("request timed out");
 				}
 	
 				try {
 					// wait a bit then send another packet
-					Thread.sleep(5000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 				}
 			}

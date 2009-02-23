@@ -17,37 +17,27 @@
  * along with XBee-API.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.rapplogic.xbee.util;
+package com.rapplogic.xbee.api.zigbee;
+
+import com.rapplogic.xbee.api.XBeeAddress16;
+import com.rapplogic.xbee.api.XBeeAddress64;
+import com.rapplogic.xbee.api.XBeeRequest;
 
 /**
- *  //TODO replace with nio.IntBuffer
+ * Uses Remote AT to send a Force Sample (IS) AT command to a remote XBee
+ * 
+ * @author andrew
+ *
  */
-public class IntArrayInputStream implements IIntArrayInputStream {
-
-	private int[] source;
-	private int pos;
-	
-	public IntArrayInputStream(int[] source) {
-		this.source = source;
-	}
-	
-	public int read() {
-		if (pos >= source.length) {
-			throw new IllegalStateException("end of input stream");
-		}
+public class ZNetForceSampleRequest extends ZNetRemoteAtRequest {
 		
-		return source[pos++];
-	}
-	
-	public int[] read(int size) {
-		int[] block = new int[size];
-		System.arraycopy(source, pos, block, 0, size);
-		// index pos
-		pos+=size;
-		return block;
-	}
-	
-	public int read(String s) {
-		return read();
+	/**
+	 * Creates a Force Sample Remote AT request
+	 * 
+	 * @param dest64
+	 * @param command
+	 */
+	public ZNetForceSampleRequest(XBeeAddress64 dest64) {
+		super(XBeeRequest.DEFAULT_FRAME_ID, dest64, XBeeAddress16.ZNET_BROADCAST, false, "IS", null);
 	}
 }

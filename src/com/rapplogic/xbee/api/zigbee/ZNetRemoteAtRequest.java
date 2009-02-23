@@ -47,10 +47,16 @@ public class ZNetRemoteAtRequest extends XBeeRequest {
 	private String command;
 	private int[] value;
 	
-	public ZNetRemoteAtRequest(int frameId, XBeeAddress64 macAddress, XBeeAddress16 znetAddress, boolean applyChanges, String command) {
-		this(frameId, macAddress, znetAddress, applyChanges, command, null);
-	}
-	
+	/**
+	 * Creates a Remote AT request for setting an AT command on a remote XBee
+	 * 
+	 * @param frameId
+	 * @param dest64
+	 * @param dest16
+	 * @param applyChanges
+	 * @param command two character AT command to set or query
+	 * @param value if null then the current setting will be queried
+	 */
 	public ZNetRemoteAtRequest(int frameId, XBeeAddress64 dest64, XBeeAddress16 dest16, boolean applyChanges, String command, int[] value) {
 		this.setFrameId(frameId);
 		this.remoteAddr64 = dest64;
@@ -59,7 +65,43 @@ public class ZNetRemoteAtRequest extends XBeeRequest {
 		this.command = command;
 		this.value = value;
 	}
+	
+	/**
+	 * Creates a Remote AT request for querying the current value of an AT command on a remote XBee
+	 * 
+	 * @param frameId
+	 * @param macAddress
+	 * @param znetAddress
+	 * @param applyChanges
+	 * @param command
+	 */
+	public ZNetRemoteAtRequest(int frameId, XBeeAddress64 macAddress, XBeeAddress16 znetAddress, boolean applyChanges, String command) {
+		this(frameId, macAddress, znetAddress, applyChanges, command, null);
+	}
 
+	/**
+	 * Abbreviated Constructor for setting an AT command on a remote XBee.
+	 * This defaults to the DEFAULT_FRAME_ID, and true for apply changes
+	 * 
+	 * @param dest64
+	 * @param command
+	 * @param value
+	 */
+	public ZNetRemoteAtRequest(XBeeAddress64 dest64, String command, int[] value) {
+		this(XBeeRequest.DEFAULT_FRAME_ID, dest64, XBeeAddress16.ZNET_BROADCAST, true, command, value);
+	}
+
+	/**
+	 * Abbreviated Constructor for querying the value of an AT command on a remote XBee.
+	 * This defaults to the DEFAULT_FRAME_ID, and true for apply changes
+	 * 
+	 * @param dest64
+	 * @param command
+	 */
+	public ZNetRemoteAtRequest(XBeeAddress64 dest64, String command) {
+		this(XBeeRequest.DEFAULT_FRAME_ID, dest64, XBeeAddress16.ZNET_BROADCAST, true, command, null);
+	}
+	
 	public int[] getFrameData() {		
 		IntArrayOutputStream out = new IntArrayOutputStream();
 		

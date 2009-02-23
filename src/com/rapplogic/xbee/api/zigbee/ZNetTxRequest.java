@@ -77,6 +77,16 @@ public class ZNetTxRequest extends XBeeRequest {
 		this.option = option;
 		this.payload = payload;
 	}
+
+	/**
+	 * Abbreviated constructor for sending a unicast TX packet
+	 * 
+	 * @param dest64
+	 * @param payload
+	 */
+	public ZNetTxRequest(XBeeAddress64 dest64, int[] payload) {
+		this(XBeeRequest.DEFAULT_FRAME_ID, dest64, XBeeAddress16.ZNET_BROADCAST, ZNetTxRequest.DEFAULT_BROADCAST_RADIUS, ZNetTxRequest.UNICAST_OPTION, payload);
+	}
 	
 	protected IntArrayOutputStream getFrameDataAsIntArrayOutputStream() {
 

@@ -22,8 +22,6 @@ package com.rapplogic.xbee.examples.zigbee;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import com.rapplogic.xbee.api.ApiId;
-import com.rapplogic.xbee.api.ErrorResponse;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
@@ -31,21 +29,20 @@ import com.rapplogic.xbee.api.XBeeException;
 import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetExplicitTxRequest;
 import com.rapplogic.xbee.api.zigbee.ZNetTxRequest;
-import com.rapplogic.xbee.api.zigbee.ZNetTxStatusResponse;
-import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.DoubleByte;
 
-
+/**
+ * Set AO=1 for to enable explicit frames for this example.
+ * Once set, you should use explicit tx/rx packets instead of plain vanilla tx requests (ZNetTxRequest).  
+ * You can still send ZNetTxRequest requests but it will be received as a explicit response (ZNetExplicitRxResponse)
+ * 
+ * @author andrew
+ *
+ */
 public class ZNetExplicitSenderTest {
 
 	private final static Logger log = Logger.getLogger(ZNetExplicitSenderTest.class);
 	
-	// ZB firmware config:
-	// sleep disabled is not supported in ZB firmware!!!! set to Pin sleep
-	// ATSM 1
-	// now connect pin 9 to ground to prevent sleep.
-	// set AO 1.  once set, you must use explicit packets instead of plain vanilla tx requests.  you can still send a tx request but it will be receive as a explicit response
-	// ATAO 1
 	private ZNetExplicitSenderTest() throws XBeeException {
 		
 		XBee xbee = new XBee();

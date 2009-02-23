@@ -28,6 +28,8 @@ public class ByteUtils {
 	 * use of the 32nd bit.  This means we this method does not support a four byte value with msb greater than 01111111 ((2^7-1) or 127).
 	 * 
 	 * TODO use long instead of int to support 4 bytes values.  note that long assignments are not atomic.
+	 * 
+	 * Not Used
 	 */
 	public static int convertMultiByteToInt(int[] bytes) {
 		
