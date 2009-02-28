@@ -332,12 +332,9 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
 	 * @return
 	 */
 	public boolean containsDigital() {
-		if (this.getDigitalChannelMask1() > 0 || this.getDigitalChannelMask2() > 0) {
-			return true;
-		}
-		
-		return false;
-	}
+        return this.getDigitalChannelMask1() > 0 || this.getDigitalChannelMask2() > 0;
+
+    }
 	
 	/**
 	 * Returns true if this sample contains data from analog inputs or supply voltage
@@ -349,12 +346,9 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
 	 * @return
 	 */
 	public boolean containsAnalog() {
-		if (this.getAnalogChannelMask() > 0) {
-			return true;
-		}
-		
-		return false;
-	}
+        return this.getAnalogChannelMask() > 0;
+
+    }
 
 	/**
 	 * Returns the DIO MSB, only if sample contains digital; null otherwise

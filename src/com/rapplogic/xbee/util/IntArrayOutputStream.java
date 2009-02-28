@@ -38,9 +38,9 @@ public class IntArrayOutputStream {
 	}
 	
 	public void write(int[] val) {
-		for (int i = 0; i < val.length; i++) {
-			this.write(val[i]);
-		}
+        for (int aVal : val) {
+            this.write(aVal);
+        }
 	}
 	
 	public int[] getIntArray() {
@@ -51,7 +51,7 @@ public class IntArrayOutputStream {
 		int i = 0;
 		
 		for (Integer integer : intList) {
-			intArr[i++] = integer.intValue();
+			intArr[i++] = integer;
 		}
 		
 		return intArr;

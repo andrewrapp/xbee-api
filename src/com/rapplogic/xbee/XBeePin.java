@@ -20,13 +20,15 @@
 package com.rapplogic.xbee;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Represents a configurable XBee pin and associated name, pin number, AT command, default capability and list of supported 
  * capabilities.
  * 
- * 
+ * TODO add pin direction
  * TODO methods to filter list by Capability
  * 
  * @author andrew
@@ -101,8 +103,10 @@ public class XBeePin {
 		this.setDefaultCapability(defaultCapability);
 		this.setDescription(description);
 		
-		for (Capability capability: capabilityArr) {
-			this.getCapabilities().add(capability);
+		if (capabilityArr != null) {
+			for (Capability capability: capabilityArr) {
+				this.getCapabilities().add(capability);
+			}			
 		}
 	}
 
@@ -190,10 +194,40 @@ public class XBeePin {
 		zigBeePins.add(new XBeePin("CTS/DIO7", 12, "D7", 7, Capability.CTS_FLOW_CTRL, "Clear-to-Send Flow Control or Digital I/O 7", 
 				Capability.DISABLED, Capability.CTS_FLOW_CTRL, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, 
 				Capability.DIGITAL_OUTPUT_HIGH, Capability.RS485_TX_LOW, Capability.RS485_TX_HIGH));
+		
 		// TODO manual lists only RTS and disabled but x-ctu lists all digital capabilities
 		zigBeePins.add(new XBeePin("RTS/DIO6", 16, "D6", 6, Capability.DISABLED, "Request-to-Send Flow Control, Digital I/O 6", 
 				Capability.DISABLED, Capability.RTS_FLOW_CTRL, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, 
 				Capability.DIGITAL_OUTPUT_HIGH));
+		
+		
+		
+		// other pins
+		zigBeePins.add(new XBeePin("VCC", 1, null, null, null, "Power Supply", (Capability[])null));
+		zigBeePins.add(new XBeePin("DOUT", 2, null, null, null, "UART Data Out", (Capability[])null));
+		zigBeePins.add(new XBeePin("DIN", 3, null, null, null, "UART Data In", (Capability[])null));
+		zigBeePins.add(new XBeePin("RESET", 5, null, null, null, "Module Reset (reset pulse must be at least 200 ns)", (Capability[])null));
+		zigBeePins.add(new XBeePin("[reserved]", 8, null, null, null, "Do not connect", (Capability[])null));
+		// DIO8 not supported according to manual
+		zigBeePins.add(new XBeePin("DTR/SLEEP_RQ", 9, null, null, null, "Pin Sleep Control Line", (Capability[])null));
+		zigBeePins.add(new XBeePin("GND", 10, null, null, null, "Ground", (Capability[])null));
+		// DIO9 not supported according to manual
+		zigBeePins.add(new XBeePin("ON/SLEEP", 13, null, null, null, "Module Status Indicator", (Capability[])null));
+		zigBeePins.add(new XBeePin("VREF", 14, null, null, null, "Not used on this module. For compatibility with other XBee modules, we recommend connecting this pin to a voltage reference if Analog sampling is desired. Otherwise, connect to GND", (Capability[])null));
+	
+		Collections.sort(zigBeePins, new PinSorter());
+	}
+	
+	/**
+	 * Sorts by pin number
+	 * 
+	 * @author andrew
+	 *
+	 */
+	private static class PinSorter implements Comparator {
+		public int compare(Object o1, Object o2) {
+			return ((XBeePin)o1).getPin().compareTo(((XBeePin)o2).getPin());
+		}		
 	}
 	
 	public static List<XBeePin> getZigBeePins() {
@@ -202,11 +236,10 @@ public class XBeePin {
 	
 	private final static List<XBeePin> wpanPins = new ArrayList<XBeePin>();
 	
-	static {
-		// TODO manual is contradictory on pin D8 and says unsupported.  need to check if supported in later firmware 
-		//wpanPins.add(new WpanPin("DI8", 4, "D8", Capability.DISABLED, "Digital Output 8", Capability.DISABLED, Capability.DIGITAL_INPUT));
+	static { 
+		wpanPins.add(new XBeePin("DTR/SLEEP_RQ/DI8", 9, "D8", 8, Capability.DISABLED, "Pin Sleep Control Line or Digital Input 8", Capability.DISABLED, Capability.DIGITAL_INPUT));
 		wpanPins.add(new XBeePin("CTS/DIO7", 12, "D7", 7, Capability.CTS_FLOW_CTRL, "Clear-to-Send Flow Control or Digital I/O 7", Capability.DISABLED, Capability.CTS_FLOW_CTRL, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
-		wpanPins.add(new XBeePin("RTS/AD6/DIO6", 16, "D6", 8, Capability.DISABLED, "Request-to-Send Flow Control, Analog Input 6 or Digital I/O 6", Capability.DISABLED, Capability.RTS_FLOW_CTRL, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
+		wpanPins.add(new XBeePin("RTS/AD6/DIO6", 16, "D6", 6, Capability.DISABLED, "Request-to-Send Flow Control, Analog Input 6 or Digital I/O 6", Capability.DISABLED, Capability.RTS_FLOW_CTRL, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
 		wpanPins.add(new XBeePin("Associate/AD5/DIO5", 15, "D5", 5, Capability.ASSOC_LED, "Associated Indicator, Analog Input 5 or Digital I/O 5", Capability.DISABLED, Capability.ASSOC_LED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
 		wpanPins.add(new XBeePin("AD4/DIO4", 11, "D4", 4, Capability.DISABLED, "Analog Input 4 or Digital I/O 4", Capability.DISABLED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
 		wpanPins.add(new XBeePin("AD3/DIO3", 17, "D3", 3, Capability.DISABLED, "Analog Input 3 or Digital I/O 3", Capability.DISABLED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
@@ -215,6 +248,20 @@ public class XBeePin {
 		wpanPins.add(new XBeePin("AD0/DIO0", 20, "D0", 0, Capability.DISABLED, "Analog Input 0 or Digital I/O 0", Capability.DISABLED, Capability.ANALOG_INPUT, Capability.DIGITAL_INPUT, Capability.DIGITAL_OUTPUT_LOW, Capability.DIGITAL_OUTPUT_HIGH));
 		wpanPins.add(new XBeePin("PWM0/RSSI", 6, "P0", null, Capability.RSSI_PWM, "PWM Output 0 / RX Signal Strength Indicator", Capability.DISABLED, Capability.RSSI_PWM, Capability.PWM_OUTPUT));
 		wpanPins.add(new XBeePin("PWM1", 7, "P1", null, Capability.DISABLED, "PWM Output 1", Capability.DISABLED,  Capability.RSSI_PWM, Capability.PWM_OUTPUT));
+		
+	
+		// other pins
+		wpanPins.add(new XBeePin("VCC", 1, null, null, null, "Power Supply", (Capability[])null));
+		wpanPins.add(new XBeePin("DOUT", 2, null, null, null, "UART Data Out", (Capability[])null));
+		wpanPins.add(new XBeePin("DIN/CONFIG", 3, null, null, null, "UART Data In", (Capability[])null));
+		wpanPins.add(new XBeePin("DO8", 4, null, null, null, "Digital Output 8 (not supported as of 2/28/09)", (Capability[])null));
+		wpanPins.add(new XBeePin("RESET", 5, null, null, null, "Module Reset (reset pulse must be at least 200 ns)", (Capability[])null));
+		wpanPins.add(new XBeePin("[reserved]", 8, null, null, null, "Do not connect", (Capability[])null));
+		wpanPins.add(new XBeePin("GND", 10, null, null, null, "Ground", (Capability[])null));
+		wpanPins.add(new XBeePin("ON/SLEEP", 13, null, null, null, "Module Status Indicator", (Capability[])null));
+		wpanPins.add(new XBeePin("VREF", 14, null, null, null, "Voltage Reference for A/D Inputs", (Capability[])null));
+		
+		Collections.sort(wpanPins, new PinSorter());
 	}
 	
 	public static String printAll(List<XBeePin> pins, String delimiter) {
@@ -243,11 +290,11 @@ public class XBeePin {
 			sb.append(delimiter);
 			sb.append(pin.getPin());
 			sb.append(delimiter);
-			sb.append(pin.getAtCommand());
+			sb.append(pin.getAtCommand() == null ? "n/a" : pin.getAtCommand());
 			sb.append(delimiter);
 			sb.append(pin.getDescription());
 			sb.append(delimiter);
-			sb.append(pin.getDefaultCapability());
+			sb.append(pin.getDefaultCapability() == null ? "n/a" : pin.getDefaultCapability());
 			sb.append(delimiter);
 			
 			boolean first = false;

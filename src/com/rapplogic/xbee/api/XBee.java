@@ -31,40 +31,12 @@ import com.rapplogic.xbee.util.ExceptionHandler;
 /**
  * This is an API for Digi XBee 802.15.4 and ZigBee radios
  * 
- * Objectives: 
- * 	Focus on support for a single version of firmware for both Zigbee and 802.15.4 XBee radios; this would likely be the latest stable. 
- * 	Implement functionality to meet an expected 80% of usage
- *  Strive for correctness and reliability over percentage of features implemented
- *  
- * Disclaimers: 
- *  Although it is my intention to continue to develop and support this project, I can't commit to a time frame (that's one reason it's open source)
- *  I also can't commit to providing technical support but will attempt to provide help where possible.
- *  I recommend you are familiar with Java and basic electronics before investing in this API such that
- *  you are comfortable with maintaining it to support your objectives.
- *  I will attempt to maintain backwards compatibility but it's possible that future release will require some refactoring of your code.
- *  This code is provided as is and I do not assume responsibility for any damage it may cause to your hardware or otherwise.
- *  
- * Notes:
+ * TODO refactor to not extend RxTxSerialComm; hide visibility of handlePacket protected
  * 
- * The API mode classes are designed for escaped byte mode (AP=2).  This applies to both varieties of XBee (ZigBee and 802.14.5).
- *  
- * Unfortunately I don't have a good solution in place for regression testing.  Since this API depends on hardware,
- * there can be significant work in configuration/setup/test iterations required to test all functionality.  That said
- * I may have broken previously working stuff.
- * 
- * Please send feedback to email address listed below
- * 
- * TODO Expose XBee object as a service to share coordinator with multiple apps
- * TODO testNG framework for unit tests 
- * 
- * Windows users: To locate your COM port on windows, go to Start->(right-click)My Computer->Manage, then Select Device Manager and Ports
- * 
- * This is disappointing (from the znet manual): "The WR command should be used sparingly. The EM250 supports a limited number of write cycles.“ How many is limited??
-
  * @author Andrew Rapp <andrew.rapp at gmail>
  * 
  */
-public class XBee extends RxTxSerialComm implements XBeePacketHandler {
+public class XBee extends RxTxSerialComm implements IXBee, XBeePacketHandler {
 
 	private final static Logger log = Logger.getLogger(XBee.class);
 
@@ -138,9 +110,9 @@ public class XBee extends RxTxSerialComm implements XBeePacketHandler {
 	 * @throws IOException
 	 */
 	public void sendPacket(int[] packet)  throws IOException {
-		for (int i = 0; i < packet.length; i++) {
-			this.getOutputStream().write(packet[i]);
-		}
+        for (int aPacket : packet) {
+            this.getOutputStream().write(aPacket);
+        }
 
 		this.getOutputStream().flush();
 	}

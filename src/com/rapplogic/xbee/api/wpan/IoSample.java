@@ -181,11 +181,6 @@ public class IoSample {
 		return null;
 	}
 	
-	/**
-	 * This pin is not currently not supported in firmware (current as of 1/22/09)
-	 * 
-	 * @return
-	 */
 	public Boolean isD8On() {
 		if (this.parent.isD8Enabled()) {
 			return ByteUtils.getBit(dioMsb, 1);	

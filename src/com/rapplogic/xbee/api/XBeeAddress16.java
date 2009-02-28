@@ -81,12 +81,8 @@ public class XBeeAddress16 extends XBeeAddress {
 		} else {
 			try {
 				XBeeAddress16 addr = (XBeeAddress16) o;
-				
-				if (this.getLsb() == addr.getLsb() && this.getMsb() == addr.getMsb()) {
-					return true;
-				} else {
-					return false;
-				}
+
+                return this.getLsb() == addr.getLsb() && this.getMsb() == addr.getMsb();
 			} catch (Exception e) {
 				return false;
 			}			

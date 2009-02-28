@@ -76,10 +76,10 @@ public class XBeePacket {
 		
 		// checksum is always computed on pre-escaped packet
 		Checksum checksum = new Checksum();
-		
-		for (int i = 0; i < frameData.length; i++) {			
-			checksum.addByte(frameData[i]);
-		}
+
+        for (int aFrameData : frameData) {
+            checksum.addByte(aFrameData);
+        }
 		
 		checksum.compute();
 		
@@ -191,13 +191,10 @@ public class XBeePacket {
 	}
 	
 	public static boolean isSpecialByte(int b) {
-		if (b == SpecialByte.START_BYTE.getValue() || b == SpecialByte.ESCAPE.getValue() || b == SpecialByte.XON.getValue() || 
-				b == SpecialByte.XOFF.getValue()) {
-			return true;
-		}
-		
-		return false;
-	}
+        return b == SpecialByte.START_BYTE.getValue() || b == SpecialByte.ESCAPE.getValue() || b == SpecialByte.XON.getValue() ||
+                b == SpecialByte.XOFF.getValue();
+
+    }
 	
 	public String toString() {
 		return ByteUtils.toBase16(this.packet);
@@ -257,12 +254,12 @@ public class XBeePacket {
 	private static int[] unEscapePacket(int[] packet) {
 	
 		int escapeBytes = 0;
-		
-		for (int i = 0; i < packet.length; i++) {
-			if (packet[i] == SpecialByte.ESCAPE.getValue()) {
-				escapeBytes++;
-			}
-		}
+
+        for (int aPacket : packet) {
+            if (aPacket == SpecialByte.ESCAPE.getValue()) {
+                escapeBytes++;
+            }
+        }
 		
 		if (escapeBytes == 0) {
 			return packet;

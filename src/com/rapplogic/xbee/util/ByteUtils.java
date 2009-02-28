@@ -150,10 +150,10 @@ public class ByteUtils {
 		}
 		
 		StringBuffer sb = new StringBuffer();
-		
-		for (int i = 0; i < arr.length; i++) {
-			sb.append((char)arr[i]);
-		}
+
+        for (int anArr : arr) {
+            sb.append((char) anArr);
+        }
 		
 		return sb.toString();
 	}	
@@ -201,13 +201,10 @@ public class ByteUtils {
 		if (b > 0xff) {
 			throw new IllegalArgumentException("input value is larger than a byte");
 		}
-		
-		if (((b >> (--position)) & 0x1) == 0x1) {
-			return true;
-		} 
-		
-		return false;		
-	}
+
+        return ((b >> (--position)) & 0x1) == 0x1;
+
+    }
 	
 	public static String toBase16(int b) {
 		

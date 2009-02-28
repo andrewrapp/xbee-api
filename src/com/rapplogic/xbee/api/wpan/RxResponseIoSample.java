@@ -79,11 +79,6 @@ public class RxResponseIoSample extends RxBaseResponse {
 		return ByteUtils.getBit(channelIndicator2, 8);
 	}	
 
-	/**
-	 * This pin is not currently not supported in firmware (current as of 1/22/09)
-	 * 
-	 * @return
-	 */
 	public boolean isD8Enabled() {
 		return ByteUtils.getBit(channelIndicator1, 1);
 	}	

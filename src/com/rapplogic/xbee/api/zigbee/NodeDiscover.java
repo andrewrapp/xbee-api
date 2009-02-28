@@ -130,7 +130,7 @@ public class NodeDiscover {
 
 		StringBuffer ni = new StringBuffer();
 		
-		int ch = 0;
+		int ch;
 		
 		// NI is terminated with 0
 		while ((ch = in.read()) != 0) {
