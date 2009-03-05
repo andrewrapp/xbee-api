@@ -56,8 +56,9 @@ public class ApiAtTest {
 			// my coordinator com/baud
 			//xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
 			// my end device
-			xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
-
+			//xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
+			// my FT232RL board
+			xbee.open("/dev/tty.usbserial-A4004Rim", 9600);
 			
 //			// set D1 analog input
 //			this.sendCommand(new AtCommand("D1", 2));

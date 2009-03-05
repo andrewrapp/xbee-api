@@ -25,6 +25,7 @@ import java.util.Map;
 
 import com.rapplogic.xbee.api.AtCommandResponse;
 
+// TODO create for wpan
 public enum AssociationStatus {
 	SUCCESS (0, "Successful completion - Coordinator started or Router/End Device found and joined with a parent."),
 	NO_PAN (0x21, "Scan found no PANs"),

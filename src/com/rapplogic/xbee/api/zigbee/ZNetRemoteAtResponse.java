@@ -20,53 +20,17 @@
 package com.rapplogic.xbee.api.zigbee;
 
 import java.io.IOException;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 
+import com.rapplogic.xbee.api.AtCommandResponse;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
-import com.rapplogic.xbee.api.XBeeFrameIdResponse;
 import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.IntArrayInputStream;
 
-public class ZNetRemoteAtResponse extends XBeeFrameIdResponse {
-	
-	public enum Status {
-		OK (0),
-		ERROR (1),
-		INVALID_COMMAND (2),
-		INVALID_PARAMETER (3);
-
-		private static final Map<Integer,Status> lookup = new HashMap<Integer,Status>();
+public class ZNetRemoteAtResponse extends AtCommandResponse {
 		
-		static {
-			for(Status s : EnumSet.allOf(Status.class)) {
-				lookup.put(s.getValue(), s);
-			}
-		}
-		
-		public static Status get(int value) { 
-			return lookup.get(value); 
-		}
-		
-	    private final int value;
-	    
-	    Status(int value) {
-	        this.value = value;
-	    }
-
-		public int getValue() {
-			return value;
-		}
-	}
-	
 	private XBeeAddress64 remoteAddress64;
 	private XBeeAddress16 remoteAddress16;
-	// TODO need AtCommand class with enum of commands instead of boring old string
-	private String commandName;
-	private Status status;
-	private int[] commandData;
 	
 	public ZNetRemoteAtResponse() {
 
@@ -94,32 +58,22 @@ public class ZNetRemoteAtResponse extends XBeeFrameIdResponse {
 		this.remoteAddress16 = sixteenBitResponderAddress;
 	}
 
+	/**
+	 * @deprecated use getCommand instead
+	 * @return
+	 * Mar 4, 2009
+	 */
 	public String getCommandName() {
-		return commandName;
-	}
-
-	public void setCommandName(String commandName) {
-		this.commandName = commandName;
-	}
-
-	public Status getStatus() {
-		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
-	public int[] getCommandData() {
-		return commandData;
-	}
-
-	public void setCommandData(int[] commandData) {
-		this.commandData = commandData;
+		return super.getCommand();
 	}
 	
-	public boolean isOk() {
-		return status == Status.OK;
+	/**
+	 * @deprecated use getValue instead
+	 * @return
+	 * Mar 4, 2009
+	 */
+	public int[] getCommandData() {
+		return super.getValue();
 	}
 	
 	/**
@@ -131,7 +85,7 @@ public class ZNetRemoteAtResponse extends XBeeFrameIdResponse {
 	 */
 	public ZNetRxIoSampleResponse parseIsSample() throws IOException {
 		
-		if (!this.commandName.equals("IS")) {
+		if (!this.getCommand().equals("IS")) {
 			throw new RuntimeException("This method is only applicable to the IS command");
 		}
 		
@@ -146,9 +100,6 @@ public class ZNetRemoteAtResponse extends XBeeFrameIdResponse {
 		
 		return super.toString() +
 			",remoteAddress64=" + this.remoteAddress64 +
-			",remoteAddress16=" + this.remoteAddress16 +
-			",command=" + this.commandName +
-			",status=" + this.status + 
-			",commandResponse=" + ByteUtils.toBase16(this.commandData);
+			",remoteAddress16=" + this.remoteAddress16;
 	}
 }

@@ -19,17 +19,46 @@
 
 package com.rapplogic.xbee.api;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.rapplogic.xbee.util.ByteUtils;
 
 public class AtCommandResponse extends XBeeFrameIdResponse {
 	
-	// TODO enum this
-	public final static int OK = 0;
-	public final static int ERROR = 1;
+	public enum Status {
+		OK (0),
+		ERROR (1),
+		INVALID_COMMAND (2), // zigbee only
+		INVALID_PARAMETER (3); // zigbee only
+
+		private static final Map<Integer,Status> lookup = new HashMap<Integer,Status>();
+		
+		static {
+			for(Status s : EnumSet.allOf(Status.class)) {
+				lookup.put(s.getValue(), s);
+			}
+		}
+		
+		public static Status get(int value) { 
+			return lookup.get(value); 
+		}
+		
+	    private final int value;
+	    
+	    Status(int value) {
+	        this.value = value;
+	    }
+
+		public int getValue() {
+			return value;
+		}
+	}
 	
 	private int char1;
 	private int char2;
-	private int status;
+	private Status status;
 	// response value msb to lsb
 	private int[] value;
 	
@@ -56,18 +85,16 @@ public class AtCommandResponse extends XBeeFrameIdResponse {
 		this.char2 = char2;
 	}
 
-
-	public int getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-
-	public void setStatus(int status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
 	public boolean isOk() {
-		return status == OK;
+		return status == Status.OK;
 	}
 
 	public int[] getValue() {
@@ -77,7 +104,7 @@ public class AtCommandResponse extends XBeeFrameIdResponse {
 	public void setValue(int[] data) {
 		this.value = data;
 	}
-
+	
 	public String getCommand() {
 		return String.valueOf((char)this.char1) + String.valueOf((char)this.char2);
 	}

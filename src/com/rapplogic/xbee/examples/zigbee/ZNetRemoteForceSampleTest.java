@@ -27,7 +27,7 @@ import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.api.XBeeRequest;
 import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.api.XBeeTimeoutException;
-import com.rapplogic.xbee.api.zigbee.ZNetForceSampleRequest;
+import com.rapplogic.xbee.api.zigbee.ZNetRemoteForceSampleRequest;
 import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse;
 
@@ -39,11 +39,11 @@ import com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse;
  * @author andrew
  *
  */
-public class ZNetForceSampleTest {
+public class ZNetRemoteForceSampleTest {
 
-	private final static Logger log = Logger.getLogger(ZNetForceSampleTest.class);
+	private final static Logger log = Logger.getLogger(ZNetRemoteForceSampleTest.class);
 	
-	private ZNetForceSampleTest() throws Exception {
+	private ZNetRemoteForceSampleTest() throws Exception {
 		XBee xbee = new XBee();		
 
 		try {			
@@ -58,7 +58,7 @@ public class ZNetForceSampleTest {
 				// replace with your end device 64-bit address
 				XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x0a, 0x3e, 0x02);
 
-				XBeeRequest request = new ZNetForceSampleRequest(addr64);
+				XBeeRequest request = new ZNetRemoteForceSampleRequest(addr64);
 				
 				try {
 					XBeeResponse response = xbee.sendSynchronous(request, 6000);
@@ -87,6 +87,6 @@ public class ZNetForceSampleTest {
 	public static void main(String[] args) throws Exception {
 		// init log4j
 		PropertyConfigurator.configure("log4j.properties");
-		new ZNetForceSampleTest();
+		new ZNetRemoteForceSampleTest();
 	}
 }

@@ -24,6 +24,7 @@ import java.io.InputStream;
 
 import org.apache.log4j.Logger;
 
+import com.rapplogic.xbee.api.AtCommandResponse.Status;
 import com.rapplogic.xbee.api.wpan.IoSample;
 import com.rapplogic.xbee.api.wpan.RxBaseResponse;
 import com.rapplogic.xbee.api.wpan.RxResponse;
@@ -47,45 +48,10 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
 /**
  * Reads a packet from the input stream, verifies checksum and creates an XBeeResponse object
  * 
- * When using the I/O line passing feature, if the remote XBee is in an Arduino XBee shield, the 
- * jumpers may be set to the USB or XBee position; however if in the XBee position, the Arduino
- * program must contain the Serial.begin(baudRate) statement in setup().
+ * Notes:
  * 
- * 
-Example RX (Receive) Packet: 16-bit Address I/O Data Format
-
-1  2  3  4  5  6  7  8  9  10 11 12 13 14
-
-16 Bit RX Packet
-
-1. Start Byte
-2. Length MSB
-3. Length LSB
-4. API Identifier (Frame Data Start)
-7e 00 0a 83 56 78 24 00 01 02 00 03 ff 85
-5  Source Address MSB
-6  Source Address LSB
-7. RSSI
-8. Options
-
-API 83
-
-9.  Number of Samples
-10. Channel Indicator 1
-11. Channel Indicator 2
-If DIO Enabled
-	12.  DIO MSB
-	13.  DIO LSB
-	14.  ADC MSB
-	15.  ADC LSB
-	16.  Checksum
-else
-12. ADC MSB
-13  ADC LSB
-14. Checksum
-
-* Escaped bytes increase packet length but packet stated length only indicates un-escaped bytes.
-* Length includes all bytes after Length bytes, not including the checksum
+ * Escaped bytes increase packet length but packet stated length only indicates un-escaped bytes.
+ * Stated length includes all bytes after Length bytes, not including the checksum
  * 
  * @author Andrew Rapp
  *
@@ -308,13 +274,14 @@ public class PacketStream implements IIntArrayInputStream {
 		
 		char cmd1 = (char)this.read("Command char 1");
 		char cmd2 = (char)this.read("Command char 2");
-		((ZNetRemoteAtResponse)response).setCommandName(new String(new char[] {cmd1, cmd2}));
-		
+		//((ZNetRemoteAtResponse)response).setCommand(new String(new char[] {cmd1, cmd2}));
+		((ZNetRemoteAtResponse)response).setChar1(cmd1);
+		((ZNetRemoteAtResponse)response).setChar2(cmd2);
 		
 		int status = this.read("AT Response Status");
 		((ZNetRemoteAtResponse)response).setStatus(ZNetRemoteAtResponse.Status.get(status));
 		
-		((ZNetRemoteAtResponse)response).setCommandData(this.readRemainingBytes());
+		((ZNetRemoteAtResponse)response).setValue(this.readRemainingBytes());
 	}
 	
 	private void parseAtResponse() throws IOException {
@@ -325,7 +292,7 @@ public class PacketStream implements IIntArrayInputStream {
 		((AtCommandResponse)response).setFrameId(this.read("AT Response Frame Id"));
 		((AtCommandResponse)response).setChar1(this.read("AT Response Char 1"));
 		((AtCommandResponse)response).setChar2(this.read("AT Response Char 2"));
-		((AtCommandResponse)response).setStatus(this.read("AT Response Status"));
+		((AtCommandResponse)response).setStatus(Status.get(this.read("AT Response Status")));
 							
 		((AtCommandResponse)response).setValue(this.readRemainingBytes());
 	}
@@ -456,12 +423,12 @@ public class PacketStream implements IIntArrayInputStream {
 				((RxBaseResponse)response).setSourceAddress(this.parseAddress64());
 			}
 		} else {
+			// TODO subclass RxResponseIoSample with 16 and 64bit classes
 			response = new RxResponseIoSample();
 			
 			if (apiId == ApiId.RX_16_IO_RESPONSE) {
 				((RxBaseResponse)response).setSourceAddress(this.parseAddress16());	
 			} else {
-				// TODO test 64 bit address
 				((RxBaseResponse)response).setSourceAddress(this.parseAddress64());
 			}	
 		}

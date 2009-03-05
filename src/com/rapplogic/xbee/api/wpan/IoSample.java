@@ -191,7 +191,7 @@ public class IoSample {
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		
+		// TODO only prefix with comma if not first entry written
 		if (this.getDioMsb() != null) {
 			builder.append("dioMsb=" + ByteUtils.toBase2(this.getDioMsb()));	
 		}

@@ -22,6 +22,7 @@ package com.rapplogic.xbee.api.zigbee;
 import org.apache.log4j.Logger;
 
 import com.rapplogic.xbee.api.ApiId;
+import com.rapplogic.xbee.api.AtCommand;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.api.XBeeRequest;
@@ -37,33 +38,34 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
  * @author andrew
  *
  */
-public class ZNetRemoteAtRequest extends XBeeRequest {
+public class ZNetRemoteAtRequest extends AtCommand {
 	
 	private final static Logger log = Logger.getLogger(ZNetRemoteAtRequest.class);
 	
 	private XBeeAddress64 remoteAddr64;
 	private XBeeAddress16 remoteAddr16;
 	private boolean applyChanges;
-	private String command;
-	private int[] value;
 	
 	/**
 	 * Creates a Remote AT request for setting an AT command on a remote XBee
 	 * 
+	 * Note: When setting a value, you must set applyChanges for the setting to
+	 * take effect.  When sending several requests, you can wait until the last
+	 * request before setting applyChanges=true.
+	 * 
 	 * @param frameId
 	 * @param dest64
 	 * @param dest16
-	 * @param applyChanges
+	 * @param applyChanges set to true if setting a value or issuing a command that changes the state of the radio (e.g. FR); not applicable to query requests 
 	 * @param command two character AT command to set or query
 	 * @param value if null then the current setting will be queried
 	 */
 	public ZNetRemoteAtRequest(int frameId, XBeeAddress64 dest64, XBeeAddress16 dest16, boolean applyChanges, String command, int[] value) {
+		super(command, value);
 		this.setFrameId(frameId);
 		this.remoteAddr64 = dest64;
 		this.remoteAddr16 = dest16;
 		this.applyChanges = applyChanges;
-		this.command = command;
-		this.value = value;
 	}
 	
 	/**
@@ -123,12 +125,12 @@ public class ZNetRemoteAtRequest extends XBeeRequest {
 		}
 		 
 		// command name ascii [1]
-		out.write((int) command.substring(0, 1).toCharArray()[0]);
+		out.write((int) this.getCommand().substring(0, 1).toCharArray()[0]);
 		// command name ascii [2]
-		out.write((int) command.substring(1, 2).toCharArray()[0]);
+		out.write((int) this.getCommand().substring(1, 2).toCharArray()[0]);
 	
-		if (value != null) {
-			out.write(value);
+		if (this.getValue() != null) {
+			out.write(this.getValue());
 		}
 
 		return out.getIntArray();
@@ -161,29 +163,11 @@ public class ZNetRemoteAtRequest extends XBeeRequest {
 	public void setApplyChanges(boolean applyChanges) {
 		this.applyChanges = applyChanges;
 	}
-
-	public String getCommand() {
-		return command;
-	}
-
-	public void setCommand(String command) {
-		this.command = command;
-	}
-
-	public int[] getValue() {
-		return value;
-	}
-
-	public void setValue(int[] value) {
-		this.value = value;
-	}
 	
 	public String toString() {
 		return super.toString() + 
 			",remoteAddr64=" + this.remoteAddr64 +
 			",remoteAddr16=" + this.remoteAddr16 +
-			",applyChanges=" + this.applyChanges + 
-			",command=" + this.command +
-			",value=" + (value == null ? "null" : ByteUtils.toBase16(this.value));
+			",applyChanges=" + this.applyChanges;
 	}
 }

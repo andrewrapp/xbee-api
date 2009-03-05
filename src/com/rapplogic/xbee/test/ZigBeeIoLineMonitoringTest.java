@@ -136,7 +136,7 @@ public class ZigBeeIoLineMonitoringTest implements PacketListener {
 			this.wait(10000);
 			
 			if (response != null && !response.isError()) {
-				if (((AtCommandResponse)response).getStatus() != AtCommandResponse.OK) {
+				if (((AtCommandResponse)response).getStatus() != AtCommandResponse.Status.OK) {
 					throw new RuntimeException("At command failed");
 				}
 				
