@@ -19,6 +19,7 @@
 
 package com.rapplogic.xbee.api;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.log4j.Logger;
@@ -37,7 +38,7 @@ public class XBeePacketParser implements Runnable {
 	
 	private Thread thread;
 	
-	private boolean done = false;
+	private volatile boolean done = false;
 
 	public XBeePacketParser(InputStream in, XBeePacketHandler handler, Object lock) {
 		this.in = in;
@@ -71,7 +72,10 @@ public class XBeePacketParser implements Runnable {
 						packetStream = new PacketStream(in);
 						response = packetStream.parsePacket();
 						
-						log.debug("Response is " + response.toString());
+						if (log.isInfoEnabled()) {
+							log.info("Received packet from XBee: " + response);	
+						}
+						
 						newPacketNotification(response);
 					} else {
 						log.warn("expected start byte but got this " + ByteUtils.toBase16(val) + ", discarding");
@@ -100,6 +104,9 @@ public class XBeePacketParser implements Runnable {
 				}
 			} catch(InterruptedException ie) {
 				// we've been told to stop
+				// this is called by RXTX if the serial device unplugged
+				// or was called by user via close()
+				log.warn("Packet parser thread was interrupted");
 				break;
 			} catch (Exception e) {
 				// handling exceptions in a thread is a bit dicey.  the rest of the packet will be discarded
@@ -110,8 +117,25 @@ public class XBeePacketParser implements Runnable {
 				
 				// not exactly what they were expecting but hey..
 				this.newPacketNotification(response);
-			}				
+				
+				if (e instanceof IOException) {
+					// TODO test
+					// XBee get unplugged??  we are no longer connected, so just return
+					log.error("Serial device IOException.. exiting");
+					break;
+				}
+			} finally {
+				try {
+					if (in != null) {
+						in.close();
+					}
+				} catch (Exception e) {
+					log.warn("Unable to shutdown input stream", e);
+				};
+			}
 		}
+		
+		log.warn("Packet parser thread is exiting");
 	}
 
 	private void newPacketNotification(XBeeResponse response) {
@@ -129,6 +153,8 @@ public class XBeePacketParser implements Runnable {
 	}
 	
 	public void interrupt() {
-		thread.interrupt();
+		if (thread != null) {
+			thread.interrupt();	
+		}
 	}
 }

@@ -100,7 +100,23 @@ public class XBeeAddress64 extends XBeeAddress  {
 	}
 	
 	public boolean equals(Object o) {
-		throw new RuntimeException("TODO");
+		
+		if (this == o) {
+			return true;
+		}
+		
+		try {
+			return this.getAddress()[0] == ((XBeeAddress64)o).getAddress()[0] &&
+				this.getAddress()[1] == ((XBeeAddress64)o).getAddress()[1] &&
+				this.getAddress()[2] == ((XBeeAddress64)o).getAddress()[2] &&
+				this.getAddress()[3] == ((XBeeAddress64)o).getAddress()[3] &&
+				this.getAddress()[4] == ((XBeeAddress64)o).getAddress()[4] &&
+				this.getAddress()[5] == ((XBeeAddress64)o).getAddress()[5] &&
+				this.getAddress()[6] == ((XBeeAddress64)o).getAddress()[6] &&
+				this.getAddress()[7] == ((XBeeAddress64)o).getAddress()[7];
+		} catch(Exception e) {
+			return false;
+		}
 	}
 
 	@Override

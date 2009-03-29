@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.rapplogic.xbee.RxTxSerialComm;
+import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.ExceptionHandler;
 
 /**
@@ -96,20 +97,23 @@ public class XBee extends RxTxSerialComm implements IXBee, XBeePacketHandler {
 	 * @param packet
 	 * @throws IOException
 	 */
-	public void sendPacket(XBeePacket packet) throws IOException {
-		log.debug("sending packet " + packet.toString());		
+	public void sendPacket(XBeePacket packet) throws IOException {	
 		this.sendPacket(packet.getPacket());
 	}
 	
 	/**
-	 * This is a bit dangerous and may be removed in a future release.  Intended For XMPP
+	 * This is a bit dangerous and may be made private in a future release.  Intended For XMPP
 	 * 
 	 * Not Thread Safe
 	 * 
 	 * @param packet
-	 * @throws IOException
+	 * @throws IOException when serial device is disconnected: java.io.IOException: Device not configured in writeByte
 	 */
 	public void sendPacket(int[] packet)  throws IOException {
+		if (log.isInfoEnabled()) {
+			log.info("sending packet to XBee " + ByteUtils.toBase16(packet));	
+		}
+
         for (int aPacket : packet) {
             this.getOutputStream().write(aPacket);
         }
@@ -189,14 +193,9 @@ public class XBee extends RxTxSerialComm implements IXBee, XBeePacketHandler {
 		try {
 			XBeePacket txPacket = xbeeRequest.getXBeePacket();
 
-			// this makes it thread safe -- prevents multiple threads from writing to output stream simultaneously
-			synchronized (sendPacketBlock) {
-				this.sendPacket(txPacket);	
-			}
-			
 			final List<XBeeResponse> responseList = new ArrayList<XBeeResponse>();
 			
-			// TODO verify that there is no possibility the response could be received in the milliseconds after sending packet and before listener is registered.
+			// TODO verify that there is no possibility the response could be received in the milliseconds before sending packet
 			
 			pl = new PacketListener() {
 				// TODO handle error response as well
@@ -214,6 +213,11 @@ public class XBee extends RxTxSerialComm implements IXBee, XBeePacketHandler {
 			};
 			
 			this.addPacketListener(pl);
+			
+			// this makes it thread safe -- prevents multiple threads from writing to output stream simultaneously
+			synchronized (sendPacketBlock) {
+				this.sendPacket(txPacket);	
+			}
 			
 			synchronized (responseList) {
 				try {

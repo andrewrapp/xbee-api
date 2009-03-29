@@ -23,6 +23,11 @@ import java.io.IOException;
 
 public class ByteUtils {
 
+	// not to be instantiated
+	private ByteUtils() {
+		
+	}
+	
 	/**
 	 * There is a slight problem with this method that you might have noticed;  a Java int is signed, so we can't make
 	 * use of the 32nd bit.  This means we this method does not support a four byte value with msb greater than 01111111 ((2^7-1) or 127).
@@ -37,7 +42,7 @@ public class ByteUtils {
 			throw new RuntimeException("too big");
 		} else if (bytes.length == 4 && ((bytes[0] & 0x80) == 0x80)) {
 			// 0x80 == 10000000, 0x7e == 01111111
-			throw new RuntimeException("Java int can't support a four byte value, with msb byte greater than 7e");
+			throw new RuntimeException("Java int can't support a four byte value with msb byte greater than 7e");
 		}
 		
 		int val = 0;
@@ -143,7 +148,22 @@ public class ByteUtils {
 		return sb.toString();
 	}
 	
+	/**
+	 * @deprecated use toString(int[] arr)
+	 */
 	public static String toChar(int[] arr) {
+		return toString(arr);
+	}
+	
+	/**
+	 * Converts an int array to string.  
+	 * Note: this method does not validate that int values map
+	 * to valid characters
+	 * 
+	 * @param arr
+	 * @return
+	 */
+	public static String toString(int[] arr) {
 		
 		if (arr == null) {
 			return "";

@@ -36,7 +36,8 @@ public class ZNetTxStatusResponse extends XBeeFrameIdResponse {
 		NOT_JOINED_TO_NETWORK (0x22),
 		SELF_ADDRESSED (0x23),
 		ADDRESS_NOT_FOUND (0x24),
-		ROUTE_NOT_FOUND (0x25);
+		ROUTE_NOT_FOUND (0x25),
+		PAYLOAD_TOO_LARGE(0x74);
 
 		private static final Map<Integer,DeliveryStatus> lookup = new HashMap<Integer,DeliveryStatus>();
 		

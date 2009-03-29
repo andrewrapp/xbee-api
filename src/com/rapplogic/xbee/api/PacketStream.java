@@ -373,7 +373,7 @@ public class PacketStream implements IIntArrayInputStream {
 		
 		// NI is terminated with 0
 		while ((ch = this.read("Node Identifier")) != 0) {
-			ni.append(ch);			
+			ni.append((char)ch);			
 		}
 		
 		((ZNetNodeIdentificationResponse)response).setNodeIdentifier(ni.toString());
