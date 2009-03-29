@@ -91,14 +91,11 @@ TODO provide bin, src, and examples distributions
 			</fileset>
 		</copy>
 
-		<copy todir="${dist.dir}/resources">
-			<fileset dir="resources">
-				<include name="XBee-*manual.pdf"/>
-			</fileset>
-		</copy>
-
 		<copy todir="${dist.dir}/docs">
-			 <fileset dir="docs"/>
+			<fileset dir="docs">
+				<include name="XBee-*manual.pdf"/>
+				<exclude name="diagrams"/>
+			</fileset>
 		</copy>
 				
 		<zip basedir="${dist.dir}" destfile="xbee-api-${release}.zip"/>
