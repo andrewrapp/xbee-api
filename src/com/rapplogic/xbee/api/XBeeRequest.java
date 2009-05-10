@@ -50,6 +50,7 @@ public abstract class XBeeRequest {
 			throw new RuntimeException("frame data is null");
 		}
 		
+		// TODO xbee packet should handle api/frame id
 		XBeePacket packet = new XBeePacket(frameData);
 		
 		return packet;
@@ -76,4 +77,10 @@ public abstract class XBeeRequest {
 	public void setFrameId(int frameId) {
 		this.frameId = frameId;
 	}
+	
+	// TODO clear method to reuse request
+//	public void clear() {
+//		this.apiId = null;
+//		this.frameId = 0;	
+//	}
 }

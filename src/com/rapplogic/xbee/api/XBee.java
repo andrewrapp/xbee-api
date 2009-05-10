@@ -46,6 +46,7 @@ public class XBee extends RxTxSerialComm implements IXBee, XBeePacketHandler {
 	private Object newPacketNotification = new Object();
 
 	private final int maxPacketListSize = 100;
+	// TODO replace with ArrayBlockingQueue
 	private final List<XBeeResponse> packetList = new ArrayList<XBeeResponse>();
 
 	private final List<PacketListener> packetListenerList = new ArrayList<PacketListener>();
@@ -110,6 +111,8 @@ public class XBee extends RxTxSerialComm implements IXBee, XBeePacketHandler {
 	 * @throws IOException when serial device is disconnected: java.io.IOException: Device not configured in writeByte
 	 */
 	public void sendPacket(int[] packet)  throws IOException {
+		// TODO call request listener with byte array
+		
 		if (log.isInfoEnabled()) {
 			log.info("sending packet to XBee " + ByteUtils.toBase16(packet));	
 		}
@@ -163,7 +166,8 @@ public class XBee extends RxTxSerialComm implements IXBee, XBeePacketHandler {
 	 * This method should only be called with requests that receive a response of
 	 * type XBeeFrameIdResponse and you should attempt to use a unique frame id (see getNextFrameId)
 	 * 
-	 * This method either returns the matching response object or throws a timeout exception
+	 * This method returns the first response object with a matching frame id within the timeout
+	 * period
 	 * 
 	 * TX requests send status responses (ACK) that indicate if the packet was delivered.  
 	 * In my brief testing with series 2 radios in a simple 2 radio network, I got a status 
@@ -173,6 +177,8 @@ public class XBee extends RxTxSerialComm implements IXBee, XBeePacketHandler {
 	 * 
 	 * NOTE: this method is thread-safe because it's not possible for the user to easily
 	 * make it thread safe and perform well 
+	 * 
+	 * TODO responses received during synchronous send should not be added to the packetList
 	 * 
 	 * @param xbeeRequest
 	 * 

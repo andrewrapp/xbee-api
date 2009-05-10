@@ -86,6 +86,11 @@ public abstract class XBeeResponse {
 		this.error = error;
 	}
 	
+	/**
+	 * Returns an array all bytes in packet except the start byte
+	 * 
+	 * @return
+	 */
 	public int[] getPacketBytes() {
 		return packetBytes;
 	}

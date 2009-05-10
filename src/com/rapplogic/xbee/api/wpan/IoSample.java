@@ -24,8 +24,6 @@ import com.rapplogic.xbee.util.ByteUtils;
 /**
  * Provides access to XBee's 8 Digital (0-7) and 6 Analog (0-5) IO pins
  * 
- * TODO according to manual, D8 is disabled.  verify
- * 
  * @author andrew
  *
  */
@@ -191,7 +189,7 @@ public class IoSample {
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		// TODO only prefix with comma if not first entry written
+		// TODO only prefix with comma if not first entry written.  Use reflection
 		if (this.getDioMsb() != null) {
 			builder.append("dioMsb=" + ByteUtils.toBase2(this.getDioMsb()));	
 		}

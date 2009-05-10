@@ -218,4 +218,6 @@ public class ZNetNodeIdentificationResponse extends XBeeResponse {
 	public void setMfgId(DoubleByte mfgId) {
 		this.mfgId = mfgId;
 	}
+	
+	// TODO toString
 }

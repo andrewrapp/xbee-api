@@ -39,11 +39,11 @@ import com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse;
  * @author andrew
  *
  */
-public class ZigBeeForceSampleTest {
+public class ZBForceSampleTest {
 
-	private final static Logger log = Logger.getLogger(ZigBeeForceSampleTest.class);
+	private final static Logger log = Logger.getLogger(ZBForceSampleTest.class);
 	
-	private ZigBeeForceSampleTest() throws Exception {
+	private ZBForceSampleTest() throws Exception {
 		XBee xbee = new XBee();		
 
 		try {			
@@ -87,6 +87,6 @@ public class ZigBeeForceSampleTest {
 	public static void main(String[] args) throws Exception {
 		// init log4j
 		PropertyConfigurator.configure("log4j.properties");
-		new ZigBeeForceSampleTest();
+		new ZBForceSampleTest();
 	}
 }

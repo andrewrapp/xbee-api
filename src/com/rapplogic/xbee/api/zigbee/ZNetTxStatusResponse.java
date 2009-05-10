@@ -136,6 +136,15 @@ public class ZNetTxStatusResponse extends XBeeFrameIdResponse {
 		this.discoveryStatus = discoveryStatus;
 	}
 	
+	/**
+	 * Returns true if the delivery status is SUCCESS
+	 * 
+	 * @return
+	 */
+	public boolean isSuccess() {
+		return this.getDeliveryStatus() == DeliveryStatus.SUCCESS;
+	}
+	
 	public String toString() {
 		return super.toString() + 
 		",remoteAddress16=" + this.remoteAddress16 +

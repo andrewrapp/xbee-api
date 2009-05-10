@@ -44,23 +44,9 @@ public interface IXBee {
 
 	public XBeeResponse sendSynchronous(final XBeeRequest xbeeRequest, int timeout) throws XBeeTimeoutException, XBeeException;
 
-	public Object getNewPacketNotification();
-
-	public void waitForResponse() throws XBeeTimeoutException, XBeeException;
-
-	public void waitForResponse(long timeout) throws XBeeTimeoutException, XBeeException;
-
-	public XBeeResponse getResponseBlocking() throws XBeeException, XBeeTimeoutException;
-
-	public XBeeResponse getResponseBlocking(int timeout) throws XBeeException, XBeeTimeoutException;
-
 	public XBeeResponse getResponse() throws XBeeException;
 
 	public XBeeResponse getResponse(int timeout) throws XBeeException, XBeeTimeoutException;
-
-	public List<XBeeResponse> getPacketList();
-
-	public long getPacketCount();
 
 	public void close();
 
@@ -69,8 +55,6 @@ public interface IXBee {
 	public int getNextFrameId();
 
 	public void updateFrameId(int val);
-
-	public XBeeResponse getLastResponse();
 
 	public boolean isConnected();
 }

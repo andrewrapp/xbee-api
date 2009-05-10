@@ -34,8 +34,6 @@ import com.rapplogic.xbee.util.ByteUtils;
  * This class is the companion to ZNetSenderTest.java, and as such, it receives packets sent by ZNetSenderTest.java
  * See the ZNetSenderTest.java for information on how to configure your XBee for this demo
  * 
- * If you want to test receiving RX packets from the coordinator, connect to your end device and run
- * 
  * You can start ZNetSenderTest.java and this class in any order but it's generally best to start this class first.
  * 
  * @author andrew
@@ -73,7 +71,8 @@ public class ZNetReceiverTest {
 						XBeeResponse atResponse = xbee.getResponse();
 						
 						if (atResponse.getApiId() == ApiId.AT_RESPONSE) {
-							log.info("RSSI of last response is " + ((AtCommandResponse)atResponse).getValue()[0]);
+							// remember rssi is a negative db value
+							log.info("RSSI of last response is " + -((AtCommandResponse)atResponse).getValue()[0]);
 						} else {
 							// we didn't get an AT response
 							log.info("expected RSSI, but received " + atResponse.toString());

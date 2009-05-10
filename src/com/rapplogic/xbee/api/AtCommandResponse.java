@@ -30,8 +30,9 @@ public class AtCommandResponse extends XBeeFrameIdResponse {
 	public enum Status {
 		OK (0),
 		ERROR (1),
-		INVALID_COMMAND (2), // zigbee only
-		INVALID_PARAMETER (3); // zigbee only
+		INVALID_COMMAND (2),
+		INVALID_PARAMETER (3),
+		NO_RESPONSE (4);  // series 1 remote AT only according to spec
 
 		private static final Map<Integer,Status> lookup = new HashMap<Integer,Status>();
 		

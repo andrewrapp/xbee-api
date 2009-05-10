@@ -26,7 +26,9 @@ import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.ErrorResponse;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeResponse;
-import com.rapplogic.xbee.api.wpan.RxResponse;
+import com.rapplogic.xbee.api.wpan.RxResponse16;
+import com.rapplogic.xbee.api.wpan.RxResponse64;
+import com.rapplogic.xbee.util.ByteUtils;
 
 /**
  * Receives IO samples from remote radio
@@ -49,7 +51,10 @@ public class ApiReceiverTest {
 		int errors = 0;
 
 		try {			
-			xbee.open("COM15", 9600);
+			// my end device 
+			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
+			// my coordinator
+			//xbee.open("/dev/tty.usbserial-A4004Rim", 9600);
 			
 			while (true) {
 
@@ -61,10 +66,15 @@ public class ApiReceiverTest {
 						log.info("response contains errors", ((ErrorResponse)response).getException());
 						errors++;
 					}
+
+					for (int i = 0; i < response.getPacketBytes().length; i++) {
+						log.info("packet [" + i + "] " + ByteUtils.toBase16(response.getPacketBytes()[i]));
+					}
 					
-					if (response.getApiId() == ApiId.RX_16_RESPONSE) {
-						RxResponse rxResponse = (RxResponse) response;
-						log.info("Received RX packet " + rxResponse.toString());
+ 					if (response.getApiId() == ApiId.RX_16_RESPONSE) {
+						log.info("Received RX 16 packet " + ((RxResponse16)response));
+ 					} else if (response.getApiId() == ApiId.RX_64_RESPONSE) {
+ 						log.info("Received RX 64 packet " + ((RxResponse64)response));
 					} else {
 						log.info("Ignoring mystery packet " + response.toString());
 					}

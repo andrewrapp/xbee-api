@@ -256,7 +256,7 @@ public class ByteUtils {
 		int[] intArr = new int[s.length()];
 		
 		for (int i = 0; i < s.length(); i++) {
-			intArr[i] = (int)s.charAt(i);
+			intArr[i] = (char)s.charAt(i);
 		}
 		
 		return intArr;

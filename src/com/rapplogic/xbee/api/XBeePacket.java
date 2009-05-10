@@ -30,8 +30,8 @@ import com.rapplogic.xbee.util.ByteUtils;
 public class XBeePacket {
 
 	public enum SpecialByte {
-		START_BYTE (0x7e),
-		ESCAPE (0x7d),
+		START_BYTE (0x7e), // ~
+		ESCAPE (0x7d), // }
 		XON (0x11),
 		XOFF (0x13);
 		
@@ -90,14 +90,14 @@ public class XBeePacket {
 		// Packet length does not include escape bytes or start, length and checksum bytes
 		XBeePacketLength length = new XBeePacketLength(frameData.length);
 		
-		// msb length
+		// msb length (will be zero until maybe someday when > 255 bytes packets are supported)
 		packet[1] = length.getMsb();
 		// lsb length
 		packet[2] = length.getLsb();
 		
 		for (int i = 0; i < frameData.length; i++) {
 			if (frameData[i] > 255) {
-				throw new RuntimeException("Value is greater than one byte: " + frameData[i]);
+				throw new RuntimeException("Packet values must not be greater than one byte (255): " + frameData[i]);
 			}
 			
 			packet[3 + i] = frameData[i];
@@ -114,6 +114,7 @@ public class XBeePacket {
 		
 		int preEscapeLength = packet.length;
 		
+		// TODO save escaping for the serial out method. this is an unnecessary operation
 		packet = escapePacket(packet);
 		
 		if (log.isDebugEnabled()) {
@@ -186,6 +187,10 @@ public class XBeePacket {
 		}
 	}
 	
+	/**
+	 * TODO rename as getBytes
+	 * @return
+	 */
 	public int[] getPacket() {
 		return packet;
 	}

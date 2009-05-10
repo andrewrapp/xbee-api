@@ -71,6 +71,9 @@ public class TxStatusResponse extends XBeeFrameIdResponse {
 		this.status = status;
 	}
 	
+	/**
+	 * Returns true if the delivery status is SUCCESS
+	 */
 	public boolean isSuccess() {
 		return this.status == Status.SUCCESS;
 	}

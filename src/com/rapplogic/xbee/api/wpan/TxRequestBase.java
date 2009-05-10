@@ -32,8 +32,13 @@ public abstract class TxRequestBase extends XBeeRequest {
 	
 	private final static Logger log = Logger.getLogger(TxRequestBase.class);
 	
-	// based on manual.  test this!
+	/**
+	 * Maximum payload size as specified in the manual.
+	 * This is provided for reference only and is not used for validation
+	 */
 	public final static int MAX_PAYLOAD_SIZE = 100;
+	
+	private int maxPayloadSize;
 	
 	public enum Option {
 		
@@ -73,8 +78,8 @@ public abstract class TxRequestBase extends XBeeRequest {
 
 	public void setPayload(int[] payload) {
 	
-		if (payload.length > MAX_PAYLOAD_SIZE) {
-			throw new IllegalArgumentException("Payload cannot exceed " + MAX_PAYLOAD_SIZE + " bytes.  Please re-package into multiple packets");
+		if (this.getMaxPayloadSize() > 0 && payload.length > this.getMaxPayloadSize()) {
+			throw new IllegalArgumentException("Payload exceeds user-defined maximum payload size of " + this.getMaxPayloadSize() + " bytes.  Please re-package into multiple packets");
 		}
 		
 		this.payload = payload;
@@ -91,5 +96,13 @@ public abstract class TxRequestBase extends XBeeRequest {
 	public String toString() {
 		return super.toString() + ",option=" + this.option + 
 			",payload=" + ByteUtils.toBase16(this.payload);
+	}
+
+	public int getMaxPayloadSize() {
+		return maxPayloadSize;
+	}
+
+	public void setMaxPayloadSize(int maxPayloadSize) {
+		this.maxPayloadSize = maxPayloadSize;
 	}
 }

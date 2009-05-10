@@ -81,7 +81,7 @@ public class XBeePacketParser implements Runnable {
 						log.warn("expected start byte but got this " + ByteUtils.toBase16(val) + ", discarding");
 					}
 				} else {
-					log.info("no data available.. waiting for new data event or timeout");
+					log.debug("no data available.. waiting for new data event or timeout");
 					long start = System.currentTimeMillis();
 					
 					// we will wait here for RXTX to notify us of new data
@@ -99,7 +99,7 @@ public class XBeePacketParser implements Runnable {
 					if (System.currentTimeMillis() - start >= timeout) {
 						log.debug("timeout expired.. checking for data");
 					} else {
-						log.info("packet parser thread woken up by RXTX");
+						log.debug("packet parser thread woken up by RXTX");
 					}
 				}
 			} catch(InterruptedException ie) {

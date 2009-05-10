@@ -24,8 +24,9 @@ import java.io.IOException;
 import com.rapplogic.xbee.api.AtCommandResponse;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
-import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.IntArrayInputStream;
+
+//TODO Now supported by series 1 XBee. parseIoSample now needs to handle series 1 and 2
 
 public class ZNetRemoteAtResponse extends AtCommandResponse {
 		
@@ -97,7 +98,6 @@ public class ZNetRemoteAtResponse extends AtCommandResponse {
 	}
 	
 	public String toString() {
-		
 		return super.toString() +
 			",remoteAddress64=" + this.remoteAddress64 +
 			",remoteAddress16=" + this.remoteAddress16;

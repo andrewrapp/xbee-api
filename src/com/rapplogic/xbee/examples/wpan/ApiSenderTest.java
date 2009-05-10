@@ -47,7 +47,7 @@ public class ApiSenderTest {
 
 		XBee xbee = new XBee();
 
-		final int sleep = 500;
+		final int sleep = 5000;
 
 		int count = 0;
 		int errors = 0;
@@ -58,7 +58,8 @@ public class ApiSenderTest {
 		long now;
 		
 		try {
-			xbee.open("COM15", 9600);
+			// my coordinator
+			xbee.open("/dev/tty.usbserial-A4004Rim", 9600);
 
 			while (true) {
 
@@ -70,8 +71,12 @@ public class ApiSenderTest {
 				// to verify correct byte escaping, we'll send a start byte
 				int[] payload = new int[] { XBeePacket.SpecialByte.START_BYTE.getValue() };
 
-				XBeeAddress16 destination = new XBeeAddress16(0x56, 0x78);
+				// my end device B071
+				XBeeAddress16 destination = new XBeeAddress16(0xb0, 0x71);
 				TxRequest16 tx = new TxRequest16(destination, frameId, payload);
+				// or send a TX64 (same thing except we are addressing by SH+SL address)
+//				XBeeAddress64 destination = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x08, 0xb4, 0x8f);
+//				TxRequest64 tx = new TxRequest64(destination, frameId, payload);
 				
 				now = System.currentTimeMillis();
 				xbee.sendAsynchronous(tx);
@@ -82,8 +87,8 @@ public class ApiSenderTest {
 					// blocks until we get response
 					response = xbee.getResponse();
 
-					if (response.getApiId() != ApiId.TX_16_STATUS_RESPONSE) {
-						log.debug("expected tx status but received " + response.toString());
+					if (response.getApiId() != ApiId.TX_STATUS_RESPONSE) {
+						log.debug("expected tx status but received " + response);
 					} else {
 //						log.debug("got tx status");
 

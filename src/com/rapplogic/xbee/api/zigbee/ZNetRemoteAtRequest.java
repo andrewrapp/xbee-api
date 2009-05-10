@@ -26,7 +26,6 @@ import com.rapplogic.xbee.api.AtCommand;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.api.XBeeRequest;
-import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.IntArrayOutputStream;
 
 /**
@@ -34,6 +33,8 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
  * Warning: this command does not return a response if the remote radio is unreachable.
  * You will need to set your own timeout when waiting for a response from this command,
  * or you may wait forever.
+ * 
+ * TODO now supported by series 1.  Need to move up to api package and refactor to support both radio types
  * 
  * @author andrew
  *

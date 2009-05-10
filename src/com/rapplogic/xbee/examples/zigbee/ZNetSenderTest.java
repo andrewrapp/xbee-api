@@ -99,14 +99,10 @@ import com.rapplogic.xbee.util.ByteUtils;
  * for other distros.
  * 
  * To run, simply right-click on the class, in the left pane, and select Run As->Java Application.  Eclipse will let you run multiple
- * processes in one IDE, but only the last process will display output in the console.  If you want to run both the ZNet sender and receiver
- * examples and see log messages for both, run one on a separate computer or start another instance of eclipse.
+ * processes in one IDE, but there is only one console and it will switch between the two processes as it is updated.  
  * 
- * Note: I haven't tried the dual eclipse approach, but seems like it should work as long as eclipse doesn't complain that another 
- * eclipse is already running.  If you are running the sender and receiver in the same eclipse, hit the terminate button twice to kill both
+ * If you are running the sender and receiver in the same eclipse, remember to hit the terminate button twice to kill both
  * or you won't be able to start it again.  If this situation occurs, simply restart eclipse.
- * 
- * Be sure to hit the "Terminate" red square button before running again.
  * 
  * @author andrew
  */
@@ -123,12 +119,18 @@ public class ZNetSenderTest {
 			//xbee.open("COM5", 9600);
 			// my coordinator com/baud
 			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
+			// my end device
+//			xbee.open("/dev/tty.usbserial-A6005uPi", 9600);
 			
 			// replace with end device's 64-bit address (SH + SL)
 			XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x0a, 0x3e, 0x02);
 			
+			// coordinator address
+			//XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x3e, 0xf, 0x30);
+			
 			// create an array of arbitrary data to send
-			int[] payload = new int[] { 0x01, 0x02 };
+			int[] payload = new int[] { 'X', 'B', 'e', 'e' };
+			//int[] payload = new int[] { 0x48, 0x69 };
 			
 //			// testing max payload size
 //			int bigPacket = ZNetTxRequest.MAX_DATA_SIZE;
@@ -140,7 +142,13 @@ public class ZNetSenderTest {
 			// first request we just send 64-bit address.  we get 16-bit network address with status response
 			ZNetTxRequest request = new ZNetTxRequest(addr64, payload);
 			
+			log.debug("zb request is " + request.getXBeePacket().getPacket());
+			
+			log.info("sending tx " + request);
+			
 			while (true) {
+				log.info("request is " + ByteUtils.toBase10(request.getXBeePacket().getPacket()));
+				
 				long start = System.currentTimeMillis();
 				//log.info("sending tx packet: " + request.toString());
 				
@@ -149,7 +157,9 @@ public class ZNetSenderTest {
 					// update frame id for next request
 					request.setFrameId(xbee.getNextFrameId());
 					
-					log.info("received response " + response.toString());
+					log.info("received response " + response);
+					
+					//log.debug("status response bytes:" + ByteUtils.toBase16(response.getPacketBytes()));
 
 					if (response.getDeliveryStatus() == ZNetTxStatusResponse.DeliveryStatus.SUCCESS) {
 						// the packet was successfully delivered
@@ -171,7 +181,7 @@ public class ZNetSenderTest {
 	
 				try {
 					// wait a bit then send another packet
-					Thread.sleep(1000);
+					Thread.sleep(5000);
 				} catch (InterruptedException e) {
 				}
 			}

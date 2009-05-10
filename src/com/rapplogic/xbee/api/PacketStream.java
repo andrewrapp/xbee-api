@@ -132,7 +132,7 @@ public class PacketStream implements IIntArrayInputStream {
 				parseRxResponse();
 			} else if (apiId == ApiId.AT_RESPONSE) {
 				parseAtResponse();
-			} else if (apiId == ApiId.TX_16_STATUS_RESPONSE) {
+			} else if (apiId == ApiId.TX_STATUS_RESPONSE) {
 				parseTxStatusResponse();
 			} else if (apiId == ApiId.ZNET_REMOTE_AT_RESPONSE) {
 				parseRemoteAtResponse();

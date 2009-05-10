@@ -25,8 +25,13 @@ import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.util.IntArrayOutputStream;
 
+// TODO test setting DH/DL to 0 and SH/SL
+
 /**
  * Constructs frame data portion of a 64-bit transmit request
+ * 
+ * Note: DH and DL must be set to SH + SL; if DH/DL are set to MY of remote XBee,
+ * then this send will succeed but remote XBee will receive a RX 16 response
  * 
  * @author andrew
  *
@@ -79,7 +84,6 @@ public class TxRequest64 extends TxRequestBase {
 	}
 
 	public int[] getFrameData() {
-		super.getFrameId();
 		
 		// response does not imply ack
 		if (remoteAddr64.equals(XBeeAddress64.BROADCAST) && this.getOption() != Option.DISABLE_ACK_OPTION) {

@@ -30,6 +30,7 @@ import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.api.zigbee.AssociationStatus;
 import com.rapplogic.xbee.api.zigbee.NodeDiscover;
 import com.rapplogic.xbee.examples.ApiAtTest;
+import com.rapplogic.xbee.util.ByteUtils;
 
 /** 
  * This class contains AtCommand examples that are specific to ZNet radios
@@ -50,9 +51,13 @@ public class ZNetApiAtTest extends ApiAtTest {
 			//xbee.open("COM6", 9600);	
 			
 			// my coordinator com/baud
-			//xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
+			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
 			// my end device
-			xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
+			//xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
+			
+			// get the 8 byte SH/SL address
+			log.debug("SH is " + ByteUtils.toBase16(((AtCommandResponse)xbee.sendAtCommand(new AtCommand("SH"))).getValue()));
+			log.debug("SL is " + ByteUtils.toBase16(((AtCommandResponse)xbee.sendAtCommand(new AtCommand("SL"))).getValue()));
 			
 			// uncomment to run
 //			this.configureIOSamples(xbee);

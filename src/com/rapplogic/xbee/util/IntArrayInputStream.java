@@ -39,6 +39,13 @@ public class IntArrayInputStream implements IIntArrayInputStream {
 		return source[pos++];
 	}
 	
+	/**
+	 * Reads <i>size</i> bytes from the input stream and returns the bytes in an array
+	 *  
+	 * @param size
+	 * @return
+	 * Apr 13, 2009
+	 */
 	public int[] read(int size) {
 		int[] block = new int[size];
 		System.arraycopy(source, pos, block, 0, size);

@@ -32,10 +32,19 @@ public class ZNetTxRequest extends XBeeRequest {
 	
 	private final static Logger log = Logger.getLogger(ZNetTxRequest.class);
 
-	// 10/28/08 API states 72 is maximum size data portion of packet but I was able to push 75 through successfully, 
+	// 10/28/08 the datasheet states 72 is maximum payload size but I was able to push 75 through successfully, 
 	// even with all bytes as escape bytes (a total post-escape packet size of 169!).
-	// I'm sticking with the manual.. close enough anyhow
-	public final static int MAX_PAYLOAD_SIZE = 72;
+	
+	/**
+	 * This is the maximum payload size for ZNet firmware, as specified in the datasheet.
+	 * This value is provided for reference only and is not enforced by this software unless
+	 * max size unless specified in the setMaxPayloadSize(int) method.
+	 * Note: this size refers to the packet size prior to escaping the control bytes.
+	 * Note: ZB Pro firmware provides the ATNP command to determine max payload size.
+	 * For ZB Pro firmware, the TX Status will return a PAYLOAD_TOO_LARGE (0x74) delivery status 
+	 * if the payload size is exceeded
+	 */
+	public final static int ZNET_MAX_PAYLOAD_SIZE = 72;
 	public final static int DEFAULT_BROADCAST_RADIUS = 0;
 	
 	public final static int UNICAST_OPTION = 0;
@@ -46,6 +55,9 @@ public class ZNetTxRequest extends XBeeRequest {
 	private int broadcastRadius;
 	private int option;
 	private int[] payload;
+	private int maxPayloadSize;
+	
+	//TODO frameId should go last in all Request constructors since it is not specific to any one request
 	
 	/**
 	 * From manual p. 33:
@@ -57,11 +69,11 @@ public class ZNetTxRequest extends XBeeRequest {
 	 * 
 	 * Key points:
 	 * 	- always specify the 64-bit address and also specify the 16-bit address, if known.  Set
-	 * 	the 16-bit network address to fffe if not known.
-	 *  - check the 16-bit address of the tx status response frame as it may change.  keep a
-	 *  hash table mapping of 64-bit address to 16-bit network address.
+	 * 	the 16-bit network address to 0xfffe if not known.
+	 *  - check the 16-bit address of the tx status response frame as it may change.  
+	 *  - keep a hash table mapping of 64-bit address to 16-bit network address.
 	 *  
-
+	 *  
 	 * @param frameId
 	 * @param dest64
 	 * @param dest16
@@ -90,8 +102,8 @@ public class ZNetTxRequest extends XBeeRequest {
 	
 	protected IntArrayOutputStream getFrameDataAsIntArrayOutputStream() {
 
-		if (payload.length > MAX_PAYLOAD_SIZE) {
-			throw new IllegalArgumentException("Payload cannot exceed " + MAX_PAYLOAD_SIZE + " bytes.  Please package into multiple packets");
+		if (this.getMaxPayloadSize() > 0 && payload.length > this.getMaxPayloadSize()) {
+			throw new IllegalArgumentException("Payload exceeds user-defined maximum payload size of " + this.getMaxPayloadSize() + " bytes.  Please package into multiple packets");
 		}
 		
 		IntArrayOutputStream out = new IntArrayOutputStream();
@@ -174,5 +186,13 @@ public class ZNetTxRequest extends XBeeRequest {
 			",broadcastRadius=" + this.broadcastRadius + 
 			",option=" + this.option +
 			",payload=" + ByteUtils.toBase16(this.payload);
+	}
+
+	public int getMaxPayloadSize() {
+		return maxPayloadSize;
+	}
+
+	public void setMaxPayloadSize(int maxPayloadSize) {
+		this.maxPayloadSize = maxPayloadSize;
 	}
 }
