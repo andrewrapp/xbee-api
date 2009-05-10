@@ -29,7 +29,7 @@ import com.rapplogic.xbee.api.XBeeRequest;
  * @author andrew
  *
  */
-public class ZbForceSampleRequest extends ZNetRemoteAtRequest {
+public class ZigBeeForceSampleRequest extends ZNetRemoteAtRequest {
 		
 	/**
 	 * Creates a Force Sample Remote AT request
@@ -37,7 +37,7 @@ public class ZbForceSampleRequest extends ZNetRemoteAtRequest {
 	 * @param dest64
 	 * @param command
 	 */
-	public ZbForceSampleRequest(XBeeAddress64 dest64) {
+	public ZigBeeForceSampleRequest(XBeeAddress64 dest64) {
 		super(XBeeRequest.DEFAULT_FRAME_ID, dest64, XBeeAddress16.ZNET_BROADCAST, false, "IS", null);
 	}
 }
