@@ -22,8 +22,8 @@ package com.rapplogic.xbee.api;
 import com.rapplogic.xbee.util.DoubleByte;
 
 /**
- * Represents a double byte XBeeApi Address.
- * 
+ * Represents a 16-bit XBee Address.
+ * <p/>
  * @author andrew
  *
  */

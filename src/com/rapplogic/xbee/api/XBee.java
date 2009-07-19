@@ -30,15 +30,16 @@ import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.ExceptionHandler;
 
 /**
- * This is an API for Digi XBee 802.15.4 and ZigBee radios
- * 
- * TODO refactor to not extend RxTxSerialComm; hide visibility of handlePacket protected
- * 
+ * This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
+ * via the serial port
+ * <p/>
  * @author Andrew Rapp <andrew.rapp at gmail>
  * 
  */
 public class XBee extends RxTxSerialComm implements IXBee, XBeePacketHandler {
 
+	// TODO refactor to not extend RxTxSerialComm; hide visibility of handlePacket protected
+	 
 	private final static Logger log = Logger.getLogger(XBee.class);
 
 	// object to synchronize on to protect access to sendPacket
@@ -113,6 +114,10 @@ public class XBee extends RxTxSerialComm implements IXBee, XBeePacketHandler {
 	public void sendPacket(int[] packet)  throws IOException {
 		// TODO call request listener with byte array
 		
+		if (this.getOutputStream() == null) {
+			throw new RuntimeException("XBee is not connected");
+		}
+		
 		if (log.isInfoEnabled()) {
 			log.info("sending packet to XBee " + ByteUtils.toBase16(packet));	
 		}
@@ -155,8 +160,8 @@ public class XBee extends RxTxSerialComm implements IXBee, XBeePacketHandler {
 	 * @return
 	 * @throws XBeeException
 	 */
-	public XBeeResponse sendAtCommand(AtCommand command) throws XBeeException {
-		return this.sendSynchronous(command, 5000);
+	public AtCommandResponse sendAtCommand(AtCommand command) throws XBeeException {
+		return (AtCommandResponse) this.sendSynchronous(command, 5000);
 	}
 	
 	/**

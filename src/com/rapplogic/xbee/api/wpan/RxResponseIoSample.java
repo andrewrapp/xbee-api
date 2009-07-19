@@ -23,6 +23,17 @@ import org.apache.log4j.Logger;
 
 import com.rapplogic.xbee.util.ByteUtils;
 
+/**
+ * Series 1 XBee. Represents an I/O sample
+ * <p/>
+ * See http://code.google.com/p/xbee-api/wiki/XBeePins for information on configuring
+ * the XBee for digital/analog inputs.
+ * <p/>
+ * API ID: 64-bit 0x82, 16-bit: 0x83
+ * <p/>
+ * @author andrew
+ *
+ */
 public class RxResponseIoSample extends RxBaseResponse {
 
 	private final static Logger log = Logger.getLogger(RxResponseIoSample.class);

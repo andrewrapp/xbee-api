@@ -26,8 +26,11 @@ import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.util.IntArrayOutputStream;
 
 /**
- * Constructs frame data portion of a 16-bit transmit request
- * 
+ * Series 1 XBee.  16-bit address Transmit Packet.  This is received on the destination XBee
+ * radio as a RxResponse16 response
+ * <p/>
+ * API ID: 0x1
+ * <p/>
  * @author andrew
  *
  */

@@ -28,6 +28,12 @@ import org.apache.log4j.Logger;
 import com.rapplogic.xbee.api.XBeeRequest;
 import com.rapplogic.xbee.util.ByteUtils;
 
+/**
+ * Series 1 XBee.  Super class for 16 and 64 bit address Transmit packets
+ * <p/>
+ * @author andrew
+ *
+ */
 public abstract class TxRequestBase extends XBeeRequest {
 	
 	private final static Logger log = Logger.getLogger(TxRequestBase.class);

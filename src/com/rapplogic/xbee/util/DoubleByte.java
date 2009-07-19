@@ -78,4 +78,8 @@ public class DoubleByte {
 	public void setLsb(int lsb) {
 		this.lsb = lsb;
 	}
+	
+	public int[] getArray() {
+		return new int[] { this.msb, this.lsb };
+	}
 }

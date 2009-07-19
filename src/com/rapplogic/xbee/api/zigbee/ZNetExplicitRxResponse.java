@@ -23,6 +23,13 @@ import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.DoubleByte;
 
 // TODO deprecate all ZNet* classes and replace with ZigBee*
+/**
+ * Series 2 XBee. This packet is received when a remote XBee sends a ZNetExplicitTxRequest
+ * <p/>
+ * Radio must be configured for explicit frames to use this class (AO=1)
+ * <p/>
+ * API ID: 0x91
+ */
 public class ZNetExplicitRxResponse extends ZNetRxResponse {
 	
 	private int sourceEndpoint;
@@ -70,7 +77,9 @@ public class ZNetExplicitRxResponse extends ZNetRxResponse {
 		return super.toString() + 
 			",sourceEndpoint=" + ByteUtils.toBase16(this.getSourceEndpoint()) +
 			",destinationEndpoint=" + ByteUtils.toBase16(this.getDestinationEndpoint()) +
-			",clusterId=" + Integer.toHexString(this.getClusterId().get16BitValue()) + 
-			",profileId=" + Integer.toHexString(this.getProfileId().get16BitValue());
+			",clusterId(msb)=" + ByteUtils.toBase16(this.getClusterId().getMsb()) +
+			",clusterId(lsb)=" + ByteUtils.toBase16(this.getClusterId().getLsb()) +
+			",profileId(msb)=" + ByteUtils.toBase16(this.getProfileId().getMsb()) +
+			",profileId(lsb)=" + ByteUtils.toBase16(this.getProfileId().getLsb());
 	}
 }

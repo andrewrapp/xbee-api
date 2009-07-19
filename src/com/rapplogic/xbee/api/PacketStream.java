@@ -47,12 +47,12 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
 
 /**
  * Reads a packet from the input stream, verifies checksum and creates an XBeeResponse object
- * 
+ * <p/>
  * Notes:
- * 
+ * <p/>
  * Escaped bytes increase packet length but packet stated length only indicates un-escaped bytes.
  * Stated length includes all bytes after Length bytes, not including the checksum
- * 
+ * <p/>
  * @author Andrew Rapp
  *
  */

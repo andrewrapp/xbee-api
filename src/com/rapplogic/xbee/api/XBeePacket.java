@@ -27,6 +27,12 @@ import org.apache.log4j.Logger;
 
 import com.rapplogic.xbee.util.ByteUtils;
 
+/**
+ * Packages a frame data array into an XBee packet.
+ * <p/>
+ * @author andrew
+ *
+ */
 public class XBeePacket {
 
 	public enum SpecialByte {

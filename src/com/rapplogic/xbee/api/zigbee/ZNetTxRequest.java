@@ -28,6 +28,15 @@ import com.rapplogic.xbee.api.XBeeRequest;
 import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.IntArrayOutputStream;
 
+/**
+ * Series 2 XBee.  Sends a packet to a remote radio.  The remote radio
+ * receives the data as a ZNetRxResponse packet.
+ * <p/>
+ * API ID: 0x10
+ * <p/>
+ * @author andrew
+ *
+ */
 public class ZNetTxRequest extends XBeeRequest {
 	
 	private final static Logger log = Logger.getLogger(ZNetTxRequest.class);

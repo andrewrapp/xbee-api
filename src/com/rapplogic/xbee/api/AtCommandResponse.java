@@ -25,6 +25,14 @@ import java.util.Map;
 
 import com.rapplogic.xbee.util.ByteUtils;
 
+/**
+ * Sent in response to an AtCommand
+ * <p/>
+ * API ID: 0x88
+ * <p/>
+ * @author andrew
+ *
+ */
 public class AtCommandResponse extends XBeeFrameIdResponse {
 	
 	public enum Status {
@@ -98,6 +106,15 @@ public class AtCommandResponse extends XBeeFrameIdResponse {
 		return status == Status.OK;
 	}
 
+	// TODO should return null if not specified
+	/**
+	 * Returns the command data byte array.
+	 * A zero length array will be returned if the command data is not specified.
+	 * This is the case if the at command set a value, or executed a command that does
+	 * not have a value (like FR)
+	 * 
+	 * @return
+	 */
 	public int[] getValue() {
 		return value;
 	}

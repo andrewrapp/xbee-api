@@ -23,19 +23,15 @@ import com.rapplogic.xbee.api.XBeeAddress;
 import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.util.ByteUtils;
 
+/**
+ * Series 1 XBee.  Common elements of 16 and 64 bit Address Receive packets
+ * <p/>
+ * @author andrew
+ *
+ */
 public abstract class RxBaseResponse extends XBeeResponse {
 
 	private XBeeAddress sourceAddress;
-	
-	// arbitrary strength classification; RSSI range is -40 to -100
-	/**
-	 * @deprecated
-	 */
-	public final static int STRONG_RSSI = -60;
-	/**
-	 * @deprecated
-	 */
-	public final static int AVERAGE_RSSI = -80;
 	
 	private int rssi;
 	private int options;
@@ -67,22 +63,13 @@ public abstract class RxBaseResponse extends XBeeResponse {
 	public boolean isPanBroadcast() {
 		return ByteUtils.getBit(options, 3);
 	}
-	
-	/**
-	 * @deprecated
-	 * @return
-	 * Mar 5, 2009
-	 */
-	public String getRssiStrength() {
-		if (rssi < STRONG_RSSI) {
-			return "STRONG";
-		} else if (rssi < AVERAGE_RSSI) {
-			return "AVERAGE";
-		} else {
-			return "WEAK";
-		}
-	}
 
+	/**
+	 * Returns either a XBeeAddress16 or XBeeAddress64
+	 * depending on if the packet is configured for 16 or 64 bit addressing.
+	 * 
+	 * @return
+	 */
 	public XBeeAddress getSourceAddress() {
 		return sourceAddress;
 	}
@@ -92,7 +79,7 @@ public abstract class RxBaseResponse extends XBeeResponse {
 	}
 	
 	public String toString() {
-		return super.toString() + ",sourceAddress=" + this.getSourceAddress().toString() + ",rssi=" + this.getRssi() + ",options=" + this.getOptions() +
+		return super.toString() + ",sourceAddress=" + this.getSourceAddress() + ",rssi=" + this.getRssi() + ",options=" + this.getOptions() +
 			",isAddressBroadcast=" + this.isAddressBroadcast() + ",isPanBroadcast=" + this.isPanBroadcast();
 	}
 }

@@ -28,11 +28,16 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
 // TODO test setting DH/DL to 0 and SH/SL
 
 /**
+ * Series 1 XBee.  64-bit address Transmit Packet.  This is received on the destination XBee
+ * radio as a RxResponse64 response
+ * <p/>
  * Constructs frame data portion of a 64-bit transmit request
- * 
+ * <p/>
  * Note: DH and DL must be set to SH + SL; if DH/DL are set to MY of remote XBee,
  * then this send will succeed but remote XBee will receive a RX 16 response
- * 
+ * <p/>
+ * API ID: 0x0
+ * <p/>
  * @author andrew
  *
  */

@@ -23,6 +23,14 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * RF module status messages are sent from the module in response to specific conditions. 
+ * <p/>
+ * API ID: 0x8a
+ * <p/>
+ * @author andrew
+ *
+ */
 public class ModemStatusResponse extends XBeeResponse {
 		
 	public enum Status {

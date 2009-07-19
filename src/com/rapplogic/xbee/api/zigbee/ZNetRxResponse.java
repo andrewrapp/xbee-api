@@ -21,6 +21,15 @@ package com.rapplogic.xbee.api.zigbee;
 
 import com.rapplogic.xbee.util.ByteUtils;
 
+/**
+ * Series 2 XBee. This packet is received when
+ * a remote XBee sends a ZNetTxRequest
+ * <p/>
+ * API ID: 0x90
+ * <p/>
+ * @author andrew
+ *
+ */
 public class ZNetRxResponse extends ZNetRxBaseResponse {
 
 	private int[] data;

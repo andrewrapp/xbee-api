@@ -19,6 +19,12 @@
 
 package com.rapplogic.xbee.api;
 
+/**
+ * Indicates an operation did not succeed within the alloted time
+ * <p/>
+ * @author andrew
+ *
+ */
 public class XBeeTimeoutException extends XBeeException {
 
 	private static final long serialVersionUID = 1045336675379821890L;

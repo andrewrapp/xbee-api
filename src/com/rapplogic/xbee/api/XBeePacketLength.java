@@ -21,6 +21,12 @@ package com.rapplogic.xbee.api;
 
 import com.rapplogic.xbee.util.DoubleByte;
 
+/**
+ * Supports a 16-bit XBee packet length
+ * <p/>
+ * @author andrew
+ *
+ */
 public class XBeePacketLength extends DoubleByte {
 	
 	/**

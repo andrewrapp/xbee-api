@@ -28,14 +28,17 @@ import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.api.XBeeRequest;
 import com.rapplogic.xbee.util.IntArrayOutputStream;
 
+// TODO now supported by series 1.  Need to move up to api package and refactor to support both radio types
+
 /**
+ * Supported by both series 1 (10C8 firmware and later) and series 2.  To be moved into common package in the future.
  * Allows AT commands to be sent to a remote radio.
  * Warning: this command does not return a response if the remote radio is unreachable.
  * You will need to set your own timeout when waiting for a response from this command,
  * or you may wait forever.
- * 
- * TODO now supported by series 1.  Need to move up to api package and refactor to support both radio types
- * 
+ * <p/>
+ * API ID: 0x17
+ * <p/>
  * @author andrew
  *
  */

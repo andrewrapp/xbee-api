@@ -26,10 +26,8 @@ import org.apache.log4j.Logger;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /**
- * Big Endian container for 64-bit XBee Address
- * 
- * See device addressing in manual p.32
- * 
+ * Represents a 64-bit XBee Address
+ * <p/>
  * @author andrew
  *
  */

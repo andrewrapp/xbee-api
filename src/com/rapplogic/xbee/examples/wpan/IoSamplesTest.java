@@ -30,8 +30,8 @@ import com.rapplogic.xbee.api.wpan.IoSample;
 import com.rapplogic.xbee.api.wpan.RxResponseIoSample;
 
 /**
- * Receives IO samples from remote radio
- * In this example, we are going to set pin 20 to analog input, pins 11 and 12 to digital input, and configure change detect for pin 12.
+ * Series 1 XBee -- receive IO samples from remote radio
+ * In this example we are going to set pin 20 to analog input, pins 11 and 12 to digital input, and configure change detect for pin 12.
  * Change detect sends a sample whenever the remote XBee detects a change from or to ground; 
  * it does not detect the transition from open circuit to high or vice versa.
  *  
@@ -69,21 +69,6 @@ import com.rapplogic.xbee.api.wpan.RxResponseIoSample;
  * (end device) necessary?
  * DL = 1 
  * 
- * Configuring XBee
- * 
- * 
- * Series 1
- * 
- * Coordinator
- * 
- * End Device
- * 
- * 
- * Series 2
- * 
- * Coordinator
- * 
- * End Device
  * 
  * @author andrew
  * 

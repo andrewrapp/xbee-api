@@ -26,6 +26,7 @@ import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -105,7 +106,7 @@ public abstract class RxTxSerialComm implements SerialPortEventListener {
 		serialPort.addEventListener(this);
 		
 		inputStream = serialPort.getInputStream();
-		outputStream = serialPort.getOutputStream();		
+		outputStream = new BufferedOutputStream(serialPort.getOutputStream());
 	}
 
 	/**

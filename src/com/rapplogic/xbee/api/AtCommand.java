@@ -24,12 +24,13 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
 
 /** 
  * API technique to set/query commands
- * 
+ * <p/>
  * WARNING: Any changes made will not survive a power cycle unless written to memory with WR command
  * According to the manual, the WR command can only be written so many times.. however many that is.
- * 
+ * <p/>
+ * API ID: 0x8
+ * <p/>
  * @author andrew
- *
  */
 public class AtCommand extends XBeeRequest {
 	

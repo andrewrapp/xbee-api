@@ -21,10 +21,9 @@ package com.rapplogic.xbee.api;
 
 
 /**
+ * The super class of all XBee transmit packets.
  * Constructs frame data portion of an XBee packet
- * 
- * TODO cache frame data and use isDirty check to see if new frame data has been updated
- * 
+ * <p/>
  * @author andrew
  *
  */

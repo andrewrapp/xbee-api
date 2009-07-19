@@ -26,6 +26,15 @@ import java.util.Map;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeFrameIdResponse;
 
+/**
+ * Series 2 XBee.  This is sent out the UART of the transmitting XBee immediately following
+ * a Transmit packet.  Indicates if the Transmit packet (ZNetTxRequest)
+ * was successful.
+ * <p/>
+ * API ID: 0x8b
+ * <p/>
+ * @author andrew
+ */
 public class ZNetTxStatusResponse extends XBeeFrameIdResponse {
 	
 	public enum DeliveryStatus {

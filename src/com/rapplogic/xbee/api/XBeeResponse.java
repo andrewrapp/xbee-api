@@ -22,6 +22,7 @@ package com.rapplogic.xbee.api;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /**
+ * The super class of all XBee Receive packets
  * 
  * @author andrew
  *

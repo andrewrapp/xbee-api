@@ -21,6 +21,13 @@ package com.rapplogic.xbee.api.wpan;
 
 import com.rapplogic.xbee.api.XBeeAddress64;
 
+/**
+ * Series 1 XBee. 64-bit address Receive packet
+ * <p/>
+ * API ID: 0x80
+ * 
+ * @author andrew
+ */
 public class RxResponse64 extends RxResponse {
 	
 	public XBeeAddress64 getRemoteAddress() {

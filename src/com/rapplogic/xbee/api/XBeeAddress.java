@@ -22,8 +22,8 @@ package com.rapplogic.xbee.api;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /**
- * Represents a XBeeApi Address.
- * 
+ * Represents a XBee Address.
+ * <p/>
  * @author andrew
  *
  */

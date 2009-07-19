@@ -28,10 +28,11 @@ import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.IIntArrayInputStream;
 
 /**
+ * Series 2 XBee.  Represents an I/O Sample resposne sent from a remote radio.
  * Provides access to the XBee's 4 Analog (0-4), 11 Digital (0-7,10-12), and 1 Supply Voltage pins
- * 
- * ZNet does not support multiple samples (IT) per packet
- * 
+ * <p/>
+ * Note: Series 2 XBee does not support multiple samples (IT) per packet
+ * <p/>
  * @author andrew
  *
  */

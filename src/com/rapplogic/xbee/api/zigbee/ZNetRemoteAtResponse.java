@@ -28,6 +28,12 @@ import com.rapplogic.xbee.util.IntArrayInputStream;
 
 //TODO Now supported by series 1 XBee. parseIoSample now needs to handle series 1 and 2
 
+/**
+ * Supported by both series 1 (10C8 firmware and later) and series 2.  To be moved into common package in the future.
+ * Represents a response, corresponding to a ZNetRemoteAtRequest.
+ * <p/>
+ * API ID: 0x97
+ */
 public class ZNetRemoteAtResponse extends AtCommandResponse {
 		
 	private XBeeAddress64 remoteAddress64;

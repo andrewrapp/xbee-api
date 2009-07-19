@@ -29,7 +29,7 @@ import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse;
 
 /**
- * Example of receiving I/O samples.  To configure your radio for this example, connect 
+ * Series 2 XBees -- Example of receiving I/O samples.  To configure your radio for this example, connect 
  * your end device to your serial connection and run the configureIOSamples() method
  * in ZNetApiAtTest.
  *  

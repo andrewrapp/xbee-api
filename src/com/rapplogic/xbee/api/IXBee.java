@@ -19,9 +19,7 @@
 
 package com.rapplogic.xbee.api;
 
-
 import java.io.IOException;
-import java.util.List;
 
 /**
  * XBee interface

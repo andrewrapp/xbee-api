@@ -23,6 +23,12 @@ import org.apache.log4j.Logger;
 
 import com.rapplogic.xbee.util.ByteUtils;
 
+/**
+ * Computes and verifies packet checksums
+ * <p/>
+ * @author andrew
+ *
+ */
 public class Checksum {
 	
 	private final static Logger log = Logger.getLogger(Checksum.class);

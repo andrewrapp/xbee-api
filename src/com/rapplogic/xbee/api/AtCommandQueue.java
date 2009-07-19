@@ -19,9 +19,13 @@
 
 package com.rapplogic.xbee.api;
 
+//TODO test
+
 /**
- * TODO test
- * 
+ * AT Command Queue
+ * <p/>
+ * API ID: 0x9
+ * <p/>
  * @author andrew
  *
  */

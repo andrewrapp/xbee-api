@@ -28,8 +28,6 @@ import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeException;
 import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.api.zigbee.AssociationStatus;
-import com.rapplogic.xbee.api.zigbee.NodeDiscover;
-import com.rapplogic.xbee.examples.ApiAtTest;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /** 
@@ -38,15 +36,15 @@ import com.rapplogic.xbee.util.ByteUtils;
  * @author andrew
  *
  */
-public class ZNetApiAtTest extends ApiAtTest {
+public class ZNetApiAtTest {
 
 	private final static Logger log = Logger.getLogger(ZNetApiAtTest.class);
 	
 	private XBee xbee = new XBee();
 	
-	private ZNetApiAtTest() throws XBeeException {
-		
+	public ZNetApiAtTest() throws XBeeException {
 		try {
+			
 			// replace with port and baud rate of your XBee
 			//xbee.open("COM6", 9600);	
 			
@@ -61,7 +59,7 @@ public class ZNetApiAtTest extends ApiAtTest {
 			
 			// uncomment to run
 //			this.configureIOSamples(xbee);
-//			this.associationStatus(xbee);
+			this.associationStatus(xbee);
 //			this.nodeDiscover(xbee);
 //			this.configureCoordinator(xbee);
 //			this.configureEndDevice(xbee);
@@ -72,7 +70,7 @@ public class ZNetApiAtTest extends ApiAtTest {
 
 	private void associationStatus(XBee xbee) throws XBeeException {
 		// get association status - success indicates it is associated to another XBee
-		AtCommandResponse response = this.getAtResponse(new AtCommand("AI"));
+		AtCommandResponse response = (AtCommandResponse) xbee.sendAtCommand(new AtCommand("AI"));
 		log.debug("Association Status is " + AssociationStatus.get(response));		
 	}
 	
@@ -167,18 +165,6 @@ public class ZNetApiAtTest extends ApiAtTest {
 		log.debug("D6 is " + response);
 		
 		// optionally configure DH + DL; if set to zero (default), samples will be sent to coordinator
-	}
-	
-	private void nodeDiscover(XBee xbee) throws XBeeException {
-		// Send znet node discover
-		xbee.sendAsynchronous(new AtCommand("ND"));
-		
-		// I just have one end device
-		XBeeResponse response = xbee.getResponse();
-		log.info("received response: " + response.toString());
-
-		NodeDiscover nd = NodeDiscover.parse((AtCommandResponse)response);
-		log.info("nd is " + nd.toString());
 	}
 	
 	public static void main(String[] args) throws XBeeException {

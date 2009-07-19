@@ -34,7 +34,7 @@ import com.rapplogic.xbee.util.DoubleByte;
 /**
  * Set AO=1 for to enable explicit frames for this example.
  * Once set, you should use explicit tx/rx packets instead of plain vanilla tx requests (ZNetTxRequest).  
- * You can still send ZNetTxRequest requests but it will be received as a explicit response (ZNetExplicitRxResponse)
+ * You can still send ZNetTxRequest requests but they will be received as explicit responses (ZNetExplicitRxResponse)
  * 
  * @author andrew
  *

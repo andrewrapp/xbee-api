@@ -219,7 +219,7 @@ public class ByteUtils {
 		}
 		
 		if (b > 0xff) {
-			throw new IllegalArgumentException("input value is larger than a byte");
+			throw new IllegalArgumentException("input value [" + b + "] is larger than a byte");
 		}
 
         return ((b >> (--position)) & 0x1) == 0x1;
@@ -229,7 +229,7 @@ public class ByteUtils {
 	public static String toBase16(int b) {
 		
 		if (b > 0xff) {
-			throw new IllegalArgumentException("input value is larger than a byte");
+			throw new IllegalArgumentException("input value [" + b + "] is larger than a byte");
 		}
 		
 		if (b < 0x10) {
@@ -242,7 +242,7 @@ public class ByteUtils {
 	public static String toBase2(int b) {
 		
 		if (b > 0xff) {
-			throw new IllegalArgumentException("input value is larger than a byte");
+			throw new IllegalArgumentException("input value [" + b + "] is larger than a byte");
 		}
 		
 		return padBase2(Integer.toBinaryString(b));

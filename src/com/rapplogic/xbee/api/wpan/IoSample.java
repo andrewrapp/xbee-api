@@ -22,8 +22,14 @@ package com.rapplogic.xbee.api.wpan;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /**
+ * Series 1 XBee.  Represents an I/O Sample, sent from a remote radio.
+ * Each I/O packet (RxResponseIoSample) may contain one for more IoSample instances.
+ * <p/>
+ * This class is accessed from the getSamples() method of RxResponseIoSample, which
+ * returns an array of IoSample objects.
+ * <p/>
  * Provides access to XBee's 8 Digital (0-7) and 6 Analog (0-5) IO pins
- * 
+ * <p/>
  * @author andrew
  *
  */
@@ -61,6 +67,12 @@ public class IoSample {
 		return dioLsb;
 	}
 
+	/**
+	 * Returns the 10-bit analog value of pin 20 (D0), when this pin is configured for Analog Input (D0=2)
+	 * Returns null if pin 20 is not configured for Analog input.
+	 * 
+	 * @return
+	 */
 	public Integer getAnalog0() {
 		return analog0;
 	}
@@ -69,6 +81,12 @@ public class IoSample {
 		this.analog0 = analog0;
 	}
 
+	/**
+	 * Returns the 10-bit analog value of pin 19 (D1), when this pin configured for Analog Input (D1=2)
+	 * Returns null if pin 19 is not configured for Analog input.
+	 * 
+	 * @return
+	 */
 	public Integer getAnalog1() {
 		return analog1;
 	}
@@ -77,6 +95,12 @@ public class IoSample {
 		this.analog1 = analog1;
 	}
 
+	/**
+	 * Returns the 10-bit analog value of pin 18 (D2), when this pin configured for Analog Input (D2=2)
+	 * Returns null if pin 18 is not configured for Analog input.
+	 * 
+	 * @return
+	 */
 	public Integer getAnalog2() {
 		return analog2;
 	}
@@ -85,6 +109,12 @@ public class IoSample {
 		this.analog2 = analog2;
 	}
 
+	/**
+	 * Returns the 10-bit analog value of pin 17 (D3), when this pin configured for Analog Input (D3=2)
+	 * Returns null if pin 17 is not configured for Analog input.
+	 * 
+	 * @return
+	 */
 	public Integer getAnalog3() {
 		return analog3;
 	}
@@ -93,6 +123,12 @@ public class IoSample {
 		this.analog3 = analog3;
 	}
 
+	/**
+	 * Returns the 10-bit analog value of pin 11 (D4), when this pin configured for Analog Input (D4=2)
+	 * Returns null if pin 11 is not configured for Analog input.
+	 * 
+	 * @return
+	 */
 	public Integer getAnalog4() {
 		return analog4;
 	}
@@ -101,6 +137,12 @@ public class IoSample {
 		this.analog4 = analog4;
 	}
 
+	/**
+	 * Returns the 10-bit analog value of pin 15 (D5), when this pin configured for Analog Input (D5=2)
+	 * Returns null if pin 15 is not configured for Analog input.
+	 * 
+	 * @return
+	 */
 	public Integer getAnalog5() {
 		return analog5;
 	}
@@ -110,8 +152,8 @@ public class IoSample {
 	}
 
 	/**
-	 * Returns boolean value of DIO 0 pin
-	 * Returns null if DIO 0 is not enabled 
+	 * Returns the digital value of pin 20 (D0) when this pin is configured for Digital input (D0=3)
+	 * Returns null if pin 20 is not configured for Digital input 
 	 * 
 	 * @return
 	 */
@@ -123,6 +165,12 @@ public class IoSample {
 		return null;
 	}
 
+	/**
+	 * Returns the digital value of pin 19 (D1) when this pin is configured for Digital input (D1=3)
+	 * Returns null if pin 19 is not configured for Digital input 
+	 * 
+	 * @return
+	 */
 	public Boolean isD1On() {
 		if (this.parent.isD1Enabled()) {
 			return ByteUtils.getBit(dioLsb, 2);	
@@ -130,7 +178,13 @@ public class IoSample {
 		
 		return null;
 	}
-	
+
+	/**
+	 * Returns the digital value of pin 18 (D2) when this pin is configured for Digital input (D2=3)
+	 * Returns null if pin 18 is not configured for Digital input 
+	 * 
+	 * @return
+	 */
 	public Boolean isD2On() {
 		if (this.parent.isD2Enabled()) {
 			return ByteUtils.getBit(dioLsb, 3);
@@ -139,6 +193,12 @@ public class IoSample {
 		return null;
 	}	
 
+	/**
+	 * Returns the digital value of pin 17 (D3) when this pin is configured for Digital input (D3=3)
+	 * Returns null if pin 17 is not configured for Digital input 
+	 * 
+	 * @return
+	 */
 	public Boolean isD3On() {
 		if (this.parent.isD3Enabled()) {
 			return ByteUtils.getBit(dioLsb, 4);	
@@ -147,6 +207,12 @@ public class IoSample {
 		return null;
 	}
 	
+	/**
+	 * Returns the digital value of pin 11 (D4) when this pin is configured for Digital input (D4=3)
+	 * Returns null if pin 11 is not configured for Digital input 
+	 * 
+	 * @return
+	 */
 	public Boolean isD4On() {
 		if (this.parent.isD4Enabled()) {
 			return ByteUtils.getBit(dioLsb, 5);	
@@ -155,6 +221,12 @@ public class IoSample {
 		return null;
 	}
 	
+	/**
+	 * Returns the digital value of pin 15 (D5) when this pin is configured for Digital input (D5=3)
+	 * Returns null if pin 15 is not configured for Digital input 
+	 * 
+	 * @return
+	 */
 	public Boolean isD5On() {
 		if (this.parent.isD5Enabled()) {
 			return ByteUtils.getBit(dioLsb, 6);	
@@ -162,7 +234,13 @@ public class IoSample {
 		
 		return null;
 	}
-	
+
+	/**
+	 * Returns the digital value of pin 16 (D6) when this pin is configured for Digital input (D6=3)
+	 * Returns null if pin 16 is not configured for Digital input 
+	 * 
+	 * @return
+	 */
 	public Boolean isD6On() {
 		if (this.parent.isD6Enabled()) {
 			return ByteUtils.getBit(dioLsb, 7);	
@@ -171,6 +249,12 @@ public class IoSample {
 		return null;
 	}
 	
+	/**
+	 * Returns the digital value of pin 12 (D7) when this pin is configured for Digital input (D7=3)
+	 * Returns null if pin 12 is not configured for Digital input 
+	 * 
+	 * @return
+	 */	
 	public Boolean isD7On() {
 		if (this.parent.isD7Enabled()) {
 			return ByteUtils.getBit(dioLsb, 8);	
@@ -178,7 +262,13 @@ public class IoSample {
 		
 		return null;
 	}
-	
+
+	/**
+	 * Returns the digital value of pin 9 (D8) when this pin is configured for Digital input (D8=3)
+	 * Returns null if pin 9 is not configured for Digital input 
+	 * 
+	 * @return
+	 */	
 	public Boolean isD8On() {
 		if (this.parent.isD8Enabled()) {
 			return ByteUtils.getBit(dioMsb, 1);	

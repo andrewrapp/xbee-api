@@ -21,6 +21,12 @@ package com.rapplogic.xbee.api;
 
 import com.rapplogic.xbee.util.ByteUtils;
 
+/**
+ * Represents all XBee responses that contain a frame id
+ * <p/>
+ * @author andrew
+ *
+ */
 public abstract class XBeeFrameIdResponse extends XBeeResponse {
 	
 	private int frameId;

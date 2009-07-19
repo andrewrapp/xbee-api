@@ -123,7 +123,9 @@ public class ZNetSenderTest {
 //			xbee.open("/dev/tty.usbserial-A6005uPi", 9600);
 			
 			// replace with end device's 64-bit address (SH + SL)
-			XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x0a, 0x3e, 0x02);
+//			XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x0a, 0x3e, 0x02);
+			// my other remote
+			XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x30, 0x3a, 0x23);
 			
 			// coordinator address
 			//XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x3e, 0xf, 0x30);
@@ -147,7 +149,7 @@ public class ZNetSenderTest {
 			log.info("sending tx " + request);
 			
 			while (true) {
-				log.info("request is " + ByteUtils.toBase10(request.getXBeePacket().getPacket()));
+				log.info("request packet bytes (base 16) " + ByteUtils.toBase16(request.getXBeePacket().getPacket()));
 				
 				long start = System.currentTimeMillis();
 				//log.info("sending tx packet: " + request.toString());

@@ -25,6 +25,16 @@ import java.util.Map;
 
 import com.rapplogic.xbee.api.XBeeFrameIdResponse;
 
+/**
+ * Series 1 XBee.  This is sent out the UART of the transmitting XBee immediately following
+ * a Transmit packet.  Indicates if the Transmit (TxRequest16 or TxRequest64)
+ * was successful.
+ * <p/>
+ * API ID: 0x89
+ * <p/>
+ * @author andrew
+ *
+ */
 public class TxStatusResponse extends XBeeFrameIdResponse {
 	
 	public enum Status {

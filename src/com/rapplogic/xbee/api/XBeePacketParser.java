@@ -26,6 +26,13 @@ import org.apache.log4j.Logger;
 
 import com.rapplogic.xbee.util.ByteUtils;
 
+/**
+ * Reads data from the input stream had hands off to PacketStream for packet parsing.
+ * Notifies XBee class when a new packet is parsed
+ * <p/>
+ * @author andrew
+ *
+ */
 public class XBeePacketParser implements Runnable {
 	
 	private final static Logger log = Logger.getLogger(XBeePacketParser.class);
@@ -106,6 +113,13 @@ public class XBeePacketParser implements Runnable {
 				// we've been told to stop
 				// this is called by RXTX if the serial device unplugged
 				// or was called by user via close()
+				
+				// TODO incase thread is waiting.. notify with error response
+				ErrorResponse error = new ErrorResponse();
+				error.setException(ie);
+				
+				this.newPacketNotification(error);
+				
 				log.warn("Packet parser thread was interrupted");
 				break;
 			} catch (Exception e) {
@@ -116,7 +130,7 @@ public class XBeePacketParser implements Runnable {
 				error.setException(e);
 				
 				// not exactly what they were expecting but hey..
-				this.newPacketNotification(response);
+				this.newPacketNotification(error);
 				
 				if (e instanceof IOException) {
 					// TODO test

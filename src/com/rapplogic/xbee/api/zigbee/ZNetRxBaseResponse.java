@@ -28,11 +28,13 @@ import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.api.XBeeResponse;
 
 /**
- *  Note: ZNet RX packets do not include RSSI since it is a mesh network and potentially requires several
- *  hops to get to the destination.  The RSSI of the last hop is available using the DB AT command.
- *  If your network is not mesh (i.e. composed of a single coordinator and end devices -- no routers) 
- *  then the DB command should provide accurate RSSI.
- *  
+ * Series 2 XBee.  Super class of all Receive packets.
+ * <p/>
+ * Note: ZNet RX packets do not include RSSI since it is a mesh network and potentially requires several
+ * hops to get to the destination.  The RSSI of the last hop is available using the DB AT command.
+ * If your network is not mesh (i.e. composed of a single coordinator and end devices -- no routers) 
+ * then the DB command should provide accurate RSSI.
+ * <p/> 
  * @author Andrew Rapp
  *
  */

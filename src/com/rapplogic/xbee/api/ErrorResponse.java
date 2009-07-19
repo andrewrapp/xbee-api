@@ -20,9 +20,10 @@
 package com.rapplogic.xbee.api;
 
 /**
- * If an exception occurs during the parsing of the packet, an instance of this
- * class will be returned.
- * 
+ * Represents a Java error during packet parsing.
+ * This is the only class that extends XBeeResponse and does not map
+ * to a XBee API ID
+ * <p/>
  * @author andrew
  *
  */

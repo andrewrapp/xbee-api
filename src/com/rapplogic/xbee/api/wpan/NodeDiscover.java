@@ -28,6 +28,9 @@ import com.rapplogic.xbee.util.IntArrayInputStream;
 
 // tested ok via xmpp on 4/13/09
 
+/**
+ * Series 1 XBee.  Parses a Node Discover (ND) AT Command Response
+ */
 public class NodeDiscover {
 
 	private final static Logger log = Logger.getLogger(NodeDiscover.class);
