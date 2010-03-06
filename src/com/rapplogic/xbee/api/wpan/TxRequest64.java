@@ -19,8 +19,6 @@
 
 package com.rapplogic.xbee.api.wpan;
 
-import org.apache.log4j.Logger;
-
 import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.util.IntArrayOutputStream;
@@ -33,8 +31,8 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
  * <p/>
  * Constructs frame data portion of a 64-bit transmit request
  * <p/>
- * Note: DH and DL must be set to SH + SL; if DH/DL are set to MY of remote XBee,
- * then this send will succeed but remote XBee will receive a RX 16 response
+ * Note: The MY address of the receiving XBee must be set to 0xffff to receive this as a RxResponse64;
+ * otherwise the packet will be transmitted but will be received as a RxResponse16
  * <p/>
  * API ID: 0x0
  * <p/>
@@ -42,8 +40,6 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
  *
  */
 public class TxRequest64 extends TxRequestBase {
-	
-	private final static Logger log = Logger.getLogger(TxRequest64.class);
 	
 	private XBeeAddress64 remoteAddr64;
 	
@@ -90,10 +86,7 @@ public class TxRequest64 extends TxRequestBase {
 
 	public int[] getFrameData() {
 		
-		// response does not imply ack
-		if (remoteAddr64.equals(XBeeAddress64.BROADCAST) && this.getOption() != Option.DISABLE_ACK_OPTION) {
-			throw new RuntimeException("When sending a broadcast packet you cannot get an ACK and so your option must equal: " + Option.DISABLE_ACK_OPTION);
-		}
+		// 3/6/10 fixed bug -- broadcast address is used with broadcast option, not no ACK
 
 		IntArrayOutputStream out = new IntArrayOutputStream();
 		

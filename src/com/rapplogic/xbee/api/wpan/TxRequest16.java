@@ -19,8 +19,6 @@
 
 package com.rapplogic.xbee.api.wpan;
 
-import org.apache.log4j.Logger;
-
 import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.util.IntArrayOutputStream;
@@ -36,12 +34,13 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
  */
 public class TxRequest16 extends TxRequestBase {
 	
-	private final static Logger log = Logger.getLogger(TxRequest16.class);
-	
 	private XBeeAddress16 remoteAddr16;
 	
 	/**
 	 * 16 bit Tx Request with default frame id and awk option
+	 * 
+	 * Keep in mind that if you programmed the destination address with X-CTU, the unit is
+	 * hex, so if you set MY=1234, use 0x1234.
 	 * 
 	 * @param remoteAddr16
 	 * @param payload
@@ -51,10 +50,8 @@ public class TxRequest16 extends TxRequestBase {
 	}
 	
 	/**
-	 * 16 bit Tx Request.
-	 *   
-	 * Keep in mind that if you programmed the destination address with AT commands, it is in Hex,
-	 * so prepend int with 0x (e.g. 0x1234).
+	 * 16 bit Tx Request with frame id argument
+	 * 
 	 * 
 	 * Payload size is limited to 100 bytes, according to MaxStream documentation.
 	 * 
@@ -82,10 +79,7 @@ public class TxRequest16 extends TxRequestBase {
 	}
 
 	public int[] getFrameData() {	
-		// response does not imply ack
-		if (remoteAddr16.equals(XBeeAddress16.BROADCAST) && this.getOption() != Option.DISABLE_ACK_OPTION) {
-			throw new RuntimeException("When sending a broadcast packet you cannot get an ACK and so your option must equal: " + Option.DISABLE_ACK_OPTION);
-		}
+		// 3/6/10 fixed bug -- broadcast address is used with broadcast option, not no ACK
 		
 		IntArrayOutputStream out = new IntArrayOutputStream();
 
