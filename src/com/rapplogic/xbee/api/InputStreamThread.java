@@ -34,16 +34,15 @@ import com.rapplogic.xbee.RxTxSerialEventListener;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /**
- * Reads data from the input stream had hands off to PacketStream for packet parsing.
+ * Reads data from the input stream had hands off to PacketParser for packet parsing.
  * Notifies XBee class when a new packet is parsed
  * <p/>
  * @author andrew
  *
  */
-// TODO rename to XBeeInputStreamThread, after commit
-public class XBeePacketParser implements Runnable {
+public class InputStreamThread implements Runnable {
 	
-	private final static Logger log = Logger.getLogger(XBeePacketParser.class);
+	private final static Logger log = Logger.getLogger(InputStreamThread.class);
 	
 	private Thread thread;
 	private volatile boolean done = false;
@@ -76,10 +75,10 @@ public class XBeePacketParser implements Runnable {
 		return responseQueue;
 	}
 
-	public XBeePacketParser(final RxTxSerialComm serialPort) {
+	public InputStreamThread(final RxTxSerialComm serialPort) {
 		this.serialPort = serialPort;
 		
-		final XBeePacketParser thiz = this;
+		final InputStreamThread thiz = this;
 		
 		serialPort.setSerialEventHandler(new RxTxSerialEventListener() {
 
@@ -147,7 +146,7 @@ public class XBeePacketParser implements Runnable {
 		int val = -1;
 		
 		XBeeResponse response = null;
-		PacketStream packetStream = null;
+		PacketParser packetStream = null;
 
 		try {
 			while (!done) {
@@ -158,7 +157,7 @@ public class XBeePacketParser implements Runnable {
 						log.debug("Read " + ByteUtils.formatByte(val) + " from input stream");
 						
 						if (val == XBeePacket.SpecialByte.START_BYTE.getValue()) {
-							packetStream = new PacketStream(serialPort.getInputStream());
+							packetStream = new PacketParser(serialPort.getInputStream());
 							response = packetStream.parsePacket();
 							
 							if (log.isInfoEnabled()) {

@@ -46,7 +46,7 @@ public class XBee implements IXBee {
 	private Object sendPacketBlock = new Object();
 	private boolean startupChecks = true;
 	private RxTxSerialComm serialComm;
-	private XBeePacketParser parser;	
+	private InputStreamThread parser;	
 	
 	public XBee() {
 //		final XBee xbeeRef = this;
@@ -135,7 +135,7 @@ public class XBee implements IXBee {
 			serialComm = new RxTxSerialComm();
 			
 			serialComm.openSerialPort(port, baudRate);
-			parser = new XBeePacketParser(serialComm);
+			parser = new InputStreamThread(serialComm);
 			
 			// startup heuristics
 			if (!this.isStartupChecks()) {

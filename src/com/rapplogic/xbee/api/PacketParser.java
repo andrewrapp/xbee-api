@@ -54,10 +54,9 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
  * @author Andrew Rapp
  *
  */
-//TODO rename to PacketParser, after commit
-public class PacketStream implements IIntArrayInputStream {
+public class PacketParser implements IIntArrayInputStream {
 
-	private final static Logger log = Logger.getLogger(PacketStream.class);
+	private final static Logger log = Logger.getLogger(PacketParser.class);
 
 	private IIntArrayInputStream in;
 	
@@ -76,12 +75,12 @@ public class PacketStream implements IIntArrayInputStream {
 	// experiment to preserve original byte array for transfer over network (Starts with length)
 	private IntArrayOutputStream rawBytes = new IntArrayOutputStream();
 	
-	public PacketStream(InputStream in) {
+	public PacketParser(InputStream in) {
 		this.in = new InputStreamWrapper(in);
 	}
 	
 	// for parsing a packet from a byte array
-	public PacketStream(IIntArrayInputStream in) {
+	public PacketParser(IIntArrayInputStream in) {
 		this.in = in;
 	}
 	

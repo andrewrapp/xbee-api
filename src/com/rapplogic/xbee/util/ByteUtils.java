@@ -103,7 +103,7 @@ public class ByteUtils {
 	}
 
 	public static String toBase16(int[] arr) {
-		return toBase16(arr, " ");
+		return toBase16(arr, ",");
 	}
 
 	public static String toBase16(int[] arr, String delimiter) {
