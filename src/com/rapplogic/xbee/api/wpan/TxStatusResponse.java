@@ -88,9 +88,7 @@ public class TxStatusResponse extends XBeeFrameIdResponse {
 		return this.status == Status.SUCCESS;
 	}
 
-	public boolean isError() {
-		return this.status != Status.SUCCESS;
-	}
+	// isError() was overridding XBeeResponse isError()
 		
 	public boolean isAckError() {
 		return this.status == Status.NO_ACK;

@@ -34,13 +34,13 @@ import com.rapplogic.xbee.api.XBeeException;
  * 
  * Refer to the manual for more information on available commands
  * 
- * TODO split class in to WPAN class
- * 
  * @author andrew
  *
  */
 public class ApiAtTest {
 
+//	TODO split class in to WPAN class
+	 
 	private final static Logger log = Logger.getLogger(ApiAtTest.class);
 	
 	private XBee xbee = new XBee();
@@ -66,7 +66,8 @@ public class ApiAtTest {
 			log.info("MY is " + xbee.sendAtCommand(new AtCommand("MY")));
 //			log.info("SH is " + xbee.sendAtCommand(new AtCommand("SH")));
 //			log.info("SL is " + xbee.sendAtCommand(new AtCommand("SL")));
-			
+		} catch (Exception e) {
+			log.error("at command failed", e);
 		} finally {
 			xbee.close();
 		}

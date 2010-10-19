@@ -77,15 +77,13 @@ public class XBeeSerialProgrammer extends SerialAsciiComm {
 	/**
 	 * Sends command to XBeeApi and waits for response.  If timeout occurs before response, a
 	 * runtime exception is thrown.
-	 *
-	 * TODO handle commands that return multiple lines (ATVL)
 	 * 
 	 * @param cmd
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
 	private void sendCommand(String cmd) throws IOException, InterruptedException {
-
+//		TODO handle commands that return multiple lines (ATVL)
 		synchronized(this.getLock()) {
 			log.debug("Sending command: " + cmd);
 			this.getOutputStream().write(cmd.getBytes());

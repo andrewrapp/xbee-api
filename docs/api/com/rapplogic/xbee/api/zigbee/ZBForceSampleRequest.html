@@ -6,14 +6,15 @@
 ZBForceSampleRequest
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.zigbee.ZBForceSampleRequest class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="ZBForceSampleRequest";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="ZBForceSampleRequest";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -71,7 +73,7 @@ function windowTitle()
 </TR>
 <TR>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
-  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#fields_inherited_from_class_com.rapplogic.xbee.api.XBeeRequest">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#methods_inherited_from_class_com.rapplogic.xbee.api.zigbee.ZNetRemoteAtRequest">METHOD</A></FONT></TD>
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#fields_inherited_from_class_com.rapplogic.xbee.api.XBeeRequest">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#methods_inherited_from_class_com.rapplogic.xbee.api.RemoteAtRequest">METHOD</A></FONT></TD>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
 DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;METHOD</FONT></TD>
 </TR>
@@ -90,12 +92,15 @@ Class ZBForceSampleRequest</H2>
 java.lang.Object
   <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../../com/rapplogic/xbee/api/XBeeRequest.html" title="class in com.rapplogic.xbee.api">com.rapplogic.xbee.api.XBeeRequest</A>
       <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../../com/rapplogic/xbee/api/AtCommand.html" title="class in com.rapplogic.xbee.api">com.rapplogic.xbee.api.AtCommand</A>
-          <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtRequest.html" title="class in com.rapplogic.xbee.api.zigbee">com.rapplogic.xbee.api.zigbee.ZNetRemoteAtRequest</A>
+          <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../../com/rapplogic/xbee/api/RemoteAtRequest.html" title="class in com.rapplogic.xbee.api">com.rapplogic.xbee.api.RemoteAtRequest</A>
               <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.zigbee.ZBForceSampleRequest</B>
 </PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD>java.io.Serializable</DD>
+</DL>
 <HR>
 <DL>
-<DT><PRE>public class <B>ZBForceSampleRequest</B><DT>extends <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtRequest.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetRemoteAtRequest</A></DL>
+<DT><PRE>public class <B>ZBForceSampleRequest</B><DT>extends <A HREF="../../../../../com/rapplogic/xbee/api/RemoteAtRequest.html" title="class in com.rapplogic.xbee.api">RemoteAtRequest</A></DL>
 </PRE>
 
 <P>
@@ -106,7 +111,7 @@ Uses Remote AT to send a Force Sample (IS) AT command to a remote XBee
 <DL>
 <DT><B>Author:</B></DT>
   <DD>andrew</DD>
-</DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../../serialized-form.html#com.rapplogic.xbee.api.zigbee.ZBForceSampleRequest">Serialized Form</A></DL>
 <HR>
 
 <P>
@@ -154,13 +159,13 @@ Uses Remote AT to send a Force Sample (IS) AT command to a remote XBee
 <B>Method Summary</B></FONT></TH>
 </TR>
 </TABLE>
-&nbsp;<A NAME="methods_inherited_from_class_com.rapplogic.xbee.api.zigbee.ZNetRemoteAtRequest"><!-- --></A>
+&nbsp;<A NAME="methods_inherited_from_class_com.rapplogic.xbee.api.RemoteAtRequest"><!-- --></A>
 <TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
 <TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
-<TH ALIGN="left"><B>Methods inherited from class com.rapplogic.xbee.api.zigbee.<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtRequest.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetRemoteAtRequest</A></B></TH>
+<TH ALIGN="left"><B>Methods inherited from class com.rapplogic.xbee.api.<A HREF="../../../../../com/rapplogic/xbee/api/RemoteAtRequest.html" title="class in com.rapplogic.xbee.api">RemoteAtRequest</A></B></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtRequest.html#getApiId()">getApiId</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtRequest.html#getFrameData()">getFrameData</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtRequest.html#getRemoteAddr16()">getRemoteAddr16</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtRequest.html#getRemoteAddr64()">getRemoteAddr64</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtRequest.html#isApplyChanges()">isApplyChanges</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtRequest.html#setApplyChanges(boolean)">setApplyChanges</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtRequest.html#setRemoteAddr16(com.rapplogic.xbee.api.XBeeAddress16)">setRemoteAddr16</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtRequest.html#setRemoteAddr64(com.rapplogic.xbee.api.XBeeAddress64)">setRemoteAddr64</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtRequest.html#toString()">toString</A></CODE></TD>
+<TD><CODE><A HREF="../../../../../com/rapplogic/xbee/api/RemoteAtRequest.html#getApiId()">getApiId</A>, <A HREF="../../../../../com/rapplogic/xbee/api/RemoteAtRequest.html#getFrameData()">getFrameData</A>, <A HREF="../../../../../com/rapplogic/xbee/api/RemoteAtRequest.html#getRemoteAddr16()">getRemoteAddr16</A>, <A HREF="../../../../../com/rapplogic/xbee/api/RemoteAtRequest.html#getRemoteAddr64()">getRemoteAddr64</A>, <A HREF="../../../../../com/rapplogic/xbee/api/RemoteAtRequest.html#isApplyChanges()">isApplyChanges</A>, <A HREF="../../../../../com/rapplogic/xbee/api/RemoteAtRequest.html#setApplyChanges(boolean)">setApplyChanges</A>, <A HREF="../../../../../com/rapplogic/xbee/api/RemoteAtRequest.html#setRemoteAddr16(com.rapplogic.xbee.api.XBeeAddress16)">setRemoteAddr16</A>, <A HREF="../../../../../com/rapplogic/xbee/api/RemoteAtRequest.html#setRemoteAddr64(com.rapplogic.xbee.api.XBeeAddress64)">setRemoteAddr64</A>, <A HREF="../../../../../com/rapplogic/xbee/api/RemoteAtRequest.html#toString()">toString</A></CODE></TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_com.rapplogic.xbee.api.AtCommand"><!-- --></A>
@@ -264,7 +269,7 @@ public <B>ZBForceSampleRequest</B>(<A HREF="../../../../../com/rapplogic/xbee/ap
 </TR>
 <TR>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
-  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#fields_inherited_from_class_com.rapplogic.xbee.api.XBeeRequest">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#methods_inherited_from_class_com.rapplogic.xbee.api.zigbee.ZNetRemoteAtRequest">METHOD</A></FONT></TD>
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#fields_inherited_from_class_com.rapplogic.xbee.api.XBeeRequest">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#methods_inherited_from_class_com.rapplogic.xbee.api.RemoteAtRequest">METHOD</A></FONT></TD>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
 DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;METHOD</FONT></TD>
 </TR>

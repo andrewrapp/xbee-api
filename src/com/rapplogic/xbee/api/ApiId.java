@@ -45,7 +45,7 @@ public enum ApiId {
 	/**
 	 * API ID: 0x17
 	 */
-	ZNET_REMOTE_AT_REQUEST (0x17),
+	REMOTE_AT_REQUEST (0x17),
 	/**
 	 * API ID: 0x10
 	 */	
@@ -97,7 +97,7 @@ public enum ApiId {
 	/**
 	 * API ID: 0x97
 	 */	
-	ZNET_REMOTE_AT_RESPONSE (0x97),
+	REMOTE_AT_RESPONSE (0x97),
 	/**
 	 * API ID: 0x92
 	 */	
@@ -106,6 +106,10 @@ public enum ApiId {
 	 * API ID: 0x95
 	 */	
 	ZNET_IO_NODE_IDENTIFIER_RESPONSE (0x95),
+	/**
+	 * Indicates that we've parsed a packet for which we didn't know how to handle the API type.  This will be parsed into a GenericResponse
+	 */
+	UNKNOWN (0xff),
 	/**
 	 * This is returned if an error occurs during packet parsing and does not correspond to a XBee API ID.
 	 */

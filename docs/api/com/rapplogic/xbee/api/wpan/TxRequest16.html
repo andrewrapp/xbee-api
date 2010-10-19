@@ -6,14 +6,15 @@
 TxRequest16
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.wpan.TxRequest16 class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="TxRequest16";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="TxRequest16";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -92,6 +94,9 @@ java.lang.Object
       <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../../com/rapplogic/xbee/api/wpan/TxRequestBase.html" title="class in com.rapplogic.xbee.api.wpan">com.rapplogic.xbee.api.wpan.TxRequestBase</A>
           <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.wpan.TxRequest16</B>
 </PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD>java.io.Serializable</DD>
+</DL>
 <HR>
 <DL>
 <DT><PRE>public class <B>TxRequest16</B><DT>extends <A HREF="../../../../../com/rapplogic/xbee/api/wpan/TxRequestBase.html" title="class in com.rapplogic.xbee.api.wpan">TxRequestBase</A></DL>
@@ -109,7 +114,7 @@ Series 1 XBee.  16-bit address Transmit Packet.  This is received on the destina
 <DL>
 <DT><B>Author:</B></DT>
   <DD>andrew</DD>
-</DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../../serialized-form.html#com.rapplogic.xbee.api.wpan.TxRequest16">Serialized Form</A></DL>
 <HR>
 
 <P>
@@ -173,7 +178,10 @@ Series 1 XBee.  16-bit address Transmit Packet.  This is received on the destina
             int[]&nbsp;payload)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16 bit Tx Request with default frame id and awk option</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16 bit Tx Request with default frame id and awk option
+ 
+ Keep in mind that if you programmed the destination address with X-CTU, the unit is
+ hex, so if you set MY=1234, use 0x1234.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/wpan/TxRequest16.html#TxRequest16(com.rapplogic.xbee.api.XBeeAddress16, int, int[])">TxRequest16</A></B>(<A HREF="../../../../../com/rapplogic/xbee/api/XBeeAddress16.html" title="class in com.rapplogic.xbee.api">XBeeAddress16</A>&nbsp;remoteAddr16,
@@ -181,7 +189,10 @@ Series 1 XBee.  16-bit address Transmit Packet.  This is received on the destina
             int[]&nbsp;payload)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16 bit Tx Request.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16 bit Tx Request with frame id argument
+ 
+ 
+ Payload size is limited to 100 bytes, according to MaxStream documentation.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/wpan/TxRequest16.html#TxRequest16(com.rapplogic.xbee.api.XBeeAddress16, int, com.rapplogic.xbee.api.wpan.TxRequestBase.Option, int[])">TxRequest16</A></B>(<A HREF="../../../../../com/rapplogic/xbee/api/XBeeAddress16.html" title="class in com.rapplogic.xbee.api">XBeeAddress16</A>&nbsp;remoteAddr16,
@@ -290,6 +301,9 @@ public <B>TxRequest16</B>(<A HREF="../../../../../com/rapplogic/xbee/api/XBeeAdd
                    int[]&nbsp;payload)</PRE>
 <DL>
 <DD>16 bit Tx Request with default frame id and awk option
+ 
+ Keep in mind that if you programmed the destination address with X-CTU, the unit is
+ hex, so if you set MY=1234, use 0x1234.
 <P>
 <DL>
 <DT><B>Parameters:</B><DD><CODE>remoteAddr16</CODE> - <DD><CODE>payload</CODE> - </DL>
@@ -303,10 +317,8 @@ public <B>TxRequest16</B>(<A HREF="../../../../../com/rapplogic/xbee/api/XBeeAdd
                    int&nbsp;frameId,
                    int[]&nbsp;payload)</PRE>
 <DL>
-<DD>16 bit Tx Request.
-   
- Keep in mind that if you programmed the destination address with AT commands, it is in Hex,
- so prepend int with 0x (e.g. 0x1234).
+<DD>16 bit Tx Request with frame id argument
+ 
  
  Payload size is limited to 100 bytes, according to MaxStream documentation.
 <P>

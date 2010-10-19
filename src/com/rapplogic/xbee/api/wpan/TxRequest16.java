@@ -46,7 +46,7 @@ public class TxRequest16 extends TxRequestBase {
 	 * @param payload
 	 */
 	public TxRequest16(XBeeAddress16 remoteAddr16, int[] payload) {
-		this(remoteAddr16, DEFAULT_FRAME_ID, Option.DEFAULT_OPTION, payload);
+		this(remoteAddr16, DEFAULT_FRAME_ID, Option.UNICAST, payload);
 	}
 	
 	/**
@@ -60,7 +60,7 @@ public class TxRequest16 extends TxRequestBase {
 	 * @param payload
 	 */
 	public TxRequest16(XBeeAddress16 remoteAddr16, int frameId, int[] payload) {
-		this(remoteAddr16, frameId, Option.DEFAULT_OPTION, payload);
+		this(remoteAddr16, frameId, Option.UNICAST, payload);
 	}
 	
 	/**

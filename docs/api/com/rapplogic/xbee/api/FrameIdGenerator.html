@@ -3,17 +3,18 @@
 <HTML>
 <HEAD>
 <TITLE>
-XBeeRxTx
+FrameIdGenerator
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.XBeeRxTx class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="XBeeRxTx";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="FrameIdGenerator";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -50,11 +52,11 @@ function windowTitle()
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/ErrorResponse.html" title="class in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/GenericResponse.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-  <A HREF="../../../../index.html?com/rapplogic/xbee/api/XBeeRxTx.html" target="_top"><B>FRAMES</B></A>  &nbsp;
-&nbsp;<A HREF="XBeeRxTx.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+  <A HREF="../../../../index.html?com/rapplogic/xbee/api/FrameIdGenerator.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="FrameIdGenerator.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
 &nbsp;<SCRIPT type="text/javascript">
   <!--
   if(window==top) {
@@ -71,9 +73,9 @@ function windowTitle()
 </TR>
 <TR>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
-  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#methods_inherited_from_class_java.lang.Object">METHOD</A></FONT></TD>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
-DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;METHOD</FONT></TD>
 </TR>
 </TABLE>
 <A NAME="skip-navbar_top"></A>
@@ -85,18 +87,14 @@ DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&n
 <FONT SIZE="-1">
 com.rapplogic.xbee.api</FONT>
 <BR>
-Class XBeeRxTx</H2>
+Class FrameIdGenerator</H2>
 <PRE>
 java.lang.Object
-  <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html" title="class in com.rapplogic.xbee">com.rapplogic.xbee.RxTxSerialComm</A>
-      <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.XBeeRxTx</B>
+  <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.FrameIdGenerator</B>
 </PRE>
-<DL>
-<DT><B>All Implemented Interfaces:</B> <DD>gnu.io.SerialPortEventListener, java.util.EventListener</DD>
-</DL>
 <HR>
 <DL>
-<DT><PRE>public class <B>XBeeRxTx</B><DT>extends <A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html" title="class in com.rapplogic.xbee">RxTxSerialComm</A></DL>
+<DT><PRE>public class <B>FrameIdGenerator</B><DT>extends java.lang.Object</DL>
 </PRE>
 
 <P>
@@ -113,7 +111,7 @@ java.lang.Object
 <B>Constructor Summary</B></FONT></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBeeRxTx.html#XBeeRxTx()">XBeeRxTx</A></B>()</CODE>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/FrameIdGenerator.html#FrameIdGenerator()">FrameIdGenerator</A></B>()</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -127,23 +125,6 @@ java.lang.Object
 <TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
 <TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
 <B>Method Summary</B></FONT></TH>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>protected &nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBeeRxTx.html#handleSerialData()">handleSerialData</A></B>()</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Called by RXTX to notify us that data is available to be read.</TD>
-</TR>
-</TABLE>
-&nbsp;<A NAME="methods_inherited_from_class_com.rapplogic.xbee.RxTxSerialComm"><!-- --></A>
-<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
-<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
-<TH ALIGN="left"><B>Methods inherited from class com.rapplogic.xbee.<A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html" title="class in com.rapplogic.xbee">RxTxSerialComm</A></B></TH>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#close()">close</A>, <A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#getInputStream()">getInputStream</A>, <A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#getOutputStream()">getOutputStream</A>, <A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#openSerialPort(java.lang.String, int)">openSerialPort</A>, <A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#openSerialPort(java.lang.String, java.lang.String, int, int)">openSerialPort</A>, <A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#openSerialPort(java.lang.String, java.lang.String, int, int, int, int, int, int)">openSerialPort</A>, <A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#serialEvent(gnu.io.SerialPortEvent)">serialEvent</A></CODE></TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
@@ -168,42 +149,11 @@ java.lang.Object
 </TR>
 </TABLE>
 
-<A NAME="XBeeRxTx()"><!-- --></A><H3>
-XBeeRxTx</H3>
+<A NAME="FrameIdGenerator()"><!-- --></A><H3>
+FrameIdGenerator</H3>
 <PRE>
-public <B>XBeeRxTx</B>()</PRE>
+public <B>FrameIdGenerator</B>()</PRE>
 <DL>
-</DL>
-
-<!-- ============ METHOD DETAIL ========== -->
-
-<A NAME="method_detail"><!-- --></A>
-<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
-<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
-<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
-<B>Method Detail</B></FONT></TH>
-</TR>
-</TABLE>
-
-<A NAME="handleSerialData()"><!-- --></A><H3>
-handleSerialData</H3>
-<PRE>
-protected void <B>handleSerialData</B>()
-                         throws java.io.IOException</PRE>
-<DL>
-<DD>Called by RXTX to notify us that data is available to be read.
- 
- This method calls notify on the parser to indicate it should start
- consuming packets.
-<P>
-<DD><DL>
-<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#handleSerialData()">handleSerialData</A></CODE> in class <CODE><A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html" title="class in com.rapplogic.xbee">RxTxSerialComm</A></CODE></DL>
-</DD>
-<DD><DL>
-
-<DT><B>Throws:</B>
-<DD><CODE>java.io.IOException</CODE></DL>
-</DD>
 </DL>
 <!-- ========= END OF CLASS DATA ========= -->
 <HR>
@@ -235,11 +185,11 @@ protected void <B>handleSerialData</B>()
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/ErrorResponse.html" title="class in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/GenericResponse.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-  <A HREF="../../../../index.html?com/rapplogic/xbee/api/XBeeRxTx.html" target="_top"><B>FRAMES</B></A>  &nbsp;
-&nbsp;<A HREF="XBeeRxTx.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+  <A HREF="../../../../index.html?com/rapplogic/xbee/api/FrameIdGenerator.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="FrameIdGenerator.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
 &nbsp;<SCRIPT type="text/javascript">
   <!--
   if(window==top) {
@@ -256,9 +206,9 @@ protected void <B>handleSerialData</B>()
 </TR>
 <TR>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
-  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#methods_inherited_from_class_java.lang.Object">METHOD</A></FONT></TD>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
-DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;METHOD</FONT></TD>
 </TR>
 </TABLE>
 <A NAME="skip-navbar_bottom"></A>

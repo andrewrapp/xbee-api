@@ -124,13 +124,18 @@ public class XBeePacket {
 		packet = escapePacket(packet);
 		
 		if (log.isDebugEnabled()) {
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append("Packet: ");
 			for (int i = 0; i < packet.length; i++) {
-				log.debug("Packet byte " + i + " is " + ByteUtils.toBase16(packet[i]));
-			}			
-		}
+				stringBuilder.append(ByteUtils.toBase16(packet[i]));
+				if (i < packet.length - 1) {
+					stringBuilder.append(" ");
+				}
+			}	
+			log.debug(stringBuilder);
 
-		log.debug("pre-escape packet size is " + preEscapeLength);
-		log.debug("post-escape packet size is " + packet.length);
+			log.debug("pre-escape packet size is " + preEscapeLength + ", post-escape packet size is " + packet.length);
+		}
 		
 		// 10/25/08 testing znet tx packet: max packet size that succeeded is 96.  when sending all escape bytes, pre-escape max is 94
 //		final int maxPacketSize = 94;
@@ -194,10 +199,14 @@ public class XBeePacket {
 	}
 	
 	/**
-	 * TODO rename as getBytes
+	 * @deprecated use getByteArray
 	 * @return
 	 */
 	public int[] getPacket() {
+		return this.getByteArray();
+	}
+	
+	public int[] getByteArray() {
 		return packet;
 	}
 	
@@ -217,7 +226,7 @@ public class XBeePacket {
 	 * @param packet
 	 * @return
 	 */
-	public static boolean verify(int[] packet) throws XBeeException {
+	public static boolean verify(int[] packet) {
 		boolean valid = true;
 		
 		try {
@@ -248,10 +257,7 @@ public class XBeePacket {
 				valid = false;
 			}
 		} catch (Exception e) {
-			XBeeException x = new XBeeException("packet verification failed with error: ");
-			x.setCause(e);
-			
-			throw x;
+			throw new RuntimeException("Packet verification failed with error: ", e);
 		}
 
 		return valid;
@@ -262,7 +268,7 @@ public class XBeePacket {
 	 * @param packet
 	 * @return
 	 */
-	private static int[] unEscapePacket(int[] packet) {
+	public static int[] unEscapePacket(int[] packet) {
 	
 		int escapeBytes = 0;
 

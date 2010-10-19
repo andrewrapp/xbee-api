@@ -34,6 +34,10 @@ public class XBeeException extends Exception {
 	public XBeeException(String message) {
 		super(message);
 	}
+
+	public XBeeException(String message, Exception e) {
+		super(message, e);
+	}
 	
 	public XBeeException() {
 		super();

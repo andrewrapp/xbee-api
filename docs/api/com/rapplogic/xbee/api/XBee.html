@@ -6,14 +6,15 @@
 XBee
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.XBee class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="XBee";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="XBee";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -50,7 +52,7 @@ function windowTitle()
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/PacketStream.html" title="class in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/RemoteAtResponse.html" title="class in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
 &nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeAddress.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../index.html?com/rapplogic/xbee/api/XBee.html" target="_top"><B>FRAMES</B></A>  &nbsp;
@@ -88,15 +90,14 @@ com.rapplogic.xbee.api</FONT>
 Class XBee</H2>
 <PRE>
 java.lang.Object
-  <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html" title="class in com.rapplogic.xbee">com.rapplogic.xbee.RxTxSerialComm</A>
-      <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.XBee</B>
+  <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.XBee</B>
 </PRE>
 <DL>
-<DT><B>All Implemented Interfaces:</B> <DD><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeePacketHandler.html" title="interface in com.rapplogic.xbee.api">XBeePacketHandler</A>, gnu.io.SerialPortEventListener, java.util.EventListener</DD>
+<DT><B>All Implemented Interfaces:</B> <DD><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A></DD>
 </DL>
 <HR>
 <DL>
-<DT><PRE>public class <B>XBee</B><DT>extends <A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html" title="class in com.rapplogic.xbee">RxTxSerialComm</A><DT>implements <A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeePacketHandler.html" title="interface in com.rapplogic.xbee.api">XBeePacketHandler</A></DL>
+<DT><PRE>public class <B>XBee</B><DT>extends java.lang.Object<DT>implements <A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A></DL>
 </PRE>
 
 <P>
@@ -149,10 +150,26 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#clearResponseQueue()">clearResponseQueue</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Removes all packets off of the response queue</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#close()">close</A></B>()</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shuts down RXTX and packet parser thread</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#doStartupChecks()">doStartupChecks</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -164,25 +181,6 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#getLastResponse()">getLastResponse</A></B>()</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the last XBeeResponse that was received
- 
- If this is called after waitForResponse returns (without timeout), this *should* be the corresponding response</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;java.lang.Object</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#getNewPacketNotification()">getNewPacketNotification</A></B>()</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You can synchronize on this lock to get notified of new packets, however you must call wait() 
- to release the lock or buffers will overrun and general chaos will ensue.</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;int</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#getNextFrameId()">getNextFrameId</A></B>()</CODE>
 
@@ -191,28 +189,11 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;long</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#getPacketCount()">getPacketCount</A></B>()</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;java.util.List&lt;<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A>&gt;</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#getPacketList()">getPacketList</A></B>()</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This list holds maximum of maxPacketListSize packets and discards
- older packets when the maximum limit is reached.</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#getResponse()">getResponse</A></B>()</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Same as getResponse(int) but does not timeout</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Same as getResponse(int) but does not timeout.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -220,46 +201,7 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#getResponse(int)">getResponse</A></B>(int&nbsp;timeout)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method returns immediately with the zero-eth response (FIFO), if getPacketList().size() is greater than 0;
- otherwise it waits on the getNewPacketNotification() object until the next response arrives.</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#getResponseBlocking()">getResponseBlocking</A></B>()</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Same as getResponseBlocking(int) but does not timeout</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#getResponseBlocking(int)">getResponseBlocking</A></B>(int&nbsp;timeout)</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method blocks until a response is received or a timeout occurs.</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#handlePacket(com.rapplogic.xbee.api.XBeeResponse)">handlePacket</A></B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A>&nbsp;packet)</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Called by the XBeePacketParser when a new packet has arrived
- After this method returns, notifyAll is called on newPacketNotification 
- to alert all threads waiting for packets
- 
- This method is called within a synchronized block
- 
- TODO this should not be public</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>protected &nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#handleSerialData()">handleSerialData</A></B>()</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Called by RXTX to notify us that data is available to be read.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method returns an XBeeResponse from the queue, if available.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -271,12 +213,21 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;boolean</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#isStartupChecks()">isStartupChecks</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#open(java.lang.String, int)">open</A></B>(java.lang.String&nbsp;port,
      int&nbsp;baudRate)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If startChecks is set to true (default), this method will check if the AP parameter
+ is set correctly and attempt to update if AP=1.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -289,7 +240,7 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#sendAsynchronous(com.rapplogic.xbee.api.XBeeRequest)">sendAsynchronous</A></B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeRequest.html" title="class in com.rapplogic.xbee.api">XBeeRequest</A>&nbsp;frameData)</CODE>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#sendAsynchronous(com.rapplogic.xbee.api.XBeeRequest)">sendAsynchronous</A></B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeRequest.html" title="class in com.rapplogic.xbee.api">XBeeRequest</A>&nbsp;request)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sends an XBeeRequest though the XBee interface in an asynchronous manner, such that
@@ -301,9 +252,7 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#sendAtCommand(com.rapplogic.xbee.api.AtCommand)">sendAtCommand</A></B>(<A HREF="../../../../com/rapplogic/xbee/api/AtCommand.html" title="class in com.rapplogic.xbee.api">AtCommand</A>&nbsp;command)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Uses sendSynchronous to send an AtCommand and collect the response
- 
- Timeout value is fixed at 5 seconds.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;<I>Use this.sendSynchronous(command, timeout);</I></TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -311,7 +260,7 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#sendPacket(int[])">sendPacket</A></B>(int[]&nbsp;packet)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is a bit dangerous and may be made private in a future release.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This exists solely for the XMPP project.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -320,6 +269,14 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It's possible for packets to get interspersed if multiple threads send simultaneously.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#sendRequest(com.rapplogic.xbee.api.XBeeRequest)">sendRequest</A></B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeRequest.html" title="class in com.rapplogic.xbee.api">XBeeRequest</A>&nbsp;request)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -334,35 +291,26 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#setMaxQueueSize(int)">setMaxQueueSize</A></B>(int&nbsp;size)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sets the maximum size of the internal queue that supports the getResponse(..) method.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#setStartupChecks(boolean)">setStartupChecks</A></B>(boolean&nbsp;startupChecks)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Controls is a startup check is performed when connecting to the XBee.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#updateFrameId(int)">updateFrameId</A></B>(int&nbsp;val)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Updates the frame id.</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#waitForResponse()">waitForResponse</A></B>()</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method blocks until an XBeeResponse has been received</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#waitForResponse(long)">waitForResponse</A></B>(long&nbsp;timeout)</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Updated to throw XBeeTimeoutException</TD>
-</TR>
-</TABLE>
-&nbsp;<A NAME="methods_inherited_from_class_com.rapplogic.xbee.RxTxSerialComm"><!-- --></A>
-<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
-<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
-<TH ALIGN="left"><B>Methods inherited from class com.rapplogic.xbee.<A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html" title="class in com.rapplogic.xbee">RxTxSerialComm</A></B></TH>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#getInputStream()">getInputStream</A>, <A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#getOutputStream()">getOutputStream</A>, <A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#openSerialPort(java.lang.String, int)">openSerialPort</A>, <A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#openSerialPort(java.lang.String, java.lang.String, int, int)">openSerialPort</A>, <A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#openSerialPort(java.lang.String, java.lang.String, int, int, int, int, int, int)">openSerialPort</A>, <A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#serialEvent(gnu.io.SerialPortEvent)">serialEvent</A></CODE></TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
@@ -404,6 +352,23 @@ public <B>XBee</B>()</PRE>
 </TR>
 </TABLE>
 
+<A NAME="doStartupChecks()"><!-- --></A><H3>
+doStartupChecks</H3>
+<PRE>
+public void <B>doStartupChecks</B>()
+                     throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
 <A NAME="open(java.lang.String, int)"><!-- --></A><H3>
 open</H3>
 <PRE>
@@ -411,6 +376,10 @@ public void <B>open</B>(java.lang.String&nbsp;port,
                  int&nbsp;baudRate)
           throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
 <DL>
+<DD>If startChecks is set to true (default), this method will check if the AP parameter
+ is set correctly and attempt to update if AP=1.  If AP=0 (Transparent mode), an
+ exception will be thrown.
+<P>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html#open(java.lang.String, int)">open</A></CODE> in interface <CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A></CODE></DL>
 </DD>
@@ -450,6 +419,23 @@ public void <B>removePacketListener</B>(<A HREF="../../../../com/rapplogic/xbee/
 </DL>
 <HR>
 
+<A NAME="sendRequest(com.rapplogic.xbee.api.XBeeRequest)"><!-- --></A><H3>
+sendRequest</H3>
+<PRE>
+public void <B>sendRequest</B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeRequest.html" title="class in com.rapplogic.xbee.api">XBeeRequest</A>&nbsp;request)
+                 throws java.io.IOException</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+
+<DT><B>Throws:</B>
+<DD><CODE>java.io.IOException</CODE></DL>
+</DD>
+</DL>
+<HR>
+
 <A NAME="sendPacket(com.rapplogic.xbee.api.XBeePacket)"><!-- --></A><H3>
 sendPacket</H3>
 <PRE>
@@ -480,7 +466,7 @@ sendPacket</H3>
 public void <B>sendPacket</B>(int[]&nbsp;packet)
                 throws java.io.IOException</PRE>
 <DL>
-<DD>This is a bit dangerous and may be made private in a future release.  Intended For XMPP
+<DD>This exists solely for the XMPP project.  Use sendRequest instead
  
  Not Thread Safe
 <P>
@@ -490,7 +476,8 @@ public void <B>sendPacket</B>(int[]&nbsp;packet)
 <DD><DL>
 <DT><B>Parameters:</B><DD><CODE>packet</CODE> - 
 <DT><B>Throws:</B>
-<DD><CODE>java.io.IOException</CODE> - when serial device is disconnected: java.io.IOException: Device not configured in writeByte</DL>
+<DD><CODE>java.lang.RuntimeException</CODE> - when serial device is disconnected
+<DD><CODE>java.io.IOException</CODE></DL>
 </DD>
 </DL>
 <HR>
@@ -498,7 +485,7 @@ public void <B>sendPacket</B>(int[]&nbsp;packet)
 <A NAME="sendAsynchronous(com.rapplogic.xbee.api.XBeeRequest)"><!-- --></A><H3>
 sendAsynchronous</H3>
 <PRE>
-public void <B>sendAsynchronous</B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeRequest.html" title="class in com.rapplogic.xbee.api">XBeeRequest</A>&nbsp;frameData)
+public void <B>sendAsynchronous</B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeRequest.html" title="class in com.rapplogic.xbee.api">XBeeRequest</A>&nbsp;request)
                       throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
 <DL>
 <DD>Sends an XBeeRequest though the XBee interface in an asynchronous manner, such that
@@ -511,7 +498,7 @@ public void <B>sendAsynchronous</B>(<A HREF="../../../../com/rapplogic/xbee/api/
 <DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html#sendAsynchronous(com.rapplogic.xbee.api.XBeeRequest)">sendAsynchronous</A></CODE> in interface <CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A></CODE></DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>frameData</CODE> - 
+<DT><B>Parameters:</B><DD><CODE>request</CODE> - 
 <DT><B>Throws:</B>
 <DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE></DL>
 </DD>
@@ -524,11 +511,11 @@ sendAtCommand</H3>
 public <A HREF="../../../../com/rapplogic/xbee/api/AtCommandResponse.html" title="class in com.rapplogic.xbee.api">AtCommandResponse</A> <B>sendAtCommand</B>(<A HREF="../../../../com/rapplogic/xbee/api/AtCommand.html" title="class in com.rapplogic.xbee.api">AtCommand</A>&nbsp;command)
                                 throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
 <DL>
+<DD><B>Deprecated.</B>&nbsp;<I>Use this.sendSynchronous(command, timeout);</I>
+<P>
 <DD>Uses sendSynchronous to send an AtCommand and collect the response
- 
- Timeout value is fixed at 5 seconds.
- 
- TODO deprecate -- this method doesn't provide any value over sendSynchronous
+ <p/>
+ Timeout value is fixed at 5 seconds
 <P>
 <DD><DL>
 </DL>
@@ -552,23 +539,24 @@ public <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="cla
 <DL>
 <DD>Synchronous method for sending an XBeeRequest and obtaining the 
  corresponding response (response that has same frame id).
- 
- This method should only be called with requests that receive a response of
- type XBeeFrameIdResponse and you should attempt to use a unique frame id (see getNextFrameId)
- 
- This method returns the first response object with a matching frame id within the timeout
- period
- 
+ <p/>
+ This method returns the first response object with a matching frame id, within the timeout
+ period, so it is important to use q unique frame id (relative to previous subsequent requests).
+ <p/>
+ This method must only be called with requests that receive a response of
+ type XBeeFrameIdResponse.  All other request types with timeout.
+ <p/>
+ Keep in mind responses received here will also be available through the getResponse method
+ and the packet listener.  You should call clearResponseQueue prior to calling this method
+ if you don't want the same packet to be returned by getResponse.
+ <p/>
  TX requests send status responses (ACK) that indicate if the packet was delivered.  
  In my brief testing with series 2 radios in a simple 2 radio network, I got a status 
  response of ADDRESS_NOT_FOUND in about 3 seconds when my end device is powered off.  
  Keep in mind that you'll want to make sure your timeout is always larger than this 
  value in order to receive status responses.
- 
- NOTE: this method is thread-safe because it's not possible for the user to easily
- make it thread safe and perform well 
- 
- TODO responses received during synchronous send should not be added to the packetList
+ <p/>
+ This method is thread-safe
 <P>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html#sendSynchronous(com.rapplogic.xbee.api.XBeeRequest, int)">sendSynchronous</A></CODE> in interface <CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A></CODE></DL>
@@ -578,160 +566,7 @@ public <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="cla
 <DT><B>Returns:</B><DD>
 <DT><B>Throws:</B>
 <DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE>
-<DD><CODE>java.io.IOException</CODE>
-<DD><CODE>java.lang.InterruptedException</CODE>
-<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A></CODE></DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="getNewPacketNotification()"><!-- --></A><H3>
-getNewPacketNotification</H3>
-<PRE>
-public java.lang.Object <B>getNewPacketNotification</B>()</PRE>
-<DL>
-<DD>You can synchronize on this lock to get notified of new packets, however you must call wait() 
- to release the lock or buffers will overrun and general chaos will ensue.
- 
- TODO provide users a different lock for notification since hogging this lock would gum up the works
-<P>
-<DD><DL>
-</DL>
-</DD>
-<DD><DL>
-
-<DT><B>Returns:</B><DD></DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="handlePacket(com.rapplogic.xbee.api.XBeeResponse)"><!-- --></A><H3>
-handlePacket</H3>
-<PRE>
-public void <B>handlePacket</B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A>&nbsp;packet)</PRE>
-<DL>
-<DD>Called by the XBeePacketParser when a new packet has arrived
- After this method returns, notifyAll is called on newPacketNotification 
- to alert all threads waiting for packets
- 
- This method is called within a synchronized block
- 
- TODO this should not be public
-<P>
-<DD><DL>
-<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeePacketHandler.html#handlePacket(com.rapplogic.xbee.api.XBeeResponse)">handlePacket</A></CODE> in interface <CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeePacketHandler.html" title="interface in com.rapplogic.xbee.api">XBeePacketHandler</A></CODE></DL>
-</DD>
-<DD><DL>
-</DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="handleSerialData()"><!-- --></A><H3>
-handleSerialData</H3>
-<PRE>
-protected void <B>handleSerialData</B>()</PRE>
-<DL>
-<DD>Called by RXTX to notify us that data is available to be read.
- 
- This method calls notify on the parser to indicate it should start
- consuming packets.
-<P>
-<DD><DL>
-<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#handleSerialData()">handleSerialData</A></CODE> in class <CODE><A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html" title="class in com.rapplogic.xbee">RxTxSerialComm</A></CODE></DL>
-</DD>
-<DD><DL>
-</DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="waitForResponse()"><!-- --></A><H3>
-waitForResponse</H3>
-<PRE>
-public void <B>waitForResponse</B>()
-                     throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A>,
-                            <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
-<DL>
-<DD>This method blocks until an XBeeResponse has been received
-<P>
-<DD><DL>
-</DL>
-</DD>
-<DD><DL>
-
-<DT><B>Throws:</B>
-<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE>
-<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A></CODE></DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="waitForResponse(long)"><!-- --></A><H3>
-waitForResponse</H3>
-<PRE>
-public void <B>waitForResponse</B>(long&nbsp;timeout)
-                     throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A>,
-                            <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
-<DL>
-<DD>Updated to throw XBeeTimeoutException
-<P>
-<DD><DL>
-</DL>
-</DD>
-<DD><DL>
-<DT><B>Parameters:</B><DD><CODE>timeout</CODE> - 
-<DT><B>Throws:</B>
-<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE>
-<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A></CODE></DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="getResponseBlocking()"><!-- --></A><H3>
-getResponseBlocking</H3>
-<PRE>
-public <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A> <B>getResponseBlocking</B>()
-                                 throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A>,
-                                        <A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A></PRE>
-<DL>
-<DD>Same as getResponseBlocking(int) but does not timeout
-<P>
-<DD><DL>
-</DL>
-</DD>
-<DD><DL>
-
-<DT><B>Returns:</B><DD>
-<DT><B>Throws:</B>
-<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE>
-<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A></CODE></DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="getResponseBlocking(int)"><!-- --></A><H3>
-getResponseBlocking</H3>
-<PRE>
-public <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A> <B>getResponseBlocking</B>(int&nbsp;timeout)
-                                 throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A>,
-                                        <A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A></PRE>
-<DL>
-<DD>This method blocks until a response is received or a timeout occurs.
- This method will not return packets in the packetBuffer.
- This method is guaranteed to return a response object or throw an Exception
- This method is thread-safe.  each thread that acquires the lock prior to notification
- will receive the same response object
-<P>
-<DD><DL>
-</DL>
-</DD>
-<DD><DL>
-<DT><B>Parameters:</B><DD><CODE>timeout</CODE> - 
-<DT><B>Returns:</B><DD>
-<DT><B>Throws:</B>
-<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE>
-<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A></CODE></DL>
+<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A></CODE> - thrown if no matching response is identified</DL>
 </DD>
 </DL>
 <HR>
@@ -742,7 +577,11 @@ getResponse</H3>
 public <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A> <B>getResponse</B>()
                          throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
 <DL>
-<DD>Same as getResponse(int) but does not timeout
+<DD>Same as getResponse(int) but does not timeout.
+ It's highly recommend that you always use a timeout because
+ if the serial connection dies under certain conditions, you will end up waiting forever!
+ <p/>
+ Consider using the PacketListener for asynchronous (non-blocking) behavior
 <P>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html#getResponse()">getResponse</A></CODE> in interface <CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A></CODE></DL>
@@ -763,58 +602,23 @@ public <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="cla
                          throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A>,
                                 <A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A></PRE>
 <DL>
-<DD>This method returns immediately with the zero-eth response (FIFO), if getPacketList().size() is greater than 0;
- otherwise it waits on the getNewPacketNotification() object until the next response arrives.
-  
- Be sure to clear the packetList prior to calling this if you are looking for new responses
- 
- WARNING: If you call this method from multiple threads, each XBeeResponse 
- will be returned to only one thread!
- 
- Consider a sendAndReceive method that returns that first response 
- Consider a separate thread that reads from the packetlist and notifies waiters
+<DD>This method returns an XBeeResponse from the queue, if available.
+ There are three possible outcomes:
+ <p/>
+ 1.  Packet is returned <br/>
+ 2.  XBeeTimeoutException is thrown (i.e. queue was empty for duration of timeout) <br/>
+ 3.  Return null if timeout is 0 and queue is empty. <br/>
+ <p/>
 <P>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html#getResponse(int)">getResponse</A></CODE> in interface <CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A></CODE></DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>timeout</CODE> - 
+<DT><B>Parameters:</B><DD><CODE>timeout</CODE> - milliseconds to wait for a response.  A value of zero disables the timeout
 <DT><B>Returns:</B><DD>
 <DT><B>Throws:</B>
 <DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE>
 <DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A></CODE> - if timeout occurs before a response is received</DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="getPacketList()"><!-- --></A><H3>
-getPacketList</H3>
-<PRE>
-public java.util.List&lt;<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A>&gt; <B>getPacketList</B>()</PRE>
-<DL>
-<DD>This list holds maximum of maxPacketListSize packets and discards
- older packets when the maximum limit is reached.
-<P>
-<DD><DL>
-</DL>
-</DD>
-<DD><DL>
-
-<DT><B>Returns:</B><DD></DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="getPacketCount()"><!-- --></A><H3>
-getPacketCount</H3>
-<PRE>
-public long <B>getPacketCount</B>()</PRE>
-<DL>
-<DD><DL>
-</DL>
-</DD>
-<DD><DL>
-</DL>
 </DD>
 </DL>
 <HR>
@@ -827,10 +631,76 @@ public void <B>close</B>()</PRE>
 <DD>Shuts down RXTX and packet parser thread
 <P>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html#close()">close</A></CODE> in interface <CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A></CODE><DT><B>Overrides:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html#close()">close</A></CODE> in class <CODE><A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html" title="class in com.rapplogic.xbee">RxTxSerialComm</A></CODE></DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html#close()">close</A></CODE> in interface <CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A></CODE></DL>
 </DD>
 <DD><DL>
 </DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="isConnected()"><!-- --></A><H3>
+isConnected</H3>
+<PRE>
+public boolean <B>isConnected</B>()</PRE>
+<DL>
+<DD>Indicates if serial port connection has been established
+<P>
+<DD><DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html#isConnected()">isConnected</A></CODE> in interface <CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A></CODE></DL>
+</DD>
+<DD><DL>
+
+<DT><B>Returns:</B><DD></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="isStartupChecks()"><!-- --></A><H3>
+isStartupChecks</H3>
+<PRE>
+public boolean <B>isStartupChecks</B>()</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="setStartupChecks(boolean)"><!-- --></A><H3>
+setStartupChecks</H3>
+<PRE>
+public void <B>setStartupChecks</B>(boolean&nbsp;startupChecks)</PRE>
+<DL>
+<DD>Controls is a startup check is performed when connecting to the XBee.
+ The startup check attempts to determine the firmware type and if it is 
+ configured correctly for use with this software.  Default is true.
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>startupChecks</CODE> - </DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="setMaxQueueSize(int)"><!-- --></A><H3>
+setMaxQueueSize</H3>
+<PRE>
+public void <B>setMaxQueueSize</B>(int&nbsp;size)</PRE>
+<DL>
+<DD>Sets the maximum size of the internal queue that supports the getResponse(..) method.
+ Packets are removed from the head of the queue once this limit is reached.  The default is 100
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>size</CODE> - </DL>
 </DD>
 </DL>
 <HR>
@@ -886,38 +756,18 @@ public void <B>updateFrameId</B>(int&nbsp;val)</PRE>
 </DL>
 <HR>
 
-<A NAME="getLastResponse()"><!-- --></A><H3>
-getLastResponse</H3>
+<A NAME="clearResponseQueue()"><!-- --></A><H3>
+clearResponseQueue</H3>
 <PRE>
-public <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A> <B>getLastResponse</B>()</PRE>
+public void <B>clearResponseQueue</B>()</PRE>
 <DL>
-<DD>Returns the last XBeeResponse that was received
- 
- If this is called after waitForResponse returns (without timeout), this *should* be the corresponding response
+<DD>Removes all packets off of the response queue
 <P>
 <DD><DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html#clearResponseQueue()">clearResponseQueue</A></CODE> in interface <CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A></CODE></DL>
+</DD>
+<DD><DL>
 </DL>
-</DD>
-<DD><DL>
-
-<DT><B>Returns:</B><DD></DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="isConnected()"><!-- --></A><H3>
-isConnected</H3>
-<PRE>
-public boolean <B>isConnected</B>()</PRE>
-<DL>
-<DD>Indicates if serial port connection has been established
-<P>
-<DD><DL>
-<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html#isConnected()">isConnected</A></CODE> in interface <CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A></CODE></DL>
-</DD>
-<DD><DL>
-
-<DT><B>Returns:</B><DD>Feb 22, 2009</DL>
 </DD>
 </DL>
 <!-- ========= END OF CLASS DATA ========= -->
@@ -950,7 +800,7 @@ public boolean <B>isConnected</B>()</PRE>
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/PacketStream.html" title="class in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/RemoteAtResponse.html" title="class in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
 &nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeAddress.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../index.html?com/rapplogic/xbee/api/XBee.html" target="_top"><B>FRAMES</B></A>  &nbsp;

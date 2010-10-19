@@ -39,13 +39,7 @@ public class IoSample {
 	
 	private Integer dioMsb;
 	private Integer dioLsb;
-	
-	private Integer analog0;
-	private Integer analog1;
-	private Integer analog2;
-	private Integer analog3;
-	private Integer analog4;
-	private Integer analog5;
+	private Integer[] analog = new Integer[6];
 
 	public IoSample(RxResponseIoSample parent) {
 		this.parent = parent;
@@ -66,19 +60,27 @@ public class IoSample {
 	public Integer getDioLsb() {
 		return dioLsb;
 	}
-
+	
 	/**
-	 * Returns the 10-bit analog value of pin 20 (D0), when this pin is configured for Analog Input (D0=2)
-	 * Returns null if pin 20 is not configured for Analog input.
+	 * Returns the 10-bit analog value of the specified pin.
+	 * Returns null if pin is not configured for Analog input.
 	 * 
 	 * @return
 	 */
+	public Integer getAnalog(int pin) {
+		if (parent.isAnalogEnabled(pin)) {
+			return analog[pin];	
+		}
+		
+		return null;
+	}
+	
 	public Integer getAnalog0() {
-		return analog0;
+		return this.getAnalog(0);
 	}
 
 	public void setAnalog0(Integer analog0) {
-		this.analog0 = analog0;
+		analog[0] = analog0;
 	}
 
 	/**
@@ -88,11 +90,11 @@ public class IoSample {
 	 * @return
 	 */
 	public Integer getAnalog1() {
-		return analog1;
+		return this.getAnalog(1);
 	}
 
 	public void setAnalog1(Integer analog1) {
-		this.analog1 = analog1;
+		analog[1] = analog1;
 	}
 
 	/**
@@ -102,11 +104,11 @@ public class IoSample {
 	 * @return
 	 */
 	public Integer getAnalog2() {
-		return analog2;
+		return this.getAnalog(2);
 	}
 
 	public void setAnalog2(Integer analog2) {
-		this.analog2 = analog2;
+		analog[2] = analog2;
 	}
 
 	/**
@@ -116,11 +118,11 @@ public class IoSample {
 	 * @return
 	 */
 	public Integer getAnalog3() {
-		return analog3;
+		return this.getAnalog(3);
 	}
 
 	public void setAnalog3(Integer analog3) {
-		this.analog3 = analog3;
+		analog[3] = analog3;
 	}
 
 	/**
@@ -130,11 +132,11 @@ public class IoSample {
 	 * @return
 	 */
 	public Integer getAnalog4() {
-		return analog4;
+		return this.getAnalog(4);
 	}
 
 	public void setAnalog4(Integer analog4) {
-		this.analog4 = analog4;
+		analog[4] = analog4;
 	}
 
 	/**
@@ -144,11 +146,31 @@ public class IoSample {
 	 * @return
 	 */
 	public Integer getAnalog5() {
-		return analog5;
+		return this.getAnalog(5);
 	}
 
 	public void setAnalog5(Integer analog5) {
-		this.analog5 = analog5;
+		analog[5] = analog5;
+	}
+
+	/**
+	 * Returns the digital value of the specified pin.
+	 * Returns null if pin is not configured for Digital input 
+	 * 
+	 * @return
+	 */
+	public Boolean isDigitalOn(int pin) {
+		
+		if (!parent.isDigitalEnabled(pin)) {
+			return null;
+		}
+		
+		if (pin >= 0 && pin <= 7) {
+			return ByteUtils.getBit(dioLsb, pin + 1);
+		} else {
+			// pin 8
+			return ByteUtils.getBit(dioMsb, 1);		
+		}
 	}
 
 	/**
@@ -158,11 +180,7 @@ public class IoSample {
 	 * @return
 	 */
 	public Boolean isD0On() {
-		if (this.parent.isD0Enabled()) {
-			return ByteUtils.getBit(dioLsb, 1);	
-		}
-		
-		return null;
+		return this.isDigitalOn(0);
 	}
 
 	/**
@@ -172,11 +190,7 @@ public class IoSample {
 	 * @return
 	 */
 	public Boolean isD1On() {
-		if (this.parent.isD1Enabled()) {
-			return ByteUtils.getBit(dioLsb, 2);	
-		}
-		
-		return null;
+		return this.isDigitalOn(1);
 	}
 
 	/**
@@ -186,11 +200,7 @@ public class IoSample {
 	 * @return
 	 */
 	public Boolean isD2On() {
-		if (this.parent.isD2Enabled()) {
-			return ByteUtils.getBit(dioLsb, 3);
-		}
-		
-		return null;
+		return this.isDigitalOn(2);
 	}	
 
 	/**
@@ -200,12 +210,7 @@ public class IoSample {
 	 * @return
 	 */
 	public Boolean isD3On() {
-		if (this.parent.isD3Enabled()) {
-			return ByteUtils.getBit(dioLsb, 4);	
-		}
-		
-		return null;
-	}
+		return this.isDigitalOn(3);	}
 	
 	/**
 	 * Returns the digital value of pin 11 (D4) when this pin is configured for Digital input (D4=3)
@@ -214,11 +219,7 @@ public class IoSample {
 	 * @return
 	 */
 	public Boolean isD4On() {
-		if (this.parent.isD4Enabled()) {
-			return ByteUtils.getBit(dioLsb, 5);	
-		}
-		
-		return null;
+		return this.isDigitalOn(4);
 	}
 	
 	/**
@@ -228,11 +229,7 @@ public class IoSample {
 	 * @return
 	 */
 	public Boolean isD5On() {
-		if (this.parent.isD5Enabled()) {
-			return ByteUtils.getBit(dioLsb, 6);	
-		}
-		
-		return null;
+		return this.isDigitalOn(5);
 	}
 
 	/**
@@ -242,11 +239,7 @@ public class IoSample {
 	 * @return
 	 */
 	public Boolean isD6On() {
-		if (this.parent.isD6Enabled()) {
-			return ByteUtils.getBit(dioLsb, 7);	
-		}
-		
-		return null;
+		return this.isDigitalOn(6);
 	}
 	
 	/**
@@ -256,11 +249,7 @@ public class IoSample {
 	 * @return
 	 */	
 	public Boolean isD7On() {
-		if (this.parent.isD7Enabled()) {
-			return ByteUtils.getBit(dioLsb, 8);	
-		}
-		
-		return null;
+		return this.isDigitalOn(7);
 	}
 
 	/**
@@ -270,84 +259,30 @@ public class IoSample {
 	 * @return
 	 */	
 	public Boolean isD8On() {
-		if (this.parent.isD8Enabled()) {
-			return ByteUtils.getBit(dioMsb, 1);	
-		}
-		
-		return null;	
+		return this.isDigitalOn(8);
 	}
+	
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		// TODO only prefix with comma if not first entry written.  Use reflection
-		if (this.getDioMsb() != null) {
-			builder.append("dioMsb=" + ByteUtils.toBase2(this.getDioMsb()));	
+			
+		if (parent.containsDigital()) {
+			for (int i = 0; i <= 8; i++) {
+				if (parent.isDigitalEnabled(i)) {
+					builder.append(",digital[" + i + "]=" + (this.isDigitalOn(i) ? "high" : "low"));
+				}
+			}
 		}
 		
-		if (this.getDioLsb() != null) {
-			builder.append(",dioLsb=" + ByteUtils.toBase2(this.getDioLsb()));	
-		}
-		
-		if (this.getAnalog0() != null) {
-			builder.append(",analog0=" + this.getAnalog0());
-		}
-
-		if (this.getAnalog1() != null) {
-			builder.append(",analog1=" + this.getAnalog1());
+		if (parent.containsAnalog()) {
+			for (int i = 0; i <= 5; i++) {
+				if (parent.isAnalogEnabled(i)) {
+					builder.append(",analog[" + i + "]=" + this.getAnalog(i));	
+				}
+			}
 		}
 
-		if (this.getAnalog2() != null) {
-			builder.append(",analog2=" + this.getAnalog2());
-		}
-
-		if (this.getAnalog3() != null) {
-			builder.append(",analog3=" + this.getAnalog3());
-		}
-
-		if (this.getAnalog4() != null) {
-			builder.append(",analog4=" + this.getAnalog4());
-		}
-
-		if (this.getAnalog5() != null) {
-			builder.append(",analog5=" + this.getAnalog5());
-		}
-		
-		if (this.isD0On() != null) {
-			builder.append(",digital0=" + (this.isD0On() ? "high" : "low"));
-		}
-
-		if (this.isD1On() != null) {
-			builder.append(",digital1=" + (this.isD1On() ? "high" : "low"));
-		}
-
-		if (this.isD2On() != null) {
-			builder.append(",digital2=" + (this.isD2On() ? "high" : "low"));
-		}
-
-		if (this.isD3On() != null) {
-			builder.append(",digital3=" + (this.isD3On() ? "high" : "low"));
-		}
-
-		if (this.isD4On() != null) {
-			builder.append(",digital4=" + (this.isD4On() ? "high" : "low"));
-		}
-
-		if (this.isD5On() != null) {
-			builder.append(",digital5=" + (this.isD5On() ? "high" : "low"));
-		}
-
-		if (this.isD6On() != null) {
-			builder.append(",digital6=" + (this.isD6On() ? "high" : "low"));
-		}
-		
-		if (this.isD7On() != null) {
-			builder.append(",digital7=" + (this.isD7On() ? "high" : "low"));
-		}
-
-		if (this.isD8On() != null) {
-			builder.append(",digital8=" + (this.isD8On() ? "high" : "low"));
-		}
-		
 		return builder.toString();
 	}
 }

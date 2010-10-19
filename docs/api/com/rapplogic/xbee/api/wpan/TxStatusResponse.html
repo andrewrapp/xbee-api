@@ -6,14 +6,15 @@
 TxStatusResponse
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.wpan.TxStatusResponse class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="TxStatusResponse";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="TxStatusResponse";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -92,6 +94,9 @@ java.lang.Object
       <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../../com/rapplogic/xbee/api/XBeeFrameIdResponse.html" title="class in com.rapplogic.xbee.api">com.rapplogic.xbee.api.XBeeFrameIdResponse</A>
           <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.wpan.TxStatusResponse</B>
 </PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD>java.io.Serializable</DD>
+</DL>
 <HR>
 <DL>
 <DT><PRE>public class <B>TxStatusResponse</B><DT>extends <A HREF="../../../../../com/rapplogic/xbee/api/XBeeFrameIdResponse.html" title="class in com.rapplogic.xbee.api">XBeeFrameIdResponse</A></DL>
@@ -110,7 +115,7 @@ Series 1 XBee.  This is sent out the UART of the transmitting XBee immediately f
 <DL>
 <DT><B>Author:</B></DT>
   <DD>andrew</DD>
-</DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../../serialized-form.html#com.rapplogic.xbee.api.wpan.TxStatusResponse">Serialized Form</A></DL>
 <HR>
 
 <P>
@@ -183,14 +188,6 @@ Series 1 XBee.  This is sent out the UART of the transmitting XBee immediately f
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;boolean</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/wpan/TxStatusResponse.html#isError()">isError</A></B>()</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indicates an error occurred during the parsing of the packet.</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;boolean</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/wpan/TxStatusResponse.html#isPurged()">isPurged</A></B>()</CODE>
 
 <BR>
@@ -236,7 +233,7 @@ Series 1 XBee.  This is sent out the UART of the transmitting XBee immediately f
 <TH ALIGN="left"><B>Methods inherited from class com.rapplogic.xbee.api.<A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A></B></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getApiId()">getApiId</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getChecksum()">getChecksum</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getLength()">getLength</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getPacketBytes()">getPacketBytes</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setApiId(com.rapplogic.xbee.api.ApiId)">setApiId</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setChecksum(int)">setChecksum</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setError(boolean)">setError</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setLength(com.rapplogic.xbee.api.XBeePacketLength)">setLength</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setPacketBytes(int[])">setPacketBytes</A></CODE></TD>
+<TD><CODE><A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#equals(java.lang.Object)">equals</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#finish()">finish</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getApiId()">getApiId</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getChecksum()">getChecksum</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getLength()">getLength</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getPacketBytes()">getPacketBytes</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getProcessedPacketBytes()">getProcessedPacketBytes</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getRawPacketBytes()">getRawPacketBytes</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#hashCode()">hashCode</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#isError()">isError</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setApiId(com.rapplogic.xbee.api.ApiId)">setApiId</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setChecksum(int)">setChecksum</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setError(boolean)">setError</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setLength(com.rapplogic.xbee.api.XBeePacketLength)">setLength</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setRawPacketBytes(int[])">setRawPacketBytes</A></CODE></TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
@@ -245,7 +242,7 @@ Series 1 XBee.  This is sent out the UART of the transmitting XBee immediately f
 <TH ALIGN="left"><B>Methods inherited from class java.lang.Object</B></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE>clone, equals, finalize, getClass, hashCode, notify, notifyAll, wait, wait, wait</CODE></TD>
+<TD><CODE>clone, finalize, getClass, notify, notifyAll, wait, wait, wait</CODE></TD>
 </TR>
 </TABLE>
 &nbsp;
@@ -309,28 +306,6 @@ public boolean <B>isSuccess</B>()</PRE>
 <P>
 <DD><DL>
 </DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="isError()"><!-- --></A><H3>
-isError</H3>
-<PRE>
-public boolean <B>isError</B>()</PRE>
-<DL>
-<DD><B>Description copied from class: <CODE><A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#isError()">XBeeResponse</A></CODE></B></DD>
-<DD>Indicates an error occurred during the parsing of the packet.
- This may indicate a bug in this software or in the XBee firmware.
- Absence of an error does not indicate the request was successful;
- you will need to inspect the status byte of the response object (if available)
- to determine success.
-<P>
-<DD><DL>
-<DT><B>Overrides:</B><DD><CODE><A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#isError()">isError</A></CODE> in class <CODE><A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A></CODE></DL>
-</DD>
-<DD><DL>
-
-<DT><B>Returns:</B><DD></DL>
 </DD>
 </DL>
 <HR>

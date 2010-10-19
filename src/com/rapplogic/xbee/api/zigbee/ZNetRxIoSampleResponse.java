@@ -23,9 +23,11 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+import com.rapplogic.xbee.api.AtCommandResponse;
 import com.rapplogic.xbee.api.XBeeParseException;
 import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.IIntArrayInputStream;
+import com.rapplogic.xbee.util.IntArrayInputStream;
 
 /**
  * Series 2 XBee.  Represents an I/O Sample resposne sent from a remote radio.
@@ -37,31 +39,40 @@ import com.rapplogic.xbee.util.IIntArrayInputStream;
  *
  */
 public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
-
-	@SuppressWarnings("unused")
+	
 	private final static Logger log = Logger.getLogger(ZNetRxIoSampleResponse.class);
 	
-	private int digitalChannelMask1;
-	private int digitalChannelMask2;
+	private int digitalChannelMaskMsb;
+	private int digitalChannelMaskLsb;
 	private int analogChannelMask;
 
 	// all values that may not be in the packet use Integer to distinguish between null and non-null
 	private Integer dioMsb;
 	private Integer dioLsb;
 	
-	private Integer analog0;
-	private Integer analog1;
-	private Integer analog2;
-	private Integer analog3;
-	private Integer supplyVoltage;
+	private final static int SUPPLY_VOLTAGE_INDEX = 4;
+	private Integer[] analog = new Integer[5];
 	
 	public ZNetRxIoSampleResponse() {
 		
 	}
 
+	public static ZNetRxIoSampleResponse parseIsSample(AtCommandResponse response) throws IOException {
+		
+		if (!response.getCommand().equals("IS")) {
+			throw new RuntimeException("This is only applicable to the \"IS\" AT command");
+		}
+		
+		IntArrayInputStream in = new IntArrayInputStream(response.getValue());
+		ZNetRxIoSampleResponse sample = new ZNetRxIoSampleResponse();
+		sample.parse(in);
+		
+		return sample;
+	}
+	
 	/**
 	 * This method is a bit non standard since it needs to parse an IO sample
-	 * from either a RX response or a Remote AT/AT response (IS).
+	 * from either a RX response or a Remote AT/Local AT response (IS).
 	 * 
 	 * @param ps
 	 * @throws IOException
@@ -74,23 +85,16 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
 			throw new XBeeParseException("Sample size is not supported if > 1 for ZNet I/O");
 		}
 		
-		this.setDigitalChannelMask1(ps.read("ZNet RX IO Sample Digital Mask 1"));
-		this.setDigitalChannelMask2(ps.read("ZNet RX IO Sample Digital Mask 2"));
+		this.setDigitalChannelMaskMsb(ps.read("ZNet RX IO Sample Digital Mask 1"));
+		this.setDigitalChannelMaskLsb(ps.read("ZNet RX IO Sample Digital Mask 2"));
 		this.setAnalogChannelMask(ps.read("ZNet RX IO Sample Analog Channel Mask"));
 		
 		// zero out n/a bits
 		this.analogChannelMask = this.analogChannelMask & 0x8f; //10001111
 		// zero out all but bits 3-5
-		this.digitalChannelMask1 = this.digitalChannelMask1 & 0x1c; //11100
-		
-//		if (!this.containsDigital() && (this.getDigitalChannelMask1() > 0 || this.getDigitalChannelMask2() > 0)) {
-//			throw new XBeeParseException("containsDigital and channal masks are conflicting");
-//		}
-//		
-//		if (!this.containsAnalog() && this.getAnalogChannelMask() > 0) {
-//			throw new XBeeParseException("containsAnalog and channal masks are conflicting");
-//		}
-		
+		// TODO apparent bug: channel mask on ZigBee Pro firmware has DIO10/P0 as enabled even though it's set to 01 (RSSI).  Digital value reports low. 
+		this.digitalChannelMaskMsb = this.digitalChannelMaskMsb & 0x1c; //11100
+				
 		if (this.containsDigital()) {
 			log.info("response contains digital data");
 			// next two bytes are digital
@@ -101,52 +105,39 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
 		}
 		
 		// parse 10-bit analog values
-
-		int analog = 0;
 		
-		if (this.isA0Enabled()) {
-			log.info("response contains analog0");
-			this.setAnalog0(ByteUtils.parse10BitAnalog(ps, analog));
-			analog++;
-		}
+		int enabledCount = 0;
 		
-		if (this.isA1Enabled()) {
-			this.setAnalog1(ByteUtils.parse10BitAnalog(ps, analog));
-			analog++;
-		}		
-
-		if (this.isA2Enabled()) {
-			this.setAnalog2(ByteUtils.parse10BitAnalog(ps, analog));
-			analog++;
-		}
-
-		if (this.isA3Enabled()) {
-			this.setAnalog3(ByteUtils.parse10BitAnalog(ps, analog));
-			analog++;
+		for (int i = 0; i < 4; i++) {
+			if (this.isAnalogEnabled(i)) {
+				log.info("response contains analog[" + i + "]");
+				analog[i] = ByteUtils.parse10BitAnalog(ps, enabledCount);
+				enabledCount++;
+			}			
 		}
 		
 		if (this.isSupplyVoltageEnabled()) {
-			this.setSupplyVoltage(ByteUtils.parse10BitAnalog(ps, analog));
-			analog++;
+			analog[SUPPLY_VOLTAGE_INDEX] = ByteUtils.parse10BitAnalog(ps, enabledCount);
+			enabledCount++;
 		}
 		
 		log.debug("There are " + analog + " analog inputs in this packet");
 	}
 	
-	public int getDigitalChannelMask1() {
-		return digitalChannelMask1;
+	public int getDigitalChannelMaskMsb() {
+		return digitalChannelMaskMsb;
 	}
 
-	private void setDigitalChannelMask1(int digitalChannelMask1) {
-		this.digitalChannelMask1 = digitalChannelMask1;
+	private void setDigitalChannelMaskMsb(int digitalChannelMask1) {
+		this.digitalChannelMaskMsb = digitalChannelMask1;
 	}
 
-	public int getDigitalChannelMask2() {
-		return digitalChannelMask2;
+	public int getDigitalChannelMaskLsb() {
+		return digitalChannelMaskLsb;
 	}
 
-	private void setDigitalChannelMask2(int digitalChannelMask2) {
-		this.digitalChannelMask2 = digitalChannelMask2;
+	private void setDigitalChannelMaskLsb(int digitalChannelMask2) {
+		this.digitalChannelMaskLsb = digitalChannelMask2;
 	}
 
 	public int getAnalogChannelMask() {
@@ -157,64 +148,92 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
 		this.analogChannelMask = analogChannelMask;
 	}
 
+	/**
+	 * Consider using isDigitalEnabled(pin) instead
+	 * 
+	 * @return
+	 */
 	public boolean isD0Enabled() {
-		return ByteUtils.getBit(this.digitalChannelMask2, 1);
+		return this.isDigitalEnabled(0);
 	}
 
 	public boolean isD1Enabled() {
-		return ByteUtils.getBit(this.digitalChannelMask2, 2);
+		return this.isDigitalEnabled(1);
 	}
 
 	public boolean isD2Enabled() {
-		return ByteUtils.getBit(this.digitalChannelMask2, 3);
+		return this.isDigitalEnabled(2);
 	}
 
 	public boolean isD3Enabled() {
-		return ByteUtils.getBit(this.digitalChannelMask2, 4);
+		return this.isDigitalEnabled(3);
 	}
 
 	public boolean isD4Enabled() {
-		return ByteUtils.getBit(this.digitalChannelMask2, 5);
+		return this.isDigitalEnabled(4);
 	}
 
 	public boolean isD5Enabled() {
-		return ByteUtils.getBit(this.digitalChannelMask2, 6);
+		return this.isDigitalEnabled(5);
 	}
 
 	public boolean isD6Enabled() {
-		return ByteUtils.getBit(this.digitalChannelMask2, 7);
+		return this.isDigitalEnabled(6);
 	}
 
 	public boolean isD7Enabled() {
-		return ByteUtils.getBit(this.digitalChannelMask2, 8);
+		return this.isDigitalEnabled(7);
 	}
 	
 	public boolean isD10Enabled() {
-		return ByteUtils.getBit(this.digitalChannelMask1, 3);
+		return this.isDigitalEnabled(10);
 	}
 	
 	public boolean isD11Enabled() {
-		return ByteUtils.getBit(this.digitalChannelMask1, 4);
+		return this.isDigitalEnabled(11);
 	}
 	
 	public boolean isD12Enabled() {
-		return ByteUtils.getBit(this.digitalChannelMask1, 5);
+		return this.isDigitalEnabled(12);
 	}
 	
+	/**
+	 * Consider using isAnalogEnable(pin) instead
+	 * 
+	 * @return
+	 */
 	public boolean isA0Enabled() {
-		return ByteUtils.getBit(this.analogChannelMask, 1);
+		return this.isAnalogEnabled(0);
 	}
 
 	public boolean isA1Enabled() {
-		return ByteUtils.getBit(this.analogChannelMask, 2);
+		return this.isAnalogEnabled(1);
 	}
 	
 	public boolean isA2Enabled() {
-		return ByteUtils.getBit(this.analogChannelMask, 3);
+		return this.isAnalogEnabled(2);
 	}
 	
 	public boolean isA3Enabled() {
-		return ByteUtils.getBit(this.analogChannelMask, 4);
+		return this.isAnalogEnabled(3);
+	}	
+	
+	public boolean isDigitalEnabled(int pin) {
+		if (pin >=0 && pin <= 7) {
+			return ByteUtils.getBit(this.digitalChannelMaskLsb, pin + 1);
+		} else if (pin >=10 && pin <= 12) {
+			return ByteUtils.getBit(this.digitalChannelMaskMsb, pin - 7);
+		} else {
+			throw new IllegalArgumentException("Unsupported pin: " + pin);
+		}
+	}
+
+	public boolean isAnalogEnabled(int pin) {
+		if (pin >=0 && pin <= 3) {
+			return ByteUtils.getBit(this.analogChannelMask, pin + 1);
+		} else {
+			throw new IllegalArgumentException("Unsupported pin: " + pin);
+		}
 	}
 
 	/**
@@ -227,18 +246,15 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
 	public boolean isSupplyVoltageEnabled() {
 		return ByteUtils.getBit(this.analogChannelMask, 8);
 	}
-	
+
 	/**
-	 * If digital I/O line (DIO0) is enabled: returns true if digital 0 is HIGH (ON); false if it is LOW (OFF).
-	 * If digital I/O line is not enabled this method returns null as it has no value.
-	 * 
-	 * Digital I/O pins seem to report high when open circuit (unconnected)
+	 * Consider using isDigitalOn(pin)
 	 * 
 	 * @return
 	 */
 	public Boolean isD0On() {
-		if (this.isD0Enabled()) {
-			return ByteUtils.getBit(dioLsb, 1);	
+		if (isDigitalEnabled(0)) {
+			return isDigitalOn(0);
 		}
 		
 		return null;
@@ -246,84 +262,106 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
 
 	// consider using underscore for readability (isD1_On)
 	public Boolean isD1On() {
-		if (this.isD1Enabled()) {
-			return ByteUtils.getBit(dioLsb, 2);	
+		if (isDigitalEnabled(1)) {
+			return isDigitalOn(1);
 		}
 		
 		return null;
 	}
 	
 	public Boolean isD2On() {
-		if (this.isD2Enabled()) {
-			return ByteUtils.getBit(dioLsb, 3);	
+		if (isDigitalEnabled(2)) {
+			return isDigitalOn(2);
 		}
 		
 		return null;
 	}
 	
 	public Boolean isD3On() {
-		if (this.isD3Enabled()) {
-			return ByteUtils.getBit(dioLsb, 4);	
+		if (isDigitalEnabled(3)) {
+			return isDigitalOn(3);
 		}
 		
 		return null;
 	}
 	
 	public Boolean isD4On() {
-		if (this.isD4Enabled()) {
-			return ByteUtils.getBit(dioLsb, 5);	
+		if (isDigitalEnabled(4)) {
+			return isDigitalOn(4);
 		}
 		
 		return null;
 	}
 
 	public Boolean isD5On() {
-		if (this.isD5Enabled()) {
-			return ByteUtils.getBit(dioLsb, 6);	
+		if (isDigitalEnabled(5)) {
+			return isDigitalOn(5);
 		}
 		
 		return null;
 	}
 	
 	public Boolean isD6On() {
-		if (this.isD6Enabled()) {
-			return ByteUtils.getBit(dioLsb, 7);	
+		if (isDigitalEnabled(6)) {
+			return isDigitalOn(6);
 		}
 		
 		return null;
 	}
 	
 	public Boolean isD7On() { 
-		if (this.isD7Enabled()) {
-			return ByteUtils.getBit(dioLsb, 8);	
+		if (isDigitalEnabled(7)) {
+			return isDigitalOn(7);
 		}
 		
 		return null;
 	}
 	
 	public Boolean isD10On() {
-		if (this.isD10Enabled()) {
-			return ByteUtils.getBit(dioMsb, 3);	
+		if (isDigitalEnabled(10)) {
+			return isDigitalOn(10);
 		}
 		
 		return null;
 	}
 
 	public Boolean isD11On() {
-		if (this.isD11Enabled()) {
-			return ByteUtils.getBit(dioMsb, 4);	
+		if (isDigitalEnabled(11)) {
+			return isDigitalOn(11);
 		}
 		
 		return null;
 	}
 	
 	public Boolean isD12On() {
-		if (this.isD12Enabled()) {
-			return ByteUtils.getBit(dioMsb, 5);	
+		if (isDigitalEnabled(12)) {
+			return isDigitalOn(12);
 		}
 		
 		return null;
 	}	
+		
+	/**
+	 * If digital I/O line (DIO0) is enabled: returns true if digital 0 is HIGH (ON); false if it is LOW (OFF).
+	 * If digital I/O line is not enabled this method returns null as it has no value.
+	 * <p/>
+	 * Important: the pin number corresponds to the logical pin (e.g. D4), not the physical pin number.
+	 * <p/>
+	 * Digital I/O pins seem to report high when open circuit (unconnected)
+	 * 
+	 * @return
+	 */	
+	public Boolean isDigitalOn(int pin) {
+		if (this.isDigitalEnabled(pin)) {
+			if (pin >=0 && pin <= 7) {
+				return ByteUtils.getBit(dioLsb, pin + 1);
+			} else if (pin >=10 && pin <= 12) {
+				return ByteUtils.getBit(dioMsb, pin - 7);
+			}			
+		}
+		
+		return null;
+	}
 
 	/**
 	 * Returns true if this sample contains data from digital inputs
@@ -333,8 +371,7 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
 	 * @return
 	 */
 	public boolean containsDigital() {
-        return this.getDigitalChannelMask1() > 0 || this.getDigitalChannelMask2() > 0;
-
+        return this.getDigitalChannelMaskMsb() > 0 || this.getDigitalChannelMaskLsb() > 0;
     }
 	
 	/**
@@ -348,7 +385,6 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
 	 */
 	public boolean containsAnalog() {
         return this.getAnalogChannelMask() > 0;
-
     }
 
 	/**
@@ -376,136 +412,123 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
 	private void setDioLsb(Integer dioLsb) {
 		this.dioLsb = dioLsb;
 	}
+	
+	/**
+	 * Consider using getAnalog(pin) instead
+	 * 
+	 * @return
+	 */
+	public Integer getAnalog0() {
+		return analog[0];
+	}
 
+	public void setAnalog0(Integer analog0) {
+		analog[0] = analog0;
+	}		
+	
+	public Integer getAnalog1() {
+		return analog[1];
+	}
+
+	public void setAnalog1(Integer analog1) {
+		analog[1] = analog1;
+	}
+
+	public Integer getAnalog2() {
+		return analog[2];
+	}
+
+	public void setAnalog2(Integer analog2) {
+		analog[2] = analog2;
+	}
+
+	public Integer getAnalog3() {
+		return analog[3];
+	}
+
+	public void setAnalog3(Integer analog3) {
+		analog[3] = analog3;
+	}	
+	
 	/**
 	 * Returns a 10 bit value of ADC line 0, if enabled.
 	 * Returns null if ADC line 0 is not enabled.
-	 * 
+	 * <p/>
 	 * The range of Digi XBee series 2 ADC is 0 - 1.2V and although I couldn't find this in the spec 
 	 * a few google searches seems to confirm.  When I connected 3.3V to just one of the ADC pins, it 
-	 * displayed it's displeasure by reporting all ADC pins at 1023.
-	 * 
+	 * displayed its displeasure by reporting all ADC pins at 1023.
+	 * <p/>
 	 * Analog pins seem to float around 512 when open circuit
-	 * 
+	 * <p/>
 	 * The reason this returns null is to prevent bugs in the event that you thought you were reading the 
 	 * actual value when the pin is not enabled.
 	 * 
 	 * @return
 	 */
-	public Integer getAnalog0() {
-		return analog0;
+	public Integer getAnalog(int pin) {
+		if (this.isAnalogEnabled(pin)) {
+			return analog[pin];
+		}
+		
+		return null;
 	}
-
-	private void setAnalog0(Integer analog0) {
-		this.analog0 = analog0;
-	}
-
-	public Integer getAnalog1() {
-		return analog1;
-	}
-
-	private void setAnalog1(Integer analog1) {
-		this.analog1 = analog1;
-	}
-
-	public Integer getAnalog2() {
-		return analog2;
-	}
-
-	private void setAnalog2(Integer analog2) {
-		this.analog2 = analog2;
-	}
-
-	public Integer getAnalog3() {
-		return analog3;
-	}
-
-	private void setAnalog3(Integer analog3) {
-		this.analog3 = analog3;
-	}
+		
+//	public Integer getAnalog(int pin) {
+//		// analog starts 19 bytes after MSB length, if no dio enabled
+//		int startIndex = 18;
+//
+//		if (!isAnalogEnabled(pin)) {
+//			// this pin is not turned on
+//			return null;
+//		}
+//		
+//		if (this.containsDigital()) {
+//			// make room for digital i/o
+//			startIndex+=2;
+//		}
+//
+//		// start depends on how many pins before this pin are enabled
+//		for (int i = 0; i < pin; i++) {
+//			if (isAnalogEnabled(i)) {
+//				startIndex+=2;
+//			}
+//		}
+//
+//		return (this.getProcessedPacketBytes()[startIndex] << 8) + this.getProcessedPacketBytes()[startIndex + 1];
+//	}
 
 	public Integer getSupplyVoltage() {
-		return supplyVoltage;
+		return analog[SUPPLY_VOLTAGE_INDEX];
 	}
 
-	private void setSupplyVoltage(Integer supplyVoltage) {
-		this.supplyVoltage = supplyVoltage;
+	public void setSupplyVoltage(Integer supplyVoltage) {
+		analog[SUPPLY_VOLTAGE_INDEX] = supplyVoltage;
 	}
 	
-	// TODO this could be simplified with reflection
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		
 		builder.append(super.toString());
 		
-		builder.append(",digitalChannelMask1=" + ByteUtils.toBase2(this.getDigitalChannelMask1()));
-		builder.append(",digitalChannelMask2=" + ByteUtils.toBase2(this.getDigitalChannelMask2()));
-		builder.append(",analogChannelMask=" + ByteUtils.toBase2(this.getAnalogChannelMask()));
-		
 		if (this.containsDigital()) {
-			builder.append(",dioMsb=" + ByteUtils.toBase2(this.getDioMsb()));
-			builder.append(",dioLsb=" + ByteUtils.toBase2(this.getDioLsb()));
-		
-			if (this.isD0Enabled()) {
-				builder.append(",D0=" + (this.isD0On() ? "high" : "low"));
+			for (int i = 0; i <= 7; i++) {
+				if (this.isDigitalEnabled(i)) {
+					builder.append(",digital[" + i + "]=" + (this.isDigitalOn(i) ? "high" : "low"));
+				}
 			}
 			
-			if (this.isD1Enabled()) {
-				builder.append(",D1=" + (this.isD1On() ? "high" : "low"));
-			}
-
-			if (this.isD2Enabled()) {
-				builder.append(",D2=" + (this.isD2On() ? "high" : "low"));
-			}
-			
-			if (this.isD3Enabled()) {
-				builder.append(",D3=" + (this.isD3On() ? "high" : "low"));
-			}
-			
-			if (this.isD4Enabled()) {
-				builder.append(",D4=" + (this.isD4On() ? "high" : "low"));
-			}
-			
-			if (this.isD5Enabled()) {
-				builder.append(",D5=" + (this.isD5On() ? "high" : "low"));
-			}
-			
-			if (this.isD6Enabled()) {
-				builder.append(",D6=" + (this.isD6On() ? "high" : "low"));
-			}
-			
-			if (this.isD7Enabled()) {
-				builder.append(",D7=" + (this.isD7On() ? "high" : "low"));
-			}
-			
-			if (this.isD10Enabled()) {
-				builder.append(",D10=" + (this.isD10On() ? "high" : "low"));
-			}
-			
-			if (this.isD11Enabled()) {
-				builder.append(",D11=" + (this.isD11On() ? "high" : "low"));
-			}	
-
-			if (this.isD12Enabled()) {
-				builder.append(",D12=" + (this.isD12On() ? "high" : "low"));
+			for (int i = 10; i <= 12; i++) {
+				if (this.isDigitalEnabled(i)) {
+					builder.append(",digital[" + i + "]=" + (this.isDigitalOn(i) ? "high" : "low"));
+				}
 			}
 		}
 		
 		if (this.containsAnalog()) {
-			if (this.isA0Enabled()) {
-				builder.append(",analog0=" + this.getAnalog0());
-			}
-			
-			if (this.isA1Enabled()) {
-				builder.append(",analog1=" + this.getAnalog1());
-			}
-
-			if (this.isA2Enabled()) {
-				builder.append(",analog2=" + this.getAnalog2());
-			}
-
-			if (this.isA3Enabled()) {
-				builder.append(",analog3=" + this.getAnalog3());
+			for (int i = 0; i <= 3; i++) {
+				if (this.isAnalogEnabled(i)) {
+					builder.append(",analog[" + i + "]=" + this.getAnalog(i));	
+				}
 			}
 			
 			if (this.isSupplyVoltageEnabled()) {

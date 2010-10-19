@@ -23,8 +23,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import com.rapplogic.xbee.api.XBeeRequest;
 import com.rapplogic.xbee.util.ByteUtils;
 
@@ -36,10 +34,8 @@ import com.rapplogic.xbee.util.ByteUtils;
  */
 public abstract class TxRequestBase extends XBeeRequest {
 	
-	private final static Logger log = Logger.getLogger(TxRequestBase.class);
-	
 	/**
-	 * Maximum payload size as specified in the manual.
+	 * Maximum payload size as specified in the series 1 XBee manual.
 	 * This is provided for reference only and is not used for validation
 	 */
 	public final static int MAX_PAYLOAD_SIZE = 100;
@@ -48,9 +44,10 @@ public abstract class TxRequestBase extends XBeeRequest {
 	
 	public enum Option {
 		
-		DEFAULT_OPTION (0),
-		DISABLE_ACK_OPTION (1),
-		BROADCAST_OPTION(4);
+		// TODO rename as unicast (delete _option for all)
+		UNICAST (0),
+		DISABLE_ACK (1),
+		BROADCAST(4);
 		
 		private static final Map<Integer,Option> lookup = new HashMap<Integer,Option>();
 		
@@ -78,6 +75,7 @@ public abstract class TxRequestBase extends XBeeRequest {
 	private int[] payload;
 	private Option option;
 
+	// TODO inconsistency: tx uses setPayload, rx uses getData
 	public int[] getPayload() {
 		return payload;
 	}

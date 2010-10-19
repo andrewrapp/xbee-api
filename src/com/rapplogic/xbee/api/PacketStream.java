@@ -25,7 +25,6 @@ import java.io.InputStream;
 import org.apache.log4j.Logger;
 
 import com.rapplogic.xbee.api.AtCommandResponse.Status;
-import com.rapplogic.xbee.api.wpan.IoSample;
 import com.rapplogic.xbee.api.wpan.RxBaseResponse;
 import com.rapplogic.xbee.api.wpan.RxResponse;
 import com.rapplogic.xbee.api.wpan.RxResponse16;
@@ -34,7 +33,6 @@ import com.rapplogic.xbee.api.wpan.RxResponseIoSample;
 import com.rapplogic.xbee.api.wpan.TxStatusResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetExplicitRxResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetNodeIdentificationResponse;
-import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRxBaseResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRxResponse;
@@ -56,12 +54,14 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
  * @author Andrew Rapp
  *
  */
+//TODO rename to PacketParser, after commit
 public class PacketStream implements IIntArrayInputStream {
 
 	private final static Logger log = Logger.getLogger(PacketStream.class);
 
 	private IIntArrayInputStream in;
 	
+	// size of packet after special bytes have been escaped
 	private XBeePacketLength length;
 	private Checksum checksum = new Checksum();
 	
@@ -73,9 +73,9 @@ public class PacketStream implements IIntArrayInputStream {
 	private XBeeResponse response;
 	private ApiId apiId;
 	
-	// experiment to preserve original byte array for transfer over network
-	private IntArrayOutputStream out = new IntArrayOutputStream();
-               
+	// experiment to preserve original byte array for transfer over network (Starts with length)
+	private IntArrayOutputStream rawBytes = new IntArrayOutputStream();
+	
 	public PacketStream(InputStream in) {
 		this.in = new InputStreamWrapper(in);
 	}
@@ -112,13 +112,13 @@ public class PacketStream implements IIntArrayInputStream {
 			this.apiId = ApiId.get(intApiId);
 			
 			if (apiId == null) {
-				throw new XBeeParseException("Unhandled Api id: " + ByteUtils.toBase16(intApiId));	
+				this.apiId = ApiId.UNKNOWN;	
 			}
 			
 			log.info("Handling ApiId: " + apiId);
 			
 			// TODO parse I/O data page 12. 82 API Identifier Byte for 64 bit address A/D data (83 is for 16bit A/D data)
-			// TODO XBeeResponse subclasses should implement a parse method
+			// TODO XBeeResponse should implement an abstract parse method
 			
 			if (apiId == ApiId.MODEM_STATUS_RESPONSE) {
 				parseModemStatusResponse();
@@ -134,7 +134,7 @@ public class PacketStream implements IIntArrayInputStream {
 				parseAtResponse();
 			} else if (apiId == ApiId.TX_STATUS_RESPONSE) {
 				parseTxStatusResponse();
-			} else if (apiId == ApiId.ZNET_REMOTE_AT_RESPONSE) {
+			} else if (apiId == ApiId.REMOTE_AT_RESPONSE) {
 				parseRemoteAtResponse();
 			} else if (apiId == ApiId.ZNET_TX_STATUS_RESPONSE) { 
 				parseZNetTxStatusResponse();
@@ -146,6 +146,10 @@ public class PacketStream implements IIntArrayInputStream {
 				parseZNetRxResponse();
 			} else if (apiId == ApiId.ZNET_IO_NODE_IDENTIFIER_RESPONSE) {
 				parseZNetNodeIdentifierResponse();		
+			} else {
+				// a new or unsupported api id
+				log.info("Encountered unknown API type: " + ByteUtils.toBase16(intApiId) + ".  returning GenericResponse");
+				parseGeneric(intApiId);
 			}
 			
 			response.setChecksum(this.read("Checksum"));
@@ -153,25 +157,25 @@ public class PacketStream implements IIntArrayInputStream {
 			if (!this.isDone()) {
 				throw new XBeeParseException("There are remaining bytes according to stated packet length but we have read all the bytes we thought were required for this packet (if that makes sense)");
 			}
+			
+			response.finish();
 		} catch (Exception e) {
 			// added bytes read for troubleshooting
-			log.error("Failed due to exception.  Returning ErrorResponse.  bytes read: " + ByteUtils.toBase16(out.getIntArray()), e);
+			log.error("Failed due to exception.  Returning ErrorResponse.  bytes read: " + ByteUtils.toBase16(rawBytes.getIntArray()), e);
 			exception = e;
 			
 			response = new ErrorResponse();
 			
-			// TODO this is redundant
 			((ErrorResponse)response).setErrorMsg(exception.getMessage());	
 			// but this isn't
 			((ErrorResponse)response).setException(e);
+		} finally {
+			response.setLength(length);
+			response.setApiId(apiId);			
+			// preserve original byte array for transfer over networks
+			response.setRawPacketBytes(rawBytes.getIntArray());
 		}
 		
-		response.setLength(length);
-		response.setApiId(apiId);
-		
-		// preserve original byte array for transfer over networks
-		response.setPacketBytes(out.getIntArray());
-
 		return response;
 	}
 	
@@ -185,21 +189,22 @@ public class PacketStream implements IIntArrayInputStream {
 	}
 	
 	/**
-	 * Only this method should call in.read()
+	 * This method should only be called by read()
 	 * 
 	 * @throws IOException
 	 */
 	private int readFromStream() throws IOException {
 		int b = in.read();
 		// save raw bytes to transfer via network
-		out.write(b);		
+		rawBytes.write(b);		
 		
 		return b;
 	}
 	
 	/**
 	 * This method reads bytes from the underlying input stream and performs the following tasks:
-	 * keeps track of how many bytes we've read, un-escapes bytes if necessary and verifies the checksum.
+	 * 1. Keeps track of how many bytes we've read
+	 * 2. Un-escapes bytes if necessary and verifies the checksum.
 	 */
 	public int read() throws IOException {
 
@@ -264,24 +269,24 @@ public class PacketStream implements IIntArrayInputStream {
 
 	private void parseRemoteAtResponse() throws IOException {
 		
-		response = new ZNetRemoteAtResponse();
+		response = new RemoteAtResponse();
 		
-		((ZNetRemoteAtResponse)response).setFrameId(this.read("Remote AT Response Frame Id"));
+		((RemoteAtResponse)response).setFrameId(this.read("Remote AT Response Frame Id"));
 		
-		((ZNetRemoteAtResponse)response).setRemoteAddress64(this.parseAddress64());
+		((RemoteAtResponse)response).setRemoteAddress64(this.parseAddress64());
 		
-		((ZNetRemoteAtResponse)response).setRemoteAddress16(this.parseAddress16());
+		((RemoteAtResponse)response).setRemoteAddress16(this.parseAddress16());
 		
 		char cmd1 = (char)this.read("Command char 1");
 		char cmd2 = (char)this.read("Command char 2");
-		//((ZNetRemoteAtResponse)response).setCommand(new String(new char[] {cmd1, cmd2}));
-		((ZNetRemoteAtResponse)response).setChar1(cmd1);
-		((ZNetRemoteAtResponse)response).setChar2(cmd2);
+		//((RemoteAtResponse)response).setCommand(new String(new char[] {cmd1, cmd2}));
+		((RemoteAtResponse)response).setChar1(cmd1);
+		((RemoteAtResponse)response).setChar2(cmd2);
 		
 		int status = this.read("AT Response Status");
-		((ZNetRemoteAtResponse)response).setStatus(ZNetRemoteAtResponse.Status.get(status));
+		((RemoteAtResponse)response).setStatus(RemoteAtResponse.Status.get(status));
 		
-		((ZNetRemoteAtResponse)response).setValue(this.readRemainingBytes());
+		((RemoteAtResponse)response).setValue(this.readRemainingBytes());
 	}
 	
 	private void parseAtResponse() throws IOException {
@@ -306,7 +311,6 @@ public class PacketStream implements IIntArrayInputStream {
 		((ZNetTxStatusResponse)response).setRemoteAddress16(this.parseAddress16());
 		((ZNetTxStatusResponse)response).setRetryCount(this.read("ZNet Tx Status Tx Count"));
 		
-		// TODO need more efficient method of looking up value, e.g hashtable
 		int deliveryStatus = this.read("ZNet Tx Status Delivery Status");
 		((ZNetTxStatusResponse)response).setDeliveryStatus(ZNetTxStatusResponse.DeliveryStatus.get(deliveryStatus));
 		
@@ -343,12 +347,18 @@ public class PacketStream implements IIntArrayInputStream {
 		}
 		
 		int option = this.read("ZNet RX Response Option");
+		((ZNetRxBaseResponse)response).setOption(ZNetRxBaseResponse.Option.get(option));
 		
 		if (this.apiId == ApiId.ZNET_IO_SAMPLE_RESPONSE) {
 			parseZNetIoSampleResponse((ZNetRxIoSampleResponse)response);
-		} else {
-			// TODO option only set for rx response??
-			((ZNetRxBaseResponse)response).setOption(ZNetRxBaseResponse.Option.get(option));		
+		} else {		
+			// FIXME major WTF here.. doc shows IO packet having option byte, p. 67 (znet), yet we were not applying it.
+			// p.43 shows no option.
+			// I have verified ZigBee Pro firmware provides the option byte, but it's likely that ZNet does not, 
+			// or I would have gotten an exception when testing, right? cause I test everything.
+			
+			// TODO test this -- option only set for rx response??
+// 			((ZNetRxBaseResponse)response).setOption(ZNetRxBaseResponse.Option.get(option));							
 			((ZNetRxResponse)response).setData(this.readRemainingBytes());			
 		}
 	}
@@ -407,13 +417,20 @@ public class PacketStream implements IIntArrayInputStream {
 		((ModemStatusResponse)response).setStatus(ModemStatusResponse.Status.get(this.read("Modem Status")));
 	}
 	
+	private void parseGeneric(int intApiId) throws IOException {
+		//eat packet bytes -- they will be save to bytearray and stored in response
+		this.readRemainingBytes();
+		response = new GenericResponse();
+		// TODO gotta save it because it isn't know to the enum apiId won't
+		((GenericResponse)response).setGenericApiId(intApiId);
+	}	
+	
 	/**
-	 * TODO untested after 64-bit refactoring
 	 * 
 	 * @throws IOException
 	 */
 	private void parseRxResponse() throws IOException {
-
+		//TODO untested after 64-bit refactoring
 		if (apiId == ApiId.RX_16_RESPONSE || apiId == ApiId.RX_64_RESPONSE) {
 			if (apiId == ApiId.RX_16_RESPONSE) {
 				response = new RxResponse16();	
@@ -423,7 +440,6 @@ public class PacketStream implements IIntArrayInputStream {
 				((RxBaseResponse)response).setSourceAddress(this.parseAddress64());
 			}
 		} else {
-			// TODO subclass RxResponseIoSample with 16 and 64bit classes
 			response = new RxResponseIoSample();
 			
 			if (apiId == ApiId.RX_16_IO_RESPONSE) {
@@ -433,12 +449,12 @@ public class PacketStream implements IIntArrayInputStream {
 			}	
 		}
 		
-		int rssi = this.read();
+		int rssi = this.read("RSSI");
 		
 		// rssi is a negative dbm value
 		((RxBaseResponse)response).setRssi(-rssi);
 		
-		int options = this.read();
+		int options = this.read("Options");
 		
 		((RxBaseResponse)response).setOptions(options);
 		
@@ -456,8 +472,7 @@ public class PacketStream implements IIntArrayInputStream {
 		} else {
 			// I/O sample
 			log.debug("this is a I/O sample!");
-			
-			this.parseIoResponse((RxResponseIoSample)response);
+			((RxResponseIoSample)response).parse(this);
 		}
 	}
 	
@@ -480,107 +495,21 @@ public class PacketStream implements IIntArrayInputStream {
 		
 		//log.debug("status is " + status);
 	}
-	
-	public void parseIoResponse(RxResponseIoSample response) throws IOException {
-
-		// first byte is # of samples
-		int samples = this.read("# I/O Samples");
 		
-		// create i/o samples array
-		response.setSamples(new IoSample[samples]);
-		
-		// channel indicator 1
-		response.setChannelIndicator1(this.read("Channel Indicator 1"));
-		
-		log.debug("channel indicator 1 is " + ByteUtils.formatByte(response.getChannelIndicator1()));
-		
-		// channel indicator 2 (dio)
-		response.setChannelIndicator2(this.read("Channel Indicator 2"));
-		
-		log.debug("channel indicator 2 is " + ByteUtils.formatByte(response.getChannelIndicator2()));	
-		
-		// collect each sample
-		for (int i = 0; i < response.getSamples().length; i++) {
-			
-			log.debug("parsing sample " + (i + 1));
-			
-			IoSample sample = parseIoSample(response);
-			
-			// attach sample to parent
-			response.getSamples()[i] = sample;
-		}
-	}
-	
-	private IoSample parseIoSample(RxResponseIoSample response) throws IOException {
-
-		IoSample sample = new IoSample(response);
-		
-		// DIO 8 occupies the first bit of the adcHeader
-		if (response.containsDigital()) {
-			// at least one DIO line is active
-			// next two bytes are DIO
-			
-			log.debug("Digital I/O was received");
-			
-			sample.setDioMsb(this.read("DIO MSB"));
-			sample.setDioLsb(this.read("DIO LSB"));
-		}
-		
-		// ADC is active if any of bits 2-7 are on
-		if (response.containsAnalog()) {
-			// adc is active
-			// adc is 10 bits
-			
-			log.debug("Analog input was received");
-			
-			// 10-bit values are read two bytes per sample
-			
-			int analog = 0;
-			
-			// Analog inputs A0-A5 are bits 2-7 of the adcHeader
-			
-			if (response.isA0Enabled()) {
-				sample.setAnalog0(ByteUtils.parse10BitAnalog(this, analog));
-				analog++;				
-			}
-
-			if (response.isA1Enabled()) {
-				sample.setAnalog1(ByteUtils.parse10BitAnalog(this, analog));
-				analog++;
-			}
-
-			if (response.isA2Enabled()) {
-				sample.setAnalog2(ByteUtils.parse10BitAnalog(this, analog));
-				analog++;
-			}
-
-			if (response.isA3Enabled()) {
-				sample.setAnalog3(ByteUtils.parse10BitAnalog(this, analog));
-				analog++;
-			}
-
-			if (response.isA4Enabled()) {
-				sample.setAnalog4(ByteUtils.parse10BitAnalog(this, analog));
-				analog++;
-			}
-			
-			if (response.isA5Enabled()) {
-				sample.setAnalog5(ByteUtils.parse10BitAnalog(this, analog));
-				analog++;
-			}
-			
-			log.debug("There are " + analog + " analog inputs turned on");
-		}
-		
-		return sample;
-	}
-	
+	/**
+	 * Reads all remaining bytes except for checksum
+	 * @return
+	 * @throws IOException
+	 */
 	private int[] readRemainingBytes() throws IOException {
-		int[] value = new int[length.getLength() - this.getFrameDataBytesRead()];
+		
+		// minus one since we don't read the checksum
+		int[] value = new int[this.getRemainingBytes() - 1];
+		
+		log.debug("There are " + value.length + " remaining bytes");
 		
 		for (int i = 0; i < value.length; i++) {
 			value[i] = this.read("Remaining bytes " + i);
-			//log.debug("byte " + i + " is " + value[i]);
 		}
 		
 		return value;

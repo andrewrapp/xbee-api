@@ -6,14 +6,15 @@
 ZNetExplicitTxRequest
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.zigbee.ZNetExplicitTxRequest class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="ZNetExplicitTxRequest";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="ZNetExplicitTxRequest";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -92,6 +94,9 @@ java.lang.Object
       <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html" title="class in com.rapplogic.xbee.api.zigbee">com.rapplogic.xbee.api.zigbee.ZNetTxRequest</A>
           <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.zigbee.ZNetExplicitTxRequest</B>
 </PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD>java.io.Serializable</DD>
+</DL>
 <HR>
 <DL>
 <DT><PRE>public class <B>ZNetExplicitTxRequest</B><DT>extends <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetTxRequest</A></DL>
@@ -99,7 +104,7 @@ java.lang.Object
 
 <P>
 Series 2 XBee.  Sends a packet to a remote radio.  The remote radio
- receives the data as a ZNetExplicitTxRequest packet.
+ receives the packet as a ZNetExplicitRxResponse packet.
  <p/>
  Radio must be configured for explicit frames to use this class (AO=1)
  <p/>
@@ -110,7 +115,7 @@ Series 2 XBee.  Sends a packet to a remote radio.  The remote radio
 <DL>
 <DT><B>Author:</B></DT>
   <DD>andrew</DD>
-</DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../../serialized-form.html#com.rapplogic.xbee.api.zigbee.ZNetExplicitTxRequest">Serialized Form</A></DL>
 <HR>
 
 <P>
@@ -139,7 +144,17 @@ Series 2 XBee.  Sends a packet to a remote radio.  The remote radio
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
 </TR>
 </TABLE>
-&nbsp;<!-- =========== FIELD SUMMARY =========== -->
+&nbsp;<A NAME="nested_classes_inherited_from_class_com.rapplogic.xbee.api.zigbee.ZNetTxRequest"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
+<TH ALIGN="left"><B>Nested classes/interfaces inherited from class com.rapplogic.xbee.api.zigbee.<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetTxRequest</A></B></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.Option.html" title="enum in com.rapplogic.xbee.api.zigbee">ZNetTxRequest.Option</A></CODE></TD>
+</TR>
+</TABLE>
+&nbsp;
+<!-- =========== FIELD SUMMARY =========== -->
 
 <A NAME="field_summary"><!-- --></A>
 <TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
@@ -192,11 +207,11 @@ Series 2 XBee.  Sends a packet to a remote radio.  The remote radio
 <B>Constructor Summary</B></FONT></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetExplicitTxRequest.html#ZNetExplicitTxRequest(int, com.rapplogic.xbee.api.XBeeAddress64, com.rapplogic.xbee.api.XBeeAddress16, int, int, int[], int, int, com.rapplogic.xbee.util.DoubleByte, com.rapplogic.xbee.util.DoubleByte)">ZNetExplicitTxRequest</A></B>(int&nbsp;frameId,
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetExplicitTxRequest.html#ZNetExplicitTxRequest(int, com.rapplogic.xbee.api.XBeeAddress64, com.rapplogic.xbee.api.XBeeAddress16, int, com.rapplogic.xbee.api.zigbee.ZNetTxRequest.Option, int[], int, int, com.rapplogic.xbee.util.DoubleByte, com.rapplogic.xbee.util.DoubleByte)">ZNetExplicitTxRequest</A></B>(int&nbsp;frameId,
                       <A HREF="../../../../../com/rapplogic/xbee/api/XBeeAddress64.html" title="class in com.rapplogic.xbee.api">XBeeAddress64</A>&nbsp;dest64,
                       <A HREF="../../../../../com/rapplogic/xbee/api/XBeeAddress16.html" title="class in com.rapplogic.xbee.api">XBeeAddress16</A>&nbsp;dest16,
                       int&nbsp;broadcastRadius,
-                      int&nbsp;option,
+                      <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.Option.html" title="enum in com.rapplogic.xbee.api.zigbee">ZNetTxRequest.Option</A>&nbsp;option,
                       int[]&nbsp;payload,
                       int&nbsp;sourceEndpoint,
                       int&nbsp;destinationEndpoint,
@@ -311,7 +326,7 @@ Series 2 XBee.  Sends a packet to a remote radio.  The remote radio
 <TH ALIGN="left"><B>Methods inherited from class com.rapplogic.xbee.api.zigbee.<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetTxRequest</A></B></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getBroadcastRadius()">getBroadcastRadius</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getDestAddr16()">getDestAddr16</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getDestAddr64()">getDestAddr64</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getFrameDataAsIntArrayOutputStream()">getFrameDataAsIntArrayOutputStream</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getMaxPayloadSize()">getMaxPayloadSize</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getOption()">getOption</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getPayload()">getPayload</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#setBroadcastRadius(int)">setBroadcastRadius</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#setDestAddr16(com.rapplogic.xbee.api.XBeeAddress16)">setDestAddr16</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#setDestAddr64(com.rapplogic.xbee.api.XBeeAddress64)">setDestAddr64</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#setMaxPayloadSize(int)">setMaxPayloadSize</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#setOption(int)">setOption</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#setPayload(int[])">setPayload</A></CODE></TD>
+<TD><CODE><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getBroadcastRadius()">getBroadcastRadius</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getDestAddr16()">getDestAddr16</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getDestAddr64()">getDestAddr64</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getFrameDataAsIntArrayOutputStream()">getFrameDataAsIntArrayOutputStream</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getMaxPayloadSize()">getMaxPayloadSize</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getOption()">getOption</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getPayload()">getPayload</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#setBroadcastRadius(int)">setBroadcastRadius</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#setDestAddr16(com.rapplogic.xbee.api.XBeeAddress16)">setDestAddr16</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#setDestAddr64(com.rapplogic.xbee.api.XBeeAddress64)">setDestAddr64</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#setMaxPayloadSize(int)">setMaxPayloadSize</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#setOption(com.rapplogic.xbee.api.zigbee.ZNetTxRequest.Option)">setOption</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#setPayload(int[])">setPayload</A></CODE></TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_com.rapplogic.xbee.api.XBeeRequest"><!-- --></A>
@@ -374,14 +389,14 @@ public static final <A HREF="../../../../../com/rapplogic/xbee/util/DoubleByte.h
 </TR>
 </TABLE>
 
-<A NAME="ZNetExplicitTxRequest(int, com.rapplogic.xbee.api.XBeeAddress64, com.rapplogic.xbee.api.XBeeAddress16, int, int, int[], int, int, com.rapplogic.xbee.util.DoubleByte, com.rapplogic.xbee.util.DoubleByte)"><!-- --></A><H3>
+<A NAME="ZNetExplicitTxRequest(int, com.rapplogic.xbee.api.XBeeAddress64, com.rapplogic.xbee.api.XBeeAddress16, int, com.rapplogic.xbee.api.zigbee.ZNetTxRequest.Option, int[], int, int, com.rapplogic.xbee.util.DoubleByte, com.rapplogic.xbee.util.DoubleByte)"><!-- --></A><H3>
 ZNetExplicitTxRequest</H3>
 <PRE>
 public <B>ZNetExplicitTxRequest</B>(int&nbsp;frameId,
                              <A HREF="../../../../../com/rapplogic/xbee/api/XBeeAddress64.html" title="class in com.rapplogic.xbee.api">XBeeAddress64</A>&nbsp;dest64,
                              <A HREF="../../../../../com/rapplogic/xbee/api/XBeeAddress16.html" title="class in com.rapplogic.xbee.api">XBeeAddress16</A>&nbsp;dest16,
                              int&nbsp;broadcastRadius,
-                             int&nbsp;option,
+                             <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.Option.html" title="enum in com.rapplogic.xbee.api.zigbee">ZNetTxRequest.Option</A>&nbsp;option,
                              int[]&nbsp;payload,
                              int&nbsp;sourceEndpoint,
                              int&nbsp;destinationEndpoint,

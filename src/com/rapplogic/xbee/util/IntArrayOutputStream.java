@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * TODO replace with nio.IntBuffer 
  */
-public class IntArrayOutputStream {
+public class IntArrayOutputStream implements IIntArray {
 
 	private List<Integer> intList = new ArrayList<Integer>();
 	

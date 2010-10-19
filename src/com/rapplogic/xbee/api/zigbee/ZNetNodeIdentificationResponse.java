@@ -218,6 +218,17 @@ public class ZNetNodeIdentificationResponse extends XBeeResponse {
 	public void setMfgId(DoubleByte mfgId) {
 		this.mfgId = mfgId;
 	}
-	
-	// TODO toString
+
+	@Override
+	public String toString() {
+		return "ZNetNodeIdentificationResponse [deviceType=" + deviceType
+				+ ", mfgId=" + mfgId + ", nodeIdentifier=" + nodeIdentifier
+				+ ", option=" + option + ", parentAddress=" + parentAddress
+				+ ", profileId=" + profileId + ", remoteAddress16="
+				+ remoteAddress16 + ", remoteAddress16_2=" + remoteAddress16_2
+				+ ", remoteAddress64=" + remoteAddress64
+				+ ", remoteAddress64_2=" + remoteAddress64_2
+				+ ", sourceAction=" + sourceAction + "]" +
+				super.toString();
+	}
 }

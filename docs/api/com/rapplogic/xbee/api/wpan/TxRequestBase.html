@@ -6,14 +6,15 @@
 TxRequestBase
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.wpan.TxRequestBase class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="TxRequestBase";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="TxRequestBase";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -92,6 +94,9 @@ java.lang.Object
       <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.wpan.TxRequestBase</B>
 </PRE>
 <DL>
+<DT><B>All Implemented Interfaces:</B> <DD>java.io.Serializable</DD>
+</DL>
+<DL>
 <DT><B>Direct Known Subclasses:</B> <DD><A HREF="../../../../../com/rapplogic/xbee/api/wpan/TxRequest16.html" title="class in com.rapplogic.xbee.api.wpan">TxRequest16</A>, <A HREF="../../../../../com/rapplogic/xbee/api/wpan/TxRequest64.html" title="class in com.rapplogic.xbee.api.wpan">TxRequest64</A></DD>
 </DL>
 <HR>
@@ -108,7 +113,7 @@ Series 1 XBee.  Super class for 16 and 64 bit address Transmit packets
 <DL>
 <DT><B>Author:</B></DT>
   <DD>andrew</DD>
-</DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../../serialized-form.html#com.rapplogic.xbee.api.wpan.TxRequestBase">Serialized Form</A></DL>
 <HR>
 
 <P>
@@ -143,7 +148,7 @@ Series 1 XBee.  Super class for 16 and 64 bit address Transmit packets
 <TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/wpan/TxRequestBase.html#MAX_PAYLOAD_SIZE">MAX_PAYLOAD_SIZE</A></B></CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Maximum payload size as specified in the manual.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Maximum payload size as specified in the series 1 XBee manual.</TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="fields_inherited_from_class_com.rapplogic.xbee.api.XBeeRequest"><!-- --></A>
@@ -273,7 +278,7 @@ MAX_PAYLOAD_SIZE</H3>
 <PRE>
 public static final int <B>MAX_PAYLOAD_SIZE</B></PRE>
 <DL>
-<DD>Maximum payload size as specified in the manual.
+<DD>Maximum payload size as specified in the series 1 XBee manual.
  This is provided for reference only and is not used for validation
 <P>
 <DL>

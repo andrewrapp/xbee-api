@@ -28,18 +28,19 @@ import java.util.List;
  * Represents a configurable XBee pin and associated name, pin number, AT command, default capability and list of supported 
  * capabilities.
  * 
- * TODO add pin direction
- * TODO methods to filter list by Capability
- * 
  * @author andrew
  *
  */
 public class XBeePin {
 
+//TODO add pin direction
+//TODO methods to filter list by Capability
+	 
 	private String name;
 	private Integer pin;
 	private String atCommand;
 	private Integer atPin;
+	// TODO add logical pin e.g. getDigital(pin)
 	
 	private Capability defaultCapability;
 	private String description;

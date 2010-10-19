@@ -27,14 +27,14 @@ import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.api.XBeeRequest;
 import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.api.XBeeTimeoutException;
+import com.rapplogic.xbee.api.RemoteAtResponse;
 import com.rapplogic.xbee.api.zigbee.ZBForceSampleRequest;
-import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse;
 
 /**
  * To run this sample you will need to configure pin 19 (D1) to Analog input on the remote XBee: D1=2.
  * To do this you can use X-CTU, the AtCommand [new AtCommand("D1", 2)] with your remote XBee connected to the serial port 
- * or with ZNetRemoteAtRequest and send the request through the coordinator. 
+ * or with RemoteAtRequest and send the request through the coordinator. 
  *  
  * @author andrew
  *
@@ -62,11 +62,11 @@ public class ZBForceSampleTest {
 				
 				try {
 					XBeeResponse response = xbee.sendSynchronous(request, 6000);
-					ZNetRemoteAtResponse remoteAt = (ZNetRemoteAtResponse) response;
+					RemoteAtResponse remoteAt = (RemoteAtResponse) response;
 					
 					if (remoteAt.isOk())  {
 						// extract the i/o sample
-						ZNetRxIoSampleResponse ioSample = remoteAt.parseIsSample();
+						ZNetRxIoSampleResponse ioSample = ZNetRxIoSampleResponse.parseIsSample(remoteAt);
 						// make sure you configured the remote XBee to D1=2 (analog input) or you will get an error
 						log.info("10 bit analog1 sample is " + ioSample.getAnalog1());
 					} else {

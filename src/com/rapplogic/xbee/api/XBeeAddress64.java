@@ -20,10 +20,7 @@
 package com.rapplogic.xbee.api;
 
 import java.util.StringTokenizer;
-
-import org.apache.log4j.Logger;
-
-import com.rapplogic.xbee.util.ByteUtils;
+import java.util.Arrays;
 
 /**
  * Represents a 64-bit XBee Address
@@ -33,9 +30,6 @@ import com.rapplogic.xbee.util.ByteUtils;
  */
 public class XBeeAddress64 extends XBeeAddress  {
 	
-	private final static Logger log = Logger.getLogger(XBeeAddress64.class);
-	
-	// broadcast address 0x000000ff
 	public static final XBeeAddress64 BROADCAST = new XBeeAddress64(new int[] {0, 0, 0, 0, 0, 0, 0xff, 0xff});
 	public static final XBeeAddress64 ZNET_COORDINATOR = new XBeeAddress64(new int[] {0, 0, 0, 0, 0, 0, 0, 0});
 	
@@ -55,8 +49,6 @@ public class XBeeAddress64 extends XBeeAddress  {
 		for (int i = 0; i < address.length; i++) {
 			String byteStr = st.nextToken();
 			address[i] = Integer.parseInt(byteStr, 16);
-			
-			log.debug("byte is " + ByteUtils.toBase16(address[i]) + " at pos " + i);
 		}
 	}
 	
@@ -96,28 +88,25 @@ public class XBeeAddress64 extends XBeeAddress  {
 	public void setAddress(int[] address) {
 		this.address = address;
 	}
-	
-	public boolean equals(Object o) {
-		
-		if (this == o) {
-			return true;
-		}
-		
-		try {
-			return this.getAddress()[0] == ((XBeeAddress64)o).getAddress()[0] &&
-				this.getAddress()[1] == ((XBeeAddress64)o).getAddress()[1] &&
-				this.getAddress()[2] == ((XBeeAddress64)o).getAddress()[2] &&
-				this.getAddress()[3] == ((XBeeAddress64)o).getAddress()[3] &&
-				this.getAddress()[4] == ((XBeeAddress64)o).getAddress()[4] &&
-				this.getAddress()[5] == ((XBeeAddress64)o).getAddress()[5] &&
-				this.getAddress()[6] == ((XBeeAddress64)o).getAddress()[6] &&
-				this.getAddress()[7] == ((XBeeAddress64)o).getAddress()[7];
-		} catch(Exception e) {
-			return false;
-		}
-	}
 
-	@Override
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        XBeeAddress64 that = (XBeeAddress64) o;
+
+        if (!Arrays.equals(address, that.address)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return address != null ? Arrays.hashCode(address) : 0;
+    }
+
+    @Override
 	public int[] getAddress() {
 		return address;
 	}

@@ -30,6 +30,15 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
  * <p/>
  * API ID: 0x8
  * <p/>
+ * Determining radio type with HV:<br/>
+ * Byte 1, Part Number<br/>
+ * x17, XB24 (series 1)<br/>
+ * x18, XBP24 (series 1)<br/>
+ * x19, XB24-B (series 2)<br/>
+ * x1A, XBP24-B (series 2)<br/>
+ * <p/>
+ * XB24-ZB<br/>
+ * XBP24-ZB<br/>
  * @author andrew
  */
 public class AtCommand extends XBeeRequest {
@@ -105,7 +114,7 @@ public class AtCommand extends XBeeRequest {
 	public void setValue(int[] value) {
 		this.value = value;
 	}
-	
+
 	public String toString() {
 		return super.toString() +
 			",command=" + this.command +

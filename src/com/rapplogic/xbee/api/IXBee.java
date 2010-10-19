@@ -38,7 +38,7 @@ public interface IXBee {
 
 	public void sendPacket(int[] packet)  throws IOException;
 
-	public void sendAsynchronous(XBeeRequest xbeeREquest) throws XBeeException;
+	public void sendAsynchronous(XBeeRequest xbeeRequest) throws XBeeException;
 
 	public XBeeResponse sendSynchronous(final XBeeRequest xbeeRequest, int timeout) throws XBeeTimeoutException, XBeeException;
 
@@ -55,4 +55,6 @@ public interface IXBee {
 	public void updateFrameId(int val);
 
 	public boolean isConnected();
+	
+	public void clearResponseQueue();
 }

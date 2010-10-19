@@ -22,6 +22,7 @@ package com.rapplogic.xbee.examples.zigbee;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import com.rapplogic.xbee.api.FrameIdGenerator;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
@@ -66,8 +67,8 @@ public class ZNetExplicitSenderTest {
 			//DoubleByte clusterId = new DoubleByte(0x0, ZNetExplicitTxRequest.ClusterId.TRANSPARENT_SERIAL.getValue());
 			
 			// first request we just send 64-bit address.  we get 16-bit network address with status response
-			ZNetExplicitTxRequest request = new ZNetExplicitTxRequest(xbee.getNextFrameId(), addr64, XBeeAddress16.ZNET_BROADCAST, 
-						ZNetTxRequest.DEFAULT_BROADCAST_RADIUS, ZNetTxRequest.UNICAST_OPTION, payload, sourceEndpoint, destinationEndpoint, clusterId, ZNetExplicitTxRequest.znetProfileId);
+			ZNetExplicitTxRequest request = new ZNetExplicitTxRequest(0xff, addr64, XBeeAddress16.ZNET_BROADCAST, 
+						ZNetTxRequest.DEFAULT_BROADCAST_RADIUS, ZNetTxRequest.Option.UNICAST, payload, sourceEndpoint, destinationEndpoint, clusterId, ZNetExplicitTxRequest.znetProfileId);
 			
 			log.info("sending explicit " + request.toString());
 			

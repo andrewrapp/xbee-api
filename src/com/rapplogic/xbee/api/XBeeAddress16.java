@@ -74,22 +74,24 @@ public class XBeeAddress16 extends XBeeAddress {
 		this.doubleByte.setLsb(lsb);
 	}
 
-	public boolean equals(Object o) {
-		
-		if (this == o) {
-			return true;
-		} else {
-			try {
-				XBeeAddress16 addr = (XBeeAddress16) o;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-                return this.getLsb() == addr.getLsb() && this.getMsb() == addr.getMsb();
-			} catch (Exception e) {
-				return false;
-			}			
-		}
-	}
+        XBeeAddress16 that = (XBeeAddress16) o;
 
-	@Override
+        if (doubleByte != null ? !doubleByte.equals(that.doubleByte) : that.doubleByte != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return doubleByte != null ? doubleByte.hashCode() : 0;
+    }
+
+    @Override
 	public int[] getAddress() {
 		return new int[] { this.doubleByte.getMsb(), this.doubleByte.getLsb() };
 	}

@@ -6,14 +6,15 @@
 AtCommandResponse
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.AtCommandResponse class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="AtCommandResponse";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="AtCommandResponse";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -93,7 +95,10 @@ java.lang.Object
           <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.AtCommandResponse</B>
 </PRE>
 <DL>
-<DT><B>Direct Known Subclasses:</B> <DD><A HREF="../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtResponse.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetRemoteAtResponse</A></DD>
+<DT><B>All Implemented Interfaces:</B> <DD>java.io.Serializable</DD>
+</DL>
+<DL>
+<DT><B>Direct Known Subclasses:</B> <DD><A HREF="../../../../com/rapplogic/xbee/api/RemoteAtResponse.html" title="class in com.rapplogic.xbee.api">RemoteAtResponse</A></DD>
 </DL>
 <HR>
 <DL>
@@ -111,7 +116,7 @@ Sent in response to an AtCommand
 <DL>
 <DT><B>Author:</B></DT>
   <DD>andrew</DD>
-</DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../serialized-form.html#com.rapplogic.xbee.api.AtCommandResponse">Serialized Form</A></DL>
 <HR>
 
 <P>
@@ -261,7 +266,7 @@ Sent in response to an AtCommand
 <TH ALIGN="left"><B>Methods inherited from class com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A></B></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#getApiId()">getApiId</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#getChecksum()">getChecksum</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#getLength()">getLength</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#getPacketBytes()">getPacketBytes</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#isError()">isError</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#setApiId(com.rapplogic.xbee.api.ApiId)">setApiId</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#setChecksum(int)">setChecksum</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#setError(boolean)">setError</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#setLength(com.rapplogic.xbee.api.XBeePacketLength)">setLength</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#setPacketBytes(int[])">setPacketBytes</A></CODE></TD>
+<TD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#equals(java.lang.Object)">equals</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#finish()">finish</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#getApiId()">getApiId</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#getChecksum()">getChecksum</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#getLength()">getLength</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#getPacketBytes()">getPacketBytes</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#getProcessedPacketBytes()">getProcessedPacketBytes</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#getRawPacketBytes()">getRawPacketBytes</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#hashCode()">hashCode</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#isError()">isError</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#setApiId(com.rapplogic.xbee.api.ApiId)">setApiId</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#setChecksum(int)">setChecksum</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#setError(boolean)">setError</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#setLength(com.rapplogic.xbee.api.XBeePacketLength)">setLength</A>, <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html#setRawPacketBytes(int[])">setRawPacketBytes</A></CODE></TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
@@ -270,7 +275,7 @@ Sent in response to an AtCommand
 <TH ALIGN="left"><B>Methods inherited from class java.lang.Object</B></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE>clone, equals, finalize, getClass, hashCode, notify, notifyAll, wait, wait, wait</CODE></TD>
+<TD><CODE>clone, finalize, getClass, notify, notifyAll, wait, wait, wait</CODE></TD>
 </TR>
 </TABLE>
 &nbsp;

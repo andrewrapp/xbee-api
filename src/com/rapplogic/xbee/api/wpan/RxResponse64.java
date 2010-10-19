@@ -22,7 +22,11 @@ package com.rapplogic.xbee.api.wpan;
 import com.rapplogic.xbee.api.XBeeAddress64;
 
 /**
- * Series 1 XBee. 64-bit address Receive packet
+ * Series 1 XBee. 64-bit address Receive packet.
+ * This packet is received when a remote radio transmits a TxRequest64
+ * packet to this radio's SH + SL address.
+ * <p/>
+ * Note: MY address must be set to 0xffff to receive this packet type.
  * <p/>
  * API ID: 0x80
  * 

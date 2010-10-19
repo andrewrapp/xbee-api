@@ -40,7 +40,7 @@ public class AtCommandResponse extends XBeeFrameIdResponse {
 		ERROR (1),
 		INVALID_COMMAND (2),
 		INVALID_PARAMETER (3),
-		NO_RESPONSE (4);  // series 1 remote AT only according to spec
+		NO_RESPONSE (4);  // series 1 remote AT only according to spec.  also series 2 in 2x64 zb pro firmware
 
 		private static final Map<Integer,Status> lookup = new HashMap<Integer,Status>();
 		
@@ -128,8 +128,10 @@ public class AtCommandResponse extends XBeeFrameIdResponse {
 	}
 	
 	public String toString() {
-		return super.toString() + ",command=" + this.getCommand() +
+		return "command=" + this.getCommand() +
 			",status=" + this.getStatus() + ",value=" + 
-			(this.value == null ? "null" : ByteUtils.toBase16(this.getValue()));
+			(this.value == null ? "null" : ByteUtils.toBase16(this.getValue())) +
+			"," +
+			super.toString();
 	}
 }

@@ -6,14 +6,15 @@
 XBeePacket
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.XBeePacket class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="XBeePacket";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="XBeePacket";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -153,10 +155,18 @@ Packages a frame data array into an XBee packet.
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;int[]</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBeePacket.html#getByteArray()">getByteArray</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;int[]</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBeePacket.html#getPacket()">getPacket</A></B>()</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TODO rename as getBytes</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>Deprecated.</B>&nbsp;<I>use getByteArray</I></TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -170,6 +180,14 @@ Packages a frame data array into an XBee packet.
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;java.lang.String</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBeePacket.html#toString()">toString</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;int[]</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBeePacket.html#unEscapePacket(int[])">unEscapePacket</A></B>(int[]&nbsp;packet)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -236,11 +254,22 @@ getPacket</H3>
 <PRE>
 public int[] <B>getPacket</B>()</PRE>
 <DL>
-<DD>TODO rename as getBytes
+<DD><B>Deprecated.</B>&nbsp;<I>use getByteArray</I>
 <P>
 <DD><DL>
 
 <DT><B>Returns:</B><DD></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getByteArray()"><!-- --></A><H3>
+getByteArray</H3>
+<PRE>
+public int[] <B>getByteArray</B>()</PRE>
+<DL>
+<DD><DL>
+</DL>
 </DD>
 </DL>
 <HR>
@@ -273,16 +302,25 @@ public java.lang.String <B>toString</B>()</PRE>
 <A NAME="verify(int[])"><!-- --></A><H3>
 verify</H3>
 <PRE>
-public static boolean <B>verify</B>(int[]&nbsp;packet)
-                      throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
+public static boolean <B>verify</B>(int[]&nbsp;packet)</PRE>
 <DL>
 <DD>Returns true if the packet is valid
 <P>
 <DD><DL>
 <DT><B>Parameters:</B><DD><CODE>packet</CODE> - 
-<DT><B>Returns:</B><DD>
-<DT><B>Throws:</B>
-<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE></DL>
+<DT><B>Returns:</B><DD></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="unEscapePacket(int[])"><!-- --></A><H3>
+unEscapePacket</H3>
+<PRE>
+public static int[] <B>unEscapePacket</B>(int[]&nbsp;packet)</PRE>
+<DL>
+<DD><DL>
+<DT><B>Parameters:</B><DD><CODE>packet</CODE> - 
+<DT><B>Returns:</B><DD></DL>
 </DD>
 </DL>
 <!-- ========= END OF CLASS DATA ========= -->

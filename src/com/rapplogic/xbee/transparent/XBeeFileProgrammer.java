@@ -28,11 +28,12 @@ import java.io.InputStreamReader;
 import com.rapplogic.xbee.api.XBeeException;
 
 /**
- * TODO need to support API mode for radios ZNet radios that do not support transparent when flashed with API firmware
- * TODO add serial number support so radio will only be programmed if serial number in file matches the radio's serial 
- * 
+ * Programs an XBee radio in transparent mode by reading commands from a file
  */
 public class XBeeFileProgrammer extends SerialAsciiComm {
+
+//	TODO need to support API mode for radios ZNet radios that do not support transparent when flashed with API firmware
+//	TODO add serial number support so radio will only be programmed if serial number in file matches the radio's serial
 	
 	private File profile;
 	private String port;

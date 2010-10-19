@@ -17,23 +17,15 @@
  * along with XBee-API.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.rapplogic.xbee.api.zigbee;
+package com.rapplogic.xbee.api;
 
-import org.apache.log4j.Logger;
-
-import com.rapplogic.xbee.api.ApiId;
-import com.rapplogic.xbee.api.AtCommand;
-import com.rapplogic.xbee.api.XBeeAddress16;
-import com.rapplogic.xbee.api.XBeeAddress64;
-import com.rapplogic.xbee.api.XBeeRequest;
 import com.rapplogic.xbee.util.IntArrayOutputStream;
 
-// TODO now supported by series 1.  Need to move up to api package and refactor to support both radio types
-
 /**
- * Supported by both series 1 (10C8 firmware and later) and series 2.  To be moved into common package in the future.
+ * Supported by both series 1 (10C8 firmware and later) and series 2.
  * Allows AT commands to be sent to a remote radio.
- * Warning: this command does not return a response if the remote radio is unreachable.
+ * <p/>
+ * Warning: this command may not return a response if the remote radio is unreachable.
  * You will need to set your own timeout when waiting for a response from this command,
  * or you may wait forever.
  * <p/>
@@ -42,9 +34,7 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
  * @author andrew
  *
  */
-public class ZNetRemoteAtRequest extends AtCommand {
-	
-	private final static Logger log = Logger.getLogger(ZNetRemoteAtRequest.class);
+public class RemoteAtRequest extends AtCommand {
 	
 	private XBeeAddress64 remoteAddr64;
 	private XBeeAddress16 remoteAddr16;
@@ -52,23 +42,23 @@ public class ZNetRemoteAtRequest extends AtCommand {
 	
 	/**
 	 * Creates a Remote AT request for setting an AT command on a remote XBee
-	 * 
+	 * <p/>
 	 * Note: When setting a value, you must set applyChanges for the setting to
 	 * take effect.  When sending several requests, you can wait until the last
 	 * request before setting applyChanges=true.
-	 * 
+	 * <p/>
 	 * @param frameId
-	 * @param dest64
-	 * @param dest16
+	 * @param remoteAddress64
+	 * @param remoteAddress16
 	 * @param applyChanges set to true if setting a value or issuing a command that changes the state of the radio (e.g. FR); not applicable to query requests 
 	 * @param command two character AT command to set or query
 	 * @param value if null then the current setting will be queried
 	 */
-	public ZNetRemoteAtRequest(int frameId, XBeeAddress64 dest64, XBeeAddress16 dest16, boolean applyChanges, String command, int[] value) {
+	public RemoteAtRequest(int frameId, XBeeAddress64 remoteAddress64, XBeeAddress16 remoteAddress16, boolean applyChanges, String command, int[] value) {
 		super(command, value);
 		this.setFrameId(frameId);
-		this.remoteAddr64 = dest64;
-		this.remoteAddr16 = dest16;
+		this.remoteAddr64 = remoteAddress64;
+		this.remoteAddr16 = remoteAddress16;
 		this.applyChanges = applyChanges;
 	}
 	
@@ -76,13 +66,13 @@ public class ZNetRemoteAtRequest extends AtCommand {
 	 * Creates a Remote AT request for querying the current value of an AT command on a remote XBee
 	 * 
 	 * @param frameId
-	 * @param macAddress
-	 * @param znetAddress
+	 * @param remoteAddress64
+	 * @param remoteAddress16
 	 * @param applyChanges
 	 * @param command
 	 */
-	public ZNetRemoteAtRequest(int frameId, XBeeAddress64 macAddress, XBeeAddress16 znetAddress, boolean applyChanges, String command) {
-		this(frameId, macAddress, znetAddress, applyChanges, command, null);
+	public RemoteAtRequest(int frameId, XBeeAddress64 remoteAddress64, XBeeAddress16 remoteAddress16, boolean applyChanges, String command) {
+		this(frameId, remoteAddress64, remoteAddress16, applyChanges, command, null);
 	}
 
 	/**
@@ -93,7 +83,8 @@ public class ZNetRemoteAtRequest extends AtCommand {
 	 * @param command
 	 * @param value
 	 */
-	public ZNetRemoteAtRequest(XBeeAddress64 dest64, String command, int[] value) {
+	public RemoteAtRequest(XBeeAddress64 dest64, String command, int[] value) {
+		// Note: the ZNET broadcast also works for series 1.  We could also use ffff but then that wouldn't work for series 2
 		this(XBeeRequest.DEFAULT_FRAME_ID, dest64, XBeeAddress16.ZNET_BROADCAST, true, command, value);
 	}
 
@@ -104,8 +95,38 @@ public class ZNetRemoteAtRequest extends AtCommand {
 	 * @param dest64
 	 * @param command
 	 */
-	public ZNetRemoteAtRequest(XBeeAddress64 dest64, String command) {
-		this(XBeeRequest.DEFAULT_FRAME_ID, dest64, XBeeAddress16.ZNET_BROADCAST, true, command, null);
+	public RemoteAtRequest(XBeeAddress64 dest64, String command) {
+		this(dest64, command, null);
+		// apply changes doesn't make sense for a query
+		this.setApplyChanges(false);
+	}
+
+	/**
+	 * Creates a Remote AT instance for querying the value of an AT command on a remote XBee, 
+	 * by specifying the 16-bit address.  Uses the broadcast address for 64-bit address (00 00 00 00 00 00 ff ff)
+	 * <p/>
+	 * Defaults are: frame id: 1, applyChanges: true
+	 * 
+	 * @param dest64
+	 * @param command
+	 */
+	public RemoteAtRequest(XBeeAddress16 dest16, String command) {
+		this(dest16, command, null);
+		// apply changes doesn't make sense for a query
+		this.setApplyChanges(false);
+	}
+
+	/**
+	 * Creates a Remote AT instance for setting the value of an AT command on a remote XBee, 
+	 * by specifying the 16-bit address and value.  Uses the broadcast address for 64-bit address (00 00 00 00 00 00 ff ff)
+	 * <p/>
+	 * Defaults are: frame id: 1, applyChanges: true
+	 * 
+	 * @param remoteAddress16
+	 * @param command
+	 */
+	public RemoteAtRequest(XBeeAddress16 remoteAddress16, String command, int[] value) {
+		this(XBeeRequest.DEFAULT_FRAME_ID, XBeeAddress64.BROADCAST, remoteAddress16, true, command, value);
 	}
 	
 	public int[] getFrameData() {		
@@ -141,7 +162,7 @@ public class ZNetRemoteAtRequest extends AtCommand {
 	}
 	
 	public ApiId getApiId() {
-		return ApiId.ZNET_REMOTE_AT_REQUEST;
+		return ApiId.REMOTE_AT_REQUEST;
 	}
 	
 	public XBeeAddress64 getRemoteAddr64() {

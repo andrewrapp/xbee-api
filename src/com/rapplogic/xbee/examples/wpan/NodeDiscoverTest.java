@@ -29,7 +29,7 @@ import com.rapplogic.xbee.api.PacketListener;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeException;
 import com.rapplogic.xbee.api.XBeeResponse;
-import com.rapplogic.xbee.api.zigbee.NodeDiscover;
+import com.rapplogic.xbee.api.wpan.NodeDiscover;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /** 
@@ -50,7 +50,7 @@ public class NodeDiscoverTest {
 		
 		try {
 			// my coordinator com/baud
-			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
+			xbee.open("/dev/tty.usbserial-A4004Rim", 9600);
 			
 			// get the Node discovery timeout
 			xbee.sendAsynchronous(new AtCommand("NT"));

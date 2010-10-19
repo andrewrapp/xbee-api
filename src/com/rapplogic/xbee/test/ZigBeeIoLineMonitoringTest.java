@@ -35,12 +35,12 @@ import com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse;
 /**
  * Series 2 test harness for verifying i/o pin functionality
  * 
- * TODO split test/examples code into src/test, src/examples
- * 
  * @author andrew
  *
  */
 public class ZigBeeIoLineMonitoringTest implements PacketListener {
+	
+//	TODO split test/examples code into src/test, src/examples
 	
 	private final static Logger log = Logger.getLogger(ZigBeeIoLineMonitoringTest.class);
 	

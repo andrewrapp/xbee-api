@@ -35,6 +35,8 @@ import java.util.TooManyListenersException;
 
 import org.apache.log4j.Logger;
 
+import com.rapplogic.xbee.api.XBeeException;
+
 /** 
  * This class encapsulates a RXTX serial port, providing access to input/output streams,
  * and notifying the subclass of new data events via the handleSerialData method.
@@ -42,10 +44,11 @@ import org.apache.log4j.Logger;
  * @author andrew
  * 
  */
-public abstract class RxTxSerialComm implements SerialPortEventListener {
+public class RxTxSerialComm implements SerialPortEventListener {
 
 	private final static Logger log = Logger.getLogger(RxTxSerialComm.class);
 	
+	private RxTxSerialEventListener handler;
 	private InputStream inputStream;
 	private OutputStream outputStream;
 
@@ -54,17 +57,17 @@ public abstract class RxTxSerialComm implements SerialPortEventListener {
 	public RxTxSerialComm() {
 	
 	}
-
-	protected void openSerialPort(String port, int baudRate) throws PortInUseException, UnsupportedCommOperationException, TooManyListenersException, IOException {
+	
+	public void openSerialPort(String port, int baudRate) throws PortInUseException, UnsupportedCommOperationException, TooManyListenersException, IOException, XBeeException {
 		this.openSerialPort(port, "XBee", 0, baudRate, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE, SerialPort.FLOWCONTROL_NONE);
 	}
 	
-	protected void openSerialPort(String port, String appName, int timeout, int baudRate) throws PortInUseException, UnsupportedCommOperationException, TooManyListenersException, IOException {
+	public void openSerialPort(String port, String appName, int timeout, int baudRate) throws PortInUseException, UnsupportedCommOperationException, TooManyListenersException, IOException, XBeeException {
 		this.openSerialPort(port, appName, timeout, baudRate, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE, SerialPort.FLOWCONTROL_NONE);
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void openSerialPort(String port, String appName, int timeout, int baudRate, int dataBits, int stopBits, int parity, int flowControl) throws PortInUseException, UnsupportedCommOperationException, TooManyListenersException, IOException {
+	public void openSerialPort(String port, String appName, int timeout, int baudRate, int dataBits, int stopBits, int parity, int flowControl) throws PortInUseException, UnsupportedCommOperationException, TooManyListenersException, IOException, XBeeException {
 		// Apparently you can't query for a specific port, but instead must iterate
 		Enumeration<CommPortIdentifier> portList = CommPortIdentifier.getPortIdentifiers();
 		
@@ -89,7 +92,7 @@ public abstract class RxTxSerialComm implements SerialPortEventListener {
 		}
 
 		if (!found) {
-			throw new RuntimeException("Could not find port: " + port);
+			throw new XBeeException("Could not find port: " + port);
 		}
 		
 		serialPort = (SerialPort) portId.open(appName, timeout);
@@ -114,37 +117,40 @@ public abstract class RxTxSerialComm implements SerialPortEventListener {
 	 */
 	public void close() {
 		try {
+			serialPort.getInputStream().close();
+		} catch (Exception e) {
+			log.warn("Exception while closing input stream", e);
+		}
+
+		try {
+			serialPort.getOutputStream().close();
+		} catch (Exception e) {
+			log.warn("Exception while closing output stream", e);
+		}
+		
+		try {
+			// this call blocks while thread is attempting to read from inputstream
 			serialPort.close();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			log.warn("Exception while closing serial port");
+		}
 	}
 	
-	protected OutputStream getOutputStream() {
+	public OutputStream getOutputStream() {
 		return outputStream;
 	}
 
-	protected InputStream getInputStream() {
+	public InputStream getInputStream() {
 		return inputStream;
 	}
 
-	protected abstract void handleSerialData() throws IOException;
-
+	public void setSerialEventHandler(RxTxSerialEventListener handler) {
+		this.handler = handler;
+	}
+	
 	public void serialEvent(SerialPortEvent event) {
-		switch (event.getEventType()) {
-		case SerialPortEvent.DATA_AVAILABLE:
-
-			try {
-				if (inputStream.available() > 0) {
-					try {
-						log.debug("serialEvent: " + inputStream.available() + " bytes available");
-						handleSerialData();
-					} catch (Exception e) {
-						log.error("Error in handleSerialData method", e);
-					}				
-				}
-			} catch (IOException ex) {
-				// it's best not to throw the exception because the RXTX thread may not be prepared to handle
-				log.error("RXTX error in serialEvent method", ex);
-			}
-		}
+		if (this.handler != null) {
+			this.handler.handleSerialEvent(event);
+		}		
 	}
 }

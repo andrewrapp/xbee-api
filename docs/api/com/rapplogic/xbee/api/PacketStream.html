@@ -6,14 +6,15 @@
 PacketStream
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.PacketStream class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="PacketStream";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="PacketStream";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -51,7 +53,7 @@ function windowTitle()
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
 &nbsp;<A HREF="../../../../com/rapplogic/xbee/api/PacketListener.html" title="interface in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBee.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/RemoteAtRequest.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../index.html?com/rapplogic/xbee/api/PacketStream.html" target="_top"><B>FRAMES</B></A>  &nbsp;
 &nbsp;<A HREF="PacketStream.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
@@ -205,14 +207,6 @@ Reads a packet from the input stream, verifies checksum and creates an XBeeRespo
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/PacketStream.html#parseIoResponse(com.rapplogic.xbee.api.wpan.RxResponseIoSample)">parseIoResponse</A></B>(<A HREF="../../../../com/rapplogic/xbee/api/wpan/RxResponseIoSample.html" title="class in com.rapplogic.xbee.api.wpan">RxResponseIoSample</A>&nbsp;response)</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/PacketStream.html#parsePacket()">parsePacket</A></B>()</CODE>
 
@@ -227,7 +221,7 @@ Reads a packet from the input stream, verifies checksum and creates an XBeeRespo
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method reads bytes from the underlying input stream and performs the following tasks:
- keeps track of how many bytes we've read, un-escapes bytes if necessary and verifies the checksum.</TD>
+ 1.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -345,27 +339,11 @@ public int <B>read</B>()
          throws java.io.IOException</PRE>
 <DL>
 <DD>This method reads bytes from the underlying input stream and performs the following tasks:
- keeps track of how many bytes we've read, un-escapes bytes if necessary and verifies the checksum.
+ 1. Keeps track of how many bytes we've read
+ 2. Un-escapes bytes if necessary and verifies the checksum.
 <P>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/util/IIntArrayInputStream.html#read()">read</A></CODE> in interface <CODE><A HREF="../../../../com/rapplogic/xbee/util/IIntArrayInputStream.html" title="interface in com.rapplogic.xbee.util">IIntArrayInputStream</A></CODE></DL>
-</DD>
-<DD><DL>
-
-<DT><B>Throws:</B>
-<DD><CODE>java.io.IOException</CODE></DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="parseIoResponse(com.rapplogic.xbee.api.wpan.RxResponseIoSample)"><!-- --></A><H3>
-parseIoResponse</H3>
-<PRE>
-public void <B>parseIoResponse</B>(<A HREF="../../../../com/rapplogic/xbee/api/wpan/RxResponseIoSample.html" title="class in com.rapplogic.xbee.api.wpan">RxResponseIoSample</A>&nbsp;response)
-                     throws java.io.IOException</PRE>
-<DL>
-<DD><DL>
-</DL>
 </DD>
 <DD><DL>
 
@@ -545,7 +523,7 @@ public int <B>getChecksum</B>()</PRE>
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
 &nbsp;<A HREF="../../../../com/rapplogic/xbee/api/PacketListener.html" title="interface in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBee.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/RemoteAtRequest.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../index.html?com/rapplogic/xbee/api/PacketStream.html" target="_top"><B>FRAMES</B></A>  &nbsp;
 &nbsp;<A HREF="PacketStream.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;

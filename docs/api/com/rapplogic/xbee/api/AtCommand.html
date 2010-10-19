@@ -6,14 +6,15 @@
 AtCommand
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.AtCommand class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="AtCommand";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="AtCommand";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -92,7 +94,10 @@ java.lang.Object
       <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.AtCommand</B>
 </PRE>
 <DL>
-<DT><B>Direct Known Subclasses:</B> <DD><A HREF="../../../../com/rapplogic/xbee/api/AtCommandQueue.html" title="class in com.rapplogic.xbee.api">AtCommandQueue</A>, <A HREF="../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtRequest.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetRemoteAtRequest</A></DD>
+<DT><B>All Implemented Interfaces:</B> <DD>java.io.Serializable</DD>
+</DL>
+<DL>
+<DT><B>Direct Known Subclasses:</B> <DD><A HREF="../../../../com/rapplogic/xbee/api/AtCommandQueue.html" title="class in com.rapplogic.xbee.api">AtCommandQueue</A>, <A HREF="../../../../com/rapplogic/xbee/api/RemoteAtRequest.html" title="class in com.rapplogic.xbee.api">RemoteAtRequest</A></DD>
 </DL>
 <HR>
 <DL>
@@ -107,13 +112,22 @@ API technique to set/query commands
  <p/>
  API ID: 0x8
  <p/>
+ Determining radio type with HV:<br/>
+ Byte 1, Part Number<br/>
+ x17, XB24 (series 1)<br/>
+ x18, XBP24 (series 1)<br/>
+ x19, XB24-B (series 2)<br/>
+ x1A, XBP24-B (series 2)<br/>
+ <p/>
+ XB24-ZB<br/>
+ XBP24-ZB<br/>
 <P>
 
 <P>
 <DL>
 <DT><B>Author:</B></DT>
   <DD>andrew</DD>
-</DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../serialized-form.html#com.rapplogic.xbee.api.AtCommand">Serialized Form</A></DL>
 <HR>
 
 <P>

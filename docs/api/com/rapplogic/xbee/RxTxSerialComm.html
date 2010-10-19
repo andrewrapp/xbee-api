@@ -6,14 +6,15 @@
 RxTxSerialComm
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.RxTxSerialComm class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="RxTxSerialComm";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="RxTxSerialComm";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -51,7 +53,7 @@ function windowTitle()
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
 &nbsp;PREV CLASS&nbsp;
-&nbsp;<A HREF="../../../com/rapplogic/xbee/XBeePin.html" title="class in com.rapplogic.xbee"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../com/rapplogic/xbee/RxTxSerialEventListener.html" title="interface in com.rapplogic.xbee"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../index.html?com/rapplogic/xbee/RxTxSerialComm.html" target="_top"><B>FRAMES</B></A>  &nbsp;
 &nbsp;<A HREF="RxTxSerialComm.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
@@ -93,12 +95,9 @@ java.lang.Object
 <DL>
 <DT><B>All Implemented Interfaces:</B> <DD>gnu.io.SerialPortEventListener, java.util.EventListener</DD>
 </DL>
-<DL>
-<DT><B>Direct Known Subclasses:</B> <DD><A HREF="../../../com/rapplogic/xbee/api/XBee.html" title="class in com.rapplogic.xbee.api">XBee</A>, <A HREF="../../../com/rapplogic/xbee/api/XBeeRxTx.html" title="class in com.rapplogic.xbee.api">XBeeRxTx</A></DD>
-</DL>
 <HR>
 <DL>
-<DT><PRE>public abstract class <B>RxTxSerialComm</B><DT>extends java.lang.Object<DT>implements gnu.io.SerialPortEventListener</DL>
+<DT><PRE>public class <B>RxTxSerialComm</B><DT>extends java.lang.Object<DT>implements gnu.io.SerialPortEventListener</DL>
 </PRE>
 
 <P>
@@ -149,7 +148,7 @@ This class encapsulates a RXTX serial port, providing access to input/output str
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>protected &nbsp;java.io.InputStream</CODE></FONT></TD>
+<CODE>&nbsp;java.io.InputStream</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../com/rapplogic/xbee/RxTxSerialComm.html#getInputStream()">getInputStream</A></B>()</CODE>
 
 <BR>
@@ -157,7 +156,7 @@ This class encapsulates a RXTX serial port, providing access to input/output str
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>protected &nbsp;java.io.OutputStream</CODE></FONT></TD>
+<CODE>&nbsp;java.io.OutputStream</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../com/rapplogic/xbee/RxTxSerialComm.html#getOutputStream()">getOutputStream</A></B>()</CODE>
 
 <BR>
@@ -165,15 +164,7 @@ This class encapsulates a RXTX serial port, providing access to input/output str
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>protected abstract &nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../com/rapplogic/xbee/RxTxSerialComm.html#handleSerialData()">handleSerialData</A></B>()</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>protected &nbsp;void</CODE></FONT></TD>
+<CODE>&nbsp;void</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../com/rapplogic/xbee/RxTxSerialComm.html#openSerialPort(java.lang.String, int)">openSerialPort</A></B>(java.lang.String&nbsp;port,
                int&nbsp;baudRate)</CODE>
 
@@ -182,7 +173,7 @@ This class encapsulates a RXTX serial port, providing access to input/output str
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>protected &nbsp;void</CODE></FONT></TD>
+<CODE>&nbsp;void</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../com/rapplogic/xbee/RxTxSerialComm.html#openSerialPort(java.lang.String, java.lang.String, int, int)">openSerialPort</A></B>(java.lang.String&nbsp;port,
                java.lang.String&nbsp;appName,
                int&nbsp;timeout,
@@ -193,7 +184,7 @@ This class encapsulates a RXTX serial port, providing access to input/output str
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>protected &nbsp;void</CODE></FONT></TD>
+<CODE>&nbsp;void</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../com/rapplogic/xbee/RxTxSerialComm.html#openSerialPort(java.lang.String, java.lang.String, int, int, int, int, int, int)">openSerialPort</A></B>(java.lang.String&nbsp;port,
                java.lang.String&nbsp;appName,
                int&nbsp;timeout,
@@ -210,6 +201,14 @@ This class encapsulates a RXTX serial port, providing access to input/output str
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../com/rapplogic/xbee/RxTxSerialComm.html#serialEvent(gnu.io.SerialPortEvent)">serialEvent</A></B>(gnu.io.SerialPortEvent&nbsp;event)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/rapplogic/xbee/RxTxSerialComm.html#setSerialEventHandler(com.rapplogic.xbee.RxTxSerialEventListener)">setSerialEventHandler</A></B>(<A HREF="../../../com/rapplogic/xbee/RxTxSerialEventListener.html" title="interface in com.rapplogic.xbee">RxTxSerialEventListener</A>&nbsp;handler)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -257,12 +256,13 @@ public <B>RxTxSerialComm</B>()</PRE>
 <A NAME="openSerialPort(java.lang.String, int)"><!-- --></A><H3>
 openSerialPort</H3>
 <PRE>
-protected void <B>openSerialPort</B>(java.lang.String&nbsp;port,
-                              int&nbsp;baudRate)
-                       throws gnu.io.PortInUseException,
-                              gnu.io.UnsupportedCommOperationException,
-                              java.util.TooManyListenersException,
-                              java.io.IOException</PRE>
+public void <B>openSerialPort</B>(java.lang.String&nbsp;port,
+                           int&nbsp;baudRate)
+                    throws gnu.io.PortInUseException,
+                           gnu.io.UnsupportedCommOperationException,
+                           java.util.TooManyListenersException,
+                           java.io.IOException,
+                           <A HREF="../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -273,7 +273,8 @@ protected void <B>openSerialPort</B>(java.lang.String&nbsp;port,
 <DD><CODE>gnu.io.PortInUseException</CODE>
 <DD><CODE>gnu.io.UnsupportedCommOperationException</CODE>
 <DD><CODE>java.util.TooManyListenersException</CODE>
-<DD><CODE>java.io.IOException</CODE></DL>
+<DD><CODE>java.io.IOException</CODE>
+<DD><CODE><A HREF="../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE></DL>
 </DD>
 </DL>
 <HR>
@@ -281,14 +282,15 @@ protected void <B>openSerialPort</B>(java.lang.String&nbsp;port,
 <A NAME="openSerialPort(java.lang.String, java.lang.String, int, int)"><!-- --></A><H3>
 openSerialPort</H3>
 <PRE>
-protected void <B>openSerialPort</B>(java.lang.String&nbsp;port,
-                              java.lang.String&nbsp;appName,
-                              int&nbsp;timeout,
-                              int&nbsp;baudRate)
-                       throws gnu.io.PortInUseException,
-                              gnu.io.UnsupportedCommOperationException,
-                              java.util.TooManyListenersException,
-                              java.io.IOException</PRE>
+public void <B>openSerialPort</B>(java.lang.String&nbsp;port,
+                           java.lang.String&nbsp;appName,
+                           int&nbsp;timeout,
+                           int&nbsp;baudRate)
+                    throws gnu.io.PortInUseException,
+                           gnu.io.UnsupportedCommOperationException,
+                           java.util.TooManyListenersException,
+                           java.io.IOException,
+                           <A HREF="../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -299,7 +301,8 @@ protected void <B>openSerialPort</B>(java.lang.String&nbsp;port,
 <DD><CODE>gnu.io.PortInUseException</CODE>
 <DD><CODE>gnu.io.UnsupportedCommOperationException</CODE>
 <DD><CODE>java.util.TooManyListenersException</CODE>
-<DD><CODE>java.io.IOException</CODE></DL>
+<DD><CODE>java.io.IOException</CODE>
+<DD><CODE><A HREF="../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE></DL>
 </DD>
 </DL>
 <HR>
@@ -307,18 +310,19 @@ protected void <B>openSerialPort</B>(java.lang.String&nbsp;port,
 <A NAME="openSerialPort(java.lang.String, java.lang.String, int, int, int, int, int, int)"><!-- --></A><H3>
 openSerialPort</H3>
 <PRE>
-protected void <B>openSerialPort</B>(java.lang.String&nbsp;port,
-                              java.lang.String&nbsp;appName,
-                              int&nbsp;timeout,
-                              int&nbsp;baudRate,
-                              int&nbsp;dataBits,
-                              int&nbsp;stopBits,
-                              int&nbsp;parity,
-                              int&nbsp;flowControl)
-                       throws gnu.io.PortInUseException,
-                              gnu.io.UnsupportedCommOperationException,
-                              java.util.TooManyListenersException,
-                              java.io.IOException</PRE>
+public void <B>openSerialPort</B>(java.lang.String&nbsp;port,
+                           java.lang.String&nbsp;appName,
+                           int&nbsp;timeout,
+                           int&nbsp;baudRate,
+                           int&nbsp;dataBits,
+                           int&nbsp;stopBits,
+                           int&nbsp;parity,
+                           int&nbsp;flowControl)
+                    throws gnu.io.PortInUseException,
+                           gnu.io.UnsupportedCommOperationException,
+                           java.util.TooManyListenersException,
+                           java.io.IOException,
+                           <A HREF="../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -329,7 +333,8 @@ protected void <B>openSerialPort</B>(java.lang.String&nbsp;port,
 <DD><CODE>gnu.io.PortInUseException</CODE>
 <DD><CODE>gnu.io.UnsupportedCommOperationException</CODE>
 <DD><CODE>java.util.TooManyListenersException</CODE>
-<DD><CODE>java.io.IOException</CODE></DL>
+<DD><CODE>java.io.IOException</CODE>
+<DD><CODE><A HREF="../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE></DL>
 </DD>
 </DL>
 <HR>
@@ -353,7 +358,7 @@ public void <B>close</B>()</PRE>
 <A NAME="getOutputStream()"><!-- --></A><H3>
 getOutputStream</H3>
 <PRE>
-protected java.io.OutputStream <B>getOutputStream</B>()</PRE>
+public java.io.OutputStream <B>getOutputStream</B>()</PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -367,7 +372,7 @@ protected java.io.OutputStream <B>getOutputStream</B>()</PRE>
 <A NAME="getInputStream()"><!-- --></A><H3>
 getInputStream</H3>
 <PRE>
-protected java.io.InputStream <B>getInputStream</B>()</PRE>
+public java.io.InputStream <B>getInputStream</B>()</PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -378,19 +383,16 @@ protected java.io.InputStream <B>getInputStream</B>()</PRE>
 </DL>
 <HR>
 
-<A NAME="handleSerialData()"><!-- --></A><H3>
-handleSerialData</H3>
+<A NAME="setSerialEventHandler(com.rapplogic.xbee.RxTxSerialEventListener)"><!-- --></A><H3>
+setSerialEventHandler</H3>
 <PRE>
-protected abstract void <B>handleSerialData</B>()
-                                  throws java.io.IOException</PRE>
+public void <B>setSerialEventHandler</B>(<A HREF="../../../com/rapplogic/xbee/RxTxSerialEventListener.html" title="interface in com.rapplogic.xbee">RxTxSerialEventListener</A>&nbsp;handler)</PRE>
 <DL>
 <DD><DL>
 </DL>
 </DD>
 <DD><DL>
-
-<DT><B>Throws:</B>
-<DD><CODE>java.io.IOException</CODE></DL>
+</DL>
 </DD>
 </DL>
 <HR>
@@ -438,7 +440,7 @@ public void <B>serialEvent</B>(gnu.io.SerialPortEvent&nbsp;event)</PRE>
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
 &nbsp;PREV CLASS&nbsp;
-&nbsp;<A HREF="../../../com/rapplogic/xbee/XBeePin.html" title="class in com.rapplogic.xbee"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../com/rapplogic/xbee/RxTxSerialEventListener.html" title="interface in com.rapplogic.xbee"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../index.html?com/rapplogic/xbee/RxTxSerialComm.html" target="_top"><B>FRAMES</B></A>  &nbsp;
 &nbsp;<A HREF="RxTxSerialComm.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;

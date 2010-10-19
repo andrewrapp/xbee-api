@@ -22,6 +22,7 @@ package com.rapplogic.xbee.api.zigbee;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.api.XBeeRequest;
+import com.rapplogic.xbee.api.RemoteAtRequest;
 
 /**
  * Uses Remote AT to send a Force Sample (IS) AT command to a remote XBee
@@ -29,7 +30,7 @@ import com.rapplogic.xbee.api.XBeeRequest;
  * @author andrew
  *
  */
-public class ZBForceSampleRequest extends ZNetRemoteAtRequest {
+public class ZBForceSampleRequest extends RemoteAtRequest {
 		
 	/**
 	 * Creates a Force Sample Remote AT request

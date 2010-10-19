@@ -19,6 +19,9 @@
 
 package com.rapplogic.xbee.api;
 
+import java.io.Serializable;
+import java.util.Arrays;
+
 import com.rapplogic.xbee.util.ByteUtils;
 
 /**
@@ -27,14 +30,19 @@ import com.rapplogic.xbee.util.ByteUtils;
  * @author andrew
  *
  */
-public abstract class XBeeResponse {
+public abstract class XBeeResponse implements Serializable {
+
+	// TODO consider adding UUID to each response
+	
+	private static final long serialVersionUID = -7038123612643874495L;
 
 	// the raw (escaped) bytes of this packet (minus start byte)
 	// this is the most compact representation of the packet;
 	// useful for sending the packet over a wire (e.g. xml),
 	// for later reconstitution
-	private int[] packetBytes;
-
+	private int[] rawPacketBytes;
+	private int[] processedPacketBytes;
+	
 	private ApiId apiId;
 	private int checksum;
 
@@ -88,21 +96,86 @@ public abstract class XBeeResponse {
 	}
 	
 	/**
-	 * Returns an array all bytes in packet except the start byte
-	 * 
+	 * @deprecated Use getRawPacketBytes instead
 	 * @return
 	 */
 	public int[] getPacketBytes() {
-		return packetBytes;
+		return this.getRawPacketBytes();
 	}
 
-	public void setPacketBytes(int[] packetBytes) {
-		this.packetBytes = packetBytes;
+	/**
+	 * Returns an array all bytes (as received off radio, including escape bytes) in packet except the start byte.  
+	 * 
+	 * @return
+	 */
+	public int[] getRawPacketBytes() {
+		return rawPacketBytes;		
 	}
 	
+	/**
+	 * Returns an array of all bytes (after being un-escaped) in the packet except the start byte.
+	 * @return
+	 */
+	public int[] getProcessedPacketBytes() {
+		return processedPacketBytes;
+	}
+
+	public void setRawPacketBytes(int[] packetBytes) {
+		this.rawPacketBytes = packetBytes;
+		this.processedPacketBytes = XBeePacket.unEscapePacket(packetBytes);
+	}
+	
+	/**
+	 * For internal use only.  Called after successful parsing to allow subclass to do any final processing before delivery
+	 */
+	public void finish() {
+		
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((apiId == null) ? 0 : apiId.hashCode());
+		result = prime * result + checksum;
+		result = prime * result + (error ? 1231 : 1237);
+		result = prime * result + ((length == null) ? 0 : length.hashCode());
+		result = prime * result + Arrays.hashCode(rawPacketBytes);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		XBeeResponse other = (XBeeResponse) obj;
+		if (apiId == null) {
+			if (other.apiId != null)
+				return false;
+		} else if (!apiId.equals(other.apiId))
+			return false;
+		if (checksum != other.checksum)
+			return false;
+		if (error != other.error)
+			return false;
+		if (length == null) {
+			if (other.length != null)
+				return false;
+		} else if (!length.equals(other.length))
+			return false;
+		if (!Arrays.equals(rawPacketBytes, other.rawPacketBytes))
+			return false;
+		return true;
+	}
+
 	public String toString() {
+		// 8/19/09 fixed null pointer on length.get16BitValue
 		return "apiId=" + this.apiId +
-			",length=" + length.get16BitValue() + 
+			",length=" + (length == null ? "null" : length.get16BitValue()) + 
 			",checksum=" + ByteUtils.toBase16(checksum) +
 			",error=" + this.error;
 	}

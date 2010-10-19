@@ -6,14 +6,15 @@
 ZNetRxBaseResponse
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.zigbee.ZNetRxBaseResponse class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="ZNetRxBaseResponse";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="ZNetRxBaseResponse";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -50,7 +52,7 @@ function windowTitle()
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtResponse.html" title="class in com.rapplogic.xbee.api.zigbee"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetNodeIdentificationResponse.SourceAction.html" title="enum in com.rapplogic.xbee.api.zigbee"><B>PREV CLASS</B></A>&nbsp;
 &nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxBaseResponse.Option.html" title="enum in com.rapplogic.xbee.api.zigbee"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../../index.html?com/rapplogic/xbee/api/zigbee/ZNetRxBaseResponse.html" target="_top"><B>FRAMES</B></A>  &nbsp;
@@ -92,6 +94,9 @@ java.lang.Object
       <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.zigbee.ZNetRxBaseResponse</B>
 </PRE>
 <DL>
+<DT><B>All Implemented Interfaces:</B> <DD>java.io.Serializable</DD>
+</DL>
+<DL>
 <DT><B>Direct Known Subclasses:</B> <DD><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetRxIoSampleResponse</A>, <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxResponse.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetRxResponse</A></DD>
 </DL>
 <HR>
@@ -113,7 +118,7 @@ Series 2 XBee.  Super class of all Receive packets.
 <DL>
 <DT><B>Author:</B></DT>
   <DD>Andrew Rapp</DD>
-</DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../../serialized-form.html#com.rapplogic.xbee.api.zigbee.ZNetRxBaseResponse">Serialized Form</A></DL>
 <HR>
 
 <P>
@@ -222,7 +227,7 @@ Series 2 XBee.  Super class of all Receive packets.
 <TH ALIGN="left"><B>Methods inherited from class com.rapplogic.xbee.api.<A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A></B></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getApiId()">getApiId</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getChecksum()">getChecksum</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getLength()">getLength</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getPacketBytes()">getPacketBytes</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#isError()">isError</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setApiId(com.rapplogic.xbee.api.ApiId)">setApiId</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setChecksum(int)">setChecksum</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setError(boolean)">setError</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setLength(com.rapplogic.xbee.api.XBeePacketLength)">setLength</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setPacketBytes(int[])">setPacketBytes</A></CODE></TD>
+<TD><CODE><A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#equals(java.lang.Object)">equals</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#finish()">finish</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getApiId()">getApiId</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getChecksum()">getChecksum</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getLength()">getLength</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getPacketBytes()">getPacketBytes</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getProcessedPacketBytes()">getProcessedPacketBytes</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getRawPacketBytes()">getRawPacketBytes</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#hashCode()">hashCode</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#isError()">isError</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setApiId(com.rapplogic.xbee.api.ApiId)">setApiId</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setChecksum(int)">setChecksum</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setError(boolean)">setError</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setLength(com.rapplogic.xbee.api.XBeePacketLength)">setLength</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setRawPacketBytes(int[])">setRawPacketBytes</A></CODE></TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
@@ -231,7 +236,7 @@ Series 2 XBee.  Super class of all Receive packets.
 <TH ALIGN="left"><B>Methods inherited from class java.lang.Object</B></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE>clone, equals, finalize, getClass, hashCode, notify, notifyAll, wait, wait, wait</CODE></TD>
+<TD><CODE>clone, finalize, getClass, notify, notifyAll, wait, wait, wait</CODE></TD>
 </TR>
 </TABLE>
 &nbsp;
@@ -372,7 +377,7 @@ public java.lang.String <B>toString</B>()</PRE>
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRemoteAtResponse.html" title="class in com.rapplogic.xbee.api.zigbee"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetNodeIdentificationResponse.SourceAction.html" title="enum in com.rapplogic.xbee.api.zigbee"><B>PREV CLASS</B></A>&nbsp;
 &nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxBaseResponse.Option.html" title="enum in com.rapplogic.xbee.api.zigbee"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../../index.html?com/rapplogic/xbee/api/zigbee/ZNetRxBaseResponse.html" target="_top"><B>FRAMES</B></A>  &nbsp;

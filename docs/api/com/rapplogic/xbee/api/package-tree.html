@@ -12,7 +12,9 @@ com.rapplogic.xbee.api Class Hierarchy
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="com.rapplogic.xbee.api Class Hierarchy";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="com.rapplogic.xbee.api Class Hierarchy";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -21,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -88,11 +91,7 @@ Class Hierarchy
 <LI TYPE="circle">java.lang.Object<UL>
 <LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/Checksum.html" title="class in com.rapplogic.xbee.api"><B>Checksum</B></A><LI TYPE="circle">com.rapplogic.xbee.util.<A HREF="../../../../com/rapplogic/xbee/util/DoubleByte.html" title="class in com.rapplogic.xbee.util"><B>DoubleByte</B></A><UL>
 <LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeePacketLength.html" title="class in com.rapplogic.xbee.api"><B>XBeePacketLength</B></A></UL>
-<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/PacketStream.html" title="class in com.rapplogic.xbee.api"><B>PacketStream</B></A> (implements com.rapplogic.xbee.util.<A HREF="../../../../com/rapplogic/xbee/util/IIntArrayInputStream.html" title="interface in com.rapplogic.xbee.util">IIntArrayInputStream</A>)
-<LI TYPE="circle">com.rapplogic.xbee.<A HREF="../../../../com/rapplogic/xbee/RxTxSerialComm.html" title="class in com.rapplogic.xbee"><B>RxTxSerialComm</B></A> (implements gnu.io.SerialPortEventListener)
-<UL>
-<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBee.html" title="class in com.rapplogic.xbee.api"><B>XBee</B></A> (implements com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A>, com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeePacketHandler.html" title="interface in com.rapplogic.xbee.api">XBeePacketHandler</A>)
-<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeeRxTx.html" title="class in com.rapplogic.xbee.api"><B>XBeeRxTx</B></A></UL>
+<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/FrameIdGenerator.html" title="class in com.rapplogic.xbee.api"><B>FrameIdGenerator</B></A><LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/PacketStream.html" title="class in com.rapplogic.xbee.api"><B>PacketStream</B></A> (implements com.rapplogic.xbee.util.<A HREF="../../../../com/rapplogic/xbee/util/IIntArrayInputStream.html" title="interface in com.rapplogic.xbee.util">IIntArrayInputStream</A>)
 <LI TYPE="circle">java.lang.Throwable (implements java.io.Serializable)
 <UL>
 <LI TYPE="circle">java.lang.Exception<UL>
@@ -102,16 +101,21 @@ Class Hierarchy
 <LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api"><B>XBeeTimeoutException</B></A></UL>
 </UL>
 </UL>
+<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBee.html" title="class in com.rapplogic.xbee.api"><B>XBee</B></A> (implements com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A>)
 <LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeeAddress.html" title="class in com.rapplogic.xbee.api"><B>XBeeAddress</B></A><UL>
 <LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeeAddress16.html" title="class in com.rapplogic.xbee.api"><B>XBeeAddress16</B></A><LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeeAddress64.html" title="class in com.rapplogic.xbee.api"><B>XBeeAddress64</B></A></UL>
 <LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeePacket.html" title="class in com.rapplogic.xbee.api"><B>XBeePacket</B></A><LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeePacketParser.html" title="class in com.rapplogic.xbee.api"><B>XBeePacketParser</B></A> (implements java.lang.Runnable)
-<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeeRequest.html" title="class in com.rapplogic.xbee.api"><B>XBeeRequest</B></A><UL>
+<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeeRequest.html" title="class in com.rapplogic.xbee.api"><B>XBeeRequest</B></A> (implements java.io.Serializable)
+<UL>
 <LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/AtCommand.html" title="class in com.rapplogic.xbee.api"><B>AtCommand</B></A><UL>
-<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/AtCommandQueue.html" title="class in com.rapplogic.xbee.api"><B>AtCommandQueue</B></A></UL>
+<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/AtCommandQueue.html" title="class in com.rapplogic.xbee.api"><B>AtCommandQueue</B></A><LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/RemoteAtRequest.html" title="class in com.rapplogic.xbee.api"><B>RemoteAtRequest</B></A></UL>
 </UL>
-<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api"><B>XBeeResponse</B></A><UL>
-<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/ErrorResponse.html" title="class in com.rapplogic.xbee.api"><B>ErrorResponse</B></A><LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/ModemStatusResponse.html" title="class in com.rapplogic.xbee.api"><B>ModemStatusResponse</B></A><LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeeFrameIdResponse.html" title="class in com.rapplogic.xbee.api"><B>XBeeFrameIdResponse</B></A><UL>
-<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/AtCommandResponse.html" title="class in com.rapplogic.xbee.api"><B>AtCommandResponse</B></A></UL>
+<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api"><B>XBeeResponse</B></A> (implements java.io.Serializable)
+<UL>
+<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/ErrorResponse.html" title="class in com.rapplogic.xbee.api"><B>ErrorResponse</B></A><LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/GenericResponse.html" title="class in com.rapplogic.xbee.api"><B>GenericResponse</B></A><LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/ModemStatusResponse.html" title="class in com.rapplogic.xbee.api"><B>ModemStatusResponse</B></A><LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/XBeeFrameIdResponse.html" title="class in com.rapplogic.xbee.api"><B>XBeeFrameIdResponse</B></A><UL>
+<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/AtCommandResponse.html" title="class in com.rapplogic.xbee.api"><B>AtCommandResponse</B></A><UL>
+<LI TYPE="circle">com.rapplogic.xbee.api.<A HREF="../../../../com/rapplogic/xbee/api/RemoteAtResponse.html" title="class in com.rapplogic.xbee.api"><B>RemoteAtResponse</B></A></UL>
+</UL>
 </UL>
 </UL>
 </UL>

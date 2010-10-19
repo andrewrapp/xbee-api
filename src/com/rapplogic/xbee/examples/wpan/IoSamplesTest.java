@@ -28,6 +28,7 @@ import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.api.wpan.IoSample;
 import com.rapplogic.xbee.api.wpan.RxResponseIoSample;
+import com.rapplogic.xbee.util.ByteUtils;
 
 /**
  * Series 1 XBee -- receive IO samples from remote radio
@@ -81,12 +82,15 @@ public class IoSamplesTest {
 		XBee xbee = new XBee();		
 		
 		try {			
-			xbee.open("COM15", 9600);
+			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
 	
 			while (true) {
 
 				try {
 					XBeeResponse response = xbee.getResponse();
+					
+					log.info("Received i/o response: " + response);
+					log.info("packet bytes is " + ByteUtils.toBase16(response.getPacketBytes()));
 					
 					if (response.isError()) {
 						log.info("response contains errors", ((ErrorResponse)response).getException());

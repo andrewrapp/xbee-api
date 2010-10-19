@@ -39,6 +39,6 @@ public class RxResponse extends RxBaseResponse {
 	
 	public String toString() {
 		return super.toString() +
-			"data=" + ByteUtils.toBase16(this.data);
+			",data=" + ByteUtils.toBase16(this.data);
 	}	
 }

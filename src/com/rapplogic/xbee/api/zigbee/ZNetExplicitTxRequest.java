@@ -23,8 +23,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
@@ -34,7 +32,7 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
 
 /**
  * Series 2 XBee.  Sends a packet to a remote radio.  The remote radio
- * receives the data as a ZNetExplicitTxRequest packet.
+ * receives the packet as a ZNetExplicitRxResponse packet.
  * <p/>
  * Radio must be configured for explicit frames to use this class (AO=1)
  * <p/>
@@ -111,8 +109,6 @@ public class ZNetExplicitTxRequest extends ZNetTxRequest {
 	
 	// TODO ZDO commands
 	
-	private final static Logger log = Logger.getLogger(ZNetExplicitTxRequest.class);
-	
 	private int sourceEndpoint;
 	private int destinationEndpoint;
 	private DoubleByte clusterId;
@@ -121,7 +117,7 @@ public class ZNetExplicitTxRequest extends ZNetTxRequest {
 	public final static DoubleByte znetProfileId = new DoubleByte(0xc1, 0x05);
 	public final static DoubleByte zdoProfileId = new DoubleByte(0, 0);
 	
-	public ZNetExplicitTxRequest(int frameId, XBeeAddress64 dest64, XBeeAddress16 dest16, int broadcastRadius, int option, int[] payload, 	int sourceEndpoint, int destinationEndpoint, DoubleByte clusterId, DoubleByte profileId) {
+	public ZNetExplicitTxRequest(int frameId, XBeeAddress64 dest64, XBeeAddress16 dest16, int broadcastRadius, ZNetTxRequest.Option option, int[] payload, 	int sourceEndpoint, int destinationEndpoint, DoubleByte clusterId, DoubleByte profileId) {
 		super(frameId, dest64, dest16, broadcastRadius, option, payload);
 		this.sourceEndpoint = sourceEndpoint;
 		this.destinationEndpoint = destinationEndpoint;
@@ -153,8 +149,6 @@ public class ZNetExplicitTxRequest extends ZNetTxRequest {
 		// profile id
 		frameData.getInternalList().add(16, this.getProfileId().getMsb());
 		frameData.getInternalList().add(17, this.getProfileId().getLsb());
-		
-		log.debug("frameData is " + ByteUtils.toBase16(frameData.getIntArray()));
 		
 		return frameData.getIntArray();
 	}

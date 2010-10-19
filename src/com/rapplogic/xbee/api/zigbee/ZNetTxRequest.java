@@ -19,7 +19,9 @@
 
 package com.rapplogic.xbee.api.zigbee;
 
-import org.apache.log4j.Logger;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.XBeeAddress16;
@@ -38,8 +40,6 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
  *
  */
 public class ZNetTxRequest extends XBeeRequest {
-	
-	private final static Logger log = Logger.getLogger(ZNetTxRequest.class);
 
 	// 10/28/08 the datasheet states 72 is maximum payload size but I was able to push 75 through successfully, 
 	// even with all bytes as escape bytes (a total post-escape packet size of 169!).
@@ -62,11 +62,39 @@ public class ZNetTxRequest extends XBeeRequest {
 	private XBeeAddress64 destAddr64;
 	private XBeeAddress16 destAddr16;
 	private int broadcastRadius;
-	private int option;
+	private Option option;
 	private int[] payload;
 	private int maxPayloadSize;
 	
 	//TODO frameId should go last in all Request constructors since it is not specific to any one request
+	
+	public enum Option {
+		
+		UNICAST (0),
+		BROADCAST (8);
+		
+		private static final Map<Integer,Option> lookup = new HashMap<Integer,Option>();
+		
+		static {
+			for(Option s : EnumSet.allOf(Option.class)) {
+				lookup.put(s.getValue(), s);
+			}
+		}
+		
+		public static Option get(int value) { 
+			return lookup.get(value); 
+		}
+		
+	    private final int value;
+	    
+	    Option(int value) {
+	        this.value = value;
+	    }
+
+		public int getValue() {
+			return value;
+		}
+	}
 	
 	/**
 	 * From manual p. 33:
@@ -90,7 +118,7 @@ public class ZNetTxRequest extends XBeeRequest {
 	 * @param option
 	 * @param payload
 	 */
-	public ZNetTxRequest(int frameId, XBeeAddress64 dest64, XBeeAddress16 dest16, int broadcastRadius, int option, int[] payload) {
+	public ZNetTxRequest(int frameId, XBeeAddress64 dest64, XBeeAddress16 dest16, int broadcastRadius, Option option, int[] payload) {
 		this.setFrameId(frameId);
 		this.destAddr64 = dest64;
 		this.destAddr16 = dest16;
@@ -106,7 +134,7 @@ public class ZNetTxRequest extends XBeeRequest {
 	 * @param payload
 	 */
 	public ZNetTxRequest(XBeeAddress64 dest64, int[] payload) {
-		this(XBeeRequest.DEFAULT_FRAME_ID, dest64, XBeeAddress16.ZNET_BROADCAST, ZNetTxRequest.DEFAULT_BROADCAST_RADIUS, ZNetTxRequest.UNICAST_OPTION, payload);
+		this(XBeeRequest.DEFAULT_FRAME_ID, dest64, XBeeAddress16.ZNET_BROADCAST, ZNetTxRequest.DEFAULT_BROADCAST_RADIUS, Option.UNICAST, payload);
 	}
 	
 	protected IntArrayOutputStream getFrameDataAsIntArrayOutputStream() {
@@ -133,7 +161,7 @@ public class ZNetTxRequest extends XBeeRequest {
 		out.write(broadcastRadius);
 		
 		// write options byte
-		out.write(option);
+		out.write(option.getValue());
 		
 		out.write(payload);
 		
@@ -172,11 +200,11 @@ public class ZNetTxRequest extends XBeeRequest {
 		this.broadcastRadius = broadcastRadius;
 	}
 
-	public int getOption() {
+	public Option getOption() {
 		return option;
 	}
 
-	public void setOption(int option) {
+	public void setOption(Option option) {
 		this.option = option;
 	}
 

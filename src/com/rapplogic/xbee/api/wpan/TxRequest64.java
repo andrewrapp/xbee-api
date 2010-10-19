@@ -50,7 +50,7 @@ public class TxRequest64 extends TxRequestBase {
 	 * @param payload
 	 */
 	public TxRequest64(XBeeAddress64 destination, int[] payload) {
-		this(destination, DEFAULT_FRAME_ID, Option.DEFAULT_OPTION, payload);
+		this(destination, DEFAULT_FRAME_ID, Option.UNICAST, payload);
 	}
 	
 	/**
@@ -66,7 +66,7 @@ public class TxRequest64 extends TxRequestBase {
 	 * @param payload
 	 */
 	public TxRequest64(XBeeAddress64 destination, int frameId, int[] payload) {
-		this(destination, frameId, Option.DEFAULT_OPTION, payload);
+		this(destination, frameId, Option.UNICAST, payload);
 	}
 	
 	/**

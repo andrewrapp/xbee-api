@@ -6,14 +6,15 @@
 com.rapplogic.xbee.api
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api package">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="com.rapplogic.xbee.api";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="com.rapplogic.xbee.api";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -138,6 +140,15 @@ Package com.rapplogic.xbee.api
 <TD>Represents a Java error during packet parsing.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../com/rapplogic/xbee/api/FrameIdGenerator.html" title="class in com.rapplogic.xbee.api">FrameIdGenerator</A></B></TD>
+<TD>&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../com/rapplogic/xbee/api/GenericResponse.html" title="class in com.rapplogic.xbee.api">GenericResponse</A></B></TD>
+<TD>Container for unknown response
+ <p/></TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
 <TD WIDTH="15%"><B><A HREF="../../../../com/rapplogic/xbee/api/ModemStatusResponse.html" title="class in com.rapplogic.xbee.api">ModemStatusResponse</A></B></TD>
 <TD>RF module status messages are sent from the module in response to specific conditions.</TD>
 </TR>
@@ -148,6 +159,14 @@ Package com.rapplogic.xbee.api
  Notes:
  <p/>
  Escaped bytes increase packet length but packet stated length only indicates un-escaped bytes.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../com/rapplogic/xbee/api/RemoteAtRequest.html" title="class in com.rapplogic.xbee.api">RemoteAtRequest</A></B></TD>
+<TD>Supported by both series 1 (10C8 firmware and later) and series 2.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD WIDTH="15%"><B><A HREF="../../../../com/rapplogic/xbee/api/RemoteAtResponse.html" title="class in com.rapplogic.xbee.api">RemoteAtResponse</A></B></TD>
+<TD>Supported by both series 1 (10C8 firmware and later) and series 2.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD WIDTH="15%"><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html" title="class in com.rapplogic.xbee.api">XBee</A></B></TD>
@@ -193,10 +212,6 @@ Package com.rapplogic.xbee.api
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD WIDTH="15%"><B><A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A></B></TD>
 <TD>The super class of all XBee Receive packets</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD WIDTH="15%"><B><A HREF="../../../../com/rapplogic/xbee/api/XBeeRxTx.html" title="class in com.rapplogic.xbee.api">XBeeRxTx</A></B></TD>
-<TD>&nbsp;</TD>
 </TR>
 </TABLE>
 &nbsp;

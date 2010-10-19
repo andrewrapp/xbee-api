@@ -6,14 +6,15 @@
 IntArrayOutputStream
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.util.IntArrayOutputStream class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="IntArrayOutputStream";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="IntArrayOutputStream";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -90,9 +92,12 @@ Class IntArrayOutputStream</H2>
 java.lang.Object
   <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.util.IntArrayOutputStream</B>
 </PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD><A HREF="../../../../com/rapplogic/xbee/util/IIntArray.html" title="interface in com.rapplogic.xbee.util">IIntArray</A></DD>
+</DL>
 <HR>
 <DL>
-<DT><PRE>public class <B>IntArrayOutputStream</B><DT>extends java.lang.Object</DL>
+<DT><PRE>public class <B>IntArrayOutputStream</B><DT>extends java.lang.Object<DT>implements <A HREF="../../../../com/rapplogic/xbee/util/IIntArray.html" title="interface in com.rapplogic.xbee.util">IIntArray</A></DL>
 </PRE>
 
 <P>
@@ -208,6 +213,9 @@ public void <B>write</B>(int&nbsp;val)</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -216,6 +224,9 @@ write</H3>
 <PRE>
 public void <B>write</B>(int[]&nbsp;val)</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -228,6 +239,9 @@ getIntArray</H3>
 public int[] <B>getIntArray</B>()</PRE>
 <DL>
 <DD><DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/util/IIntArray.html#getIntArray()">getIntArray</A></CODE> in interface <CODE><A HREF="../../../../com/rapplogic/xbee/util/IIntArray.html" title="interface in com.rapplogic.xbee.util">IIntArray</A></CODE></DL>
+</DD>
+<DD><DL>
 </DL>
 </DD>
 </DL>
@@ -238,6 +252,9 @@ getInternalList</H3>
 <PRE>
 public java.util.List&lt;java.lang.Integer&gt; <B>getInternalList</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>

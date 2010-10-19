@@ -6,14 +6,15 @@
 ApiId
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.ApiId class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="ApiId";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="ApiId";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -142,6 +144,18 @@ java.lang.Object
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;API ID: 0x8a</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/ApiId.html#REMOTE_AT_REQUEST">REMOTE_AT_REQUEST</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;API ID: 0x17</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/ApiId.html#REMOTE_AT_RESPONSE">REMOTE_AT_RESPONSE</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;API ID: 0x97</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/ApiId.html#RX_16_IO_RESPONSE">RX_16_IO_RESPONSE</A></B></CODE>
 
 <BR>
@@ -184,6 +198,12 @@ java.lang.Object
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;API ID: 0x89</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/ApiId.html#UNKNOWN">UNKNOWN</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indicates that we've parsed a packet for which we didn't know how to handle the API type.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/ApiId.html#ZNET_EXPLICIT_RX_RESPONSE">ZNET_EXPLICIT_RX_RESPONSE</A></B></CODE>
 
 <BR>
@@ -206,18 +226,6 @@ java.lang.Object
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;API ID: 0x92</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/ApiId.html#ZNET_REMOTE_AT_REQUEST">ZNET_REMOTE_AT_REQUEST</A></B></CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;API ID: 0x17</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/ApiId.html#ZNET_REMOTE_AT_RESPONSE">ZNET_REMOTE_AT_RESPONSE</A></B></CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;API ID: 0x97</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/ApiId.html#ZNET_RX_RESPONSE">ZNET_RX_RESPONSE</A></B></CODE>
@@ -286,7 +294,7 @@ java.lang.Object
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns an array containing the constants of this enum type, in
-the order they're declared.</TD>
+the order they are declared.</TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_java.lang.Enum"><!-- --></A>
@@ -295,7 +303,7 @@ the order they're declared.</TD>
 <TH ALIGN="left"><B>Methods inherited from class java.lang.Enum</B></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE>clone, compareTo, equals, getDeclaringClass, hashCode, name, ordinal, valueOf</CODE></TD>
+<TD><CODE>clone, compareTo, equals, finalize, getDeclaringClass, hashCode, name, ordinal, valueOf</CODE></TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
@@ -304,7 +312,7 @@ the order they're declared.</TD>
 <TH ALIGN="left"><B>Methods inherited from class java.lang.Object</B></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE>finalize, getClass, notify, notifyAll, wait, wait, wait</CODE></TD>
+<TD><CODE>getClass, notify, notifyAll, wait, wait, wait</CODE></TD>
 </TR>
 </TABLE>
 &nbsp;
@@ -368,10 +376,10 @@ public static final <A HREF="../../../../com/rapplogic/xbee/api/ApiId.html" titl
 </DL>
 <HR>
 
-<A NAME="ZNET_REMOTE_AT_REQUEST"><!-- --></A><H3>
-ZNET_REMOTE_AT_REQUEST</H3>
+<A NAME="REMOTE_AT_REQUEST"><!-- --></A><H3>
+REMOTE_AT_REQUEST</H3>
 <PRE>
-public static final <A HREF="../../../../com/rapplogic/xbee/api/ApiId.html" title="enum in com.rapplogic.xbee.api">ApiId</A> <B>ZNET_REMOTE_AT_REQUEST</B></PRE>
+public static final <A HREF="../../../../com/rapplogic/xbee/api/ApiId.html" title="enum in com.rapplogic.xbee.api">ApiId</A> <B>REMOTE_AT_REQUEST</B></PRE>
 <DL>
 <DD>API ID: 0x17
 <P>
@@ -524,10 +532,10 @@ public static final <A HREF="../../../../com/rapplogic/xbee/api/ApiId.html" titl
 </DL>
 <HR>
 
-<A NAME="ZNET_REMOTE_AT_RESPONSE"><!-- --></A><H3>
-ZNET_REMOTE_AT_RESPONSE</H3>
+<A NAME="REMOTE_AT_RESPONSE"><!-- --></A><H3>
+REMOTE_AT_RESPONSE</H3>
 <PRE>
-public static final <A HREF="../../../../com/rapplogic/xbee/api/ApiId.html" title="enum in com.rapplogic.xbee.api">ApiId</A> <B>ZNET_REMOTE_AT_RESPONSE</B></PRE>
+public static final <A HREF="../../../../com/rapplogic/xbee/api/ApiId.html" title="enum in com.rapplogic.xbee.api">ApiId</A> <B>REMOTE_AT_RESPONSE</B></PRE>
 <DL>
 <DD>API ID: 0x97
 <P>
@@ -560,6 +568,18 @@ public static final <A HREF="../../../../com/rapplogic/xbee/api/ApiId.html" titl
 </DL>
 <HR>
 
+<A NAME="UNKNOWN"><!-- --></A><H3>
+UNKNOWN</H3>
+<PRE>
+public static final <A HREF="../../../../com/rapplogic/xbee/api/ApiId.html" title="enum in com.rapplogic.xbee.api">ApiId</A> <B>UNKNOWN</B></PRE>
+<DL>
+<DD>Indicates that we've parsed a packet for which we didn't know how to handle the API type.  This will be parsed into a GenericResponse
+<P>
+<DL>
+</DL>
+</DL>
+<HR>
+
 <A NAME="ERROR_RESPONSE"><!-- --></A><H3>
 ERROR_RESPONSE</H3>
 <PRE>
@@ -584,20 +604,20 @@ public static final <A HREF="../../../../com/rapplogic/xbee/api/ApiId.html" titl
 <A NAME="values()"><!-- --></A><H3>
 values</H3>
 <PRE>
-public static final <A HREF="../../../../com/rapplogic/xbee/api/ApiId.html" title="enum in com.rapplogic.xbee.api">ApiId</A>[] <B>values</B>()</PRE>
+public static <A HREF="../../../../com/rapplogic/xbee/api/ApiId.html" title="enum in com.rapplogic.xbee.api">ApiId</A>[] <B>values</B>()</PRE>
 <DL>
 <DD>Returns an array containing the constants of this enum type, in
-the order they're declared.  This method may be used to iterate
+the order they are declared.  This method may be used to iterate
 over the constants as follows:
 <pre>
-for(ApiId c : ApiId.values())
-        System.out.println(c);
+for (ApiId c : ApiId.values())
+&nbsp;   System.out.println(c);
 </pre>
 <P>
 <DD><DL>
 
 <DT><B>Returns:</B><DD>an array containing the constants of this enum type, in
-the order they're declared</DL>
+the order they are declared</DL>
 </DD>
 </DL>
 <HR>
@@ -617,7 +637,8 @@ not permitted.)
 <DT><B>Returns:</B><DD>the enum constant with the specified name
 <DT><B>Throws:</B>
 <DD><CODE>java.lang.IllegalArgumentException</CODE> - if this enum type has no constant
-with the specified name</DL>
+with the specified name
+<DD><CODE>java.lang.NullPointerException</CODE> - if the argument is null</DL>
 </DD>
 </DL>
 <HR>

@@ -46,7 +46,7 @@ public class ZNetTxStatusResponse extends XBeeFrameIdResponse {
 		SELF_ADDRESSED (0x23),
 		ADDRESS_NOT_FOUND (0x24),
 		ROUTE_NOT_FOUND (0x25),
-		PAYLOAD_TOO_LARGE(0x74);
+		PAYLOAD_TOO_LARGE(0x74); // ZB Pro firmware only
 
 		private static final Map<Integer,DeliveryStatus> lookup = new HashMap<Integer,DeliveryStatus>();
 		

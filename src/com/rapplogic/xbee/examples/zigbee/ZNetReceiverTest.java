@@ -48,7 +48,8 @@ public class ZNetReceiverTest {
 
 		try {			
 			// replace with the com port of your receiving XBee (typically your end device)
-			xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
+//			xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
+			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
 			
 			while (true) {
 
@@ -85,7 +86,9 @@ public class ZNetReceiverTest {
 				}
 			}
 		} finally {
-			xbee.close();
+			if (xbee.isConnected()) {
+				xbee.close();
+			}
 		}
 	}
 

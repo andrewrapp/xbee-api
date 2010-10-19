@@ -6,14 +6,15 @@
 TxRequest64
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.wpan.TxRequest64 class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="TxRequest64";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="TxRequest64";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -92,6 +94,9 @@ java.lang.Object
       <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../../com/rapplogic/xbee/api/wpan/TxRequestBase.html" title="class in com.rapplogic.xbee.api.wpan">com.rapplogic.xbee.api.wpan.TxRequestBase</A>
           <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.wpan.TxRequest64</B>
 </PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD>java.io.Serializable</DD>
+</DL>
 <HR>
 <DL>
 <DT><PRE>public class <B>TxRequest64</B><DT>extends <A HREF="../../../../../com/rapplogic/xbee/api/wpan/TxRequestBase.html" title="class in com.rapplogic.xbee.api.wpan">TxRequestBase</A></DL>
@@ -103,8 +108,8 @@ Series 1 XBee.  64-bit address Transmit Packet.  This is received on the destina
  <p/>
  Constructs frame data portion of a 64-bit transmit request
  <p/>
- Note: DH and DL must be set to SH + SL; if DH/DL are set to MY of remote XBee,
- then this send will succeed but remote XBee will receive a RX 16 response
+ Note: The MY address of the receiving XBee must be set to 0xffff to receive this as a RxResponse64;
+ otherwise the packet will be transmitted but will be received as a RxResponse16
  <p/>
  API ID: 0x0
  <p/>
@@ -114,7 +119,7 @@ Series 1 XBee.  64-bit address Transmit Packet.  This is received on the destina
 <DL>
 <DT><B>Author:</B></DT>
   <DD>andrew</DD>
-</DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../../serialized-form.html#com.rapplogic.xbee.api.wpan.TxRequest64">Serialized Form</A></DL>
 <HR>
 
 <P>

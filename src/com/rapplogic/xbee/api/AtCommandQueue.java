@@ -19,8 +19,6 @@
 
 package com.rapplogic.xbee.api;
 
-//TODO test
-
 /**
  * AT Command Queue
  * <p/>
@@ -30,7 +28,7 @@ package com.rapplogic.xbee.api;
  *
  */
 public class AtCommandQueue extends AtCommand {
-
+	//TODO test
 	public AtCommandQueue(String command) {
 		this(command, null, DEFAULT_FRAME_ID);
 	}

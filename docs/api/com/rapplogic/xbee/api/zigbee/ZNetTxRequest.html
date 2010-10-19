@@ -6,14 +6,15 @@
 ZNetTxRequest
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.zigbee.ZNetTxRequest class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="ZNetTxRequest";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="ZNetTxRequest";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -51,7 +53,7 @@ function windowTitle()
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
 &nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxResponse.html" title="class in com.rapplogic.xbee.api.zigbee"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxStatusResponse.html" title="class in com.rapplogic.xbee.api.zigbee"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.Option.html" title="enum in com.rapplogic.xbee.api.zigbee"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../../index.html?com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html" target="_top"><B>FRAMES</B></A>  &nbsp;
 &nbsp;<A HREF="ZNetTxRequest.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
@@ -71,7 +73,7 @@ function windowTitle()
 </TR>
 <TR>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
-  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+  SUMMARY:&nbsp;<A HREF="#nested_class_summary">NESTED</A>&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
 DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
 </TR>
@@ -92,6 +94,9 @@ java.lang.Object
       <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.zigbee.ZNetTxRequest</B>
 </PRE>
 <DL>
+<DT><B>All Implemented Interfaces:</B> <DD>java.io.Serializable</DD>
+</DL>
+<DL>
 <DT><B>Direct Known Subclasses:</B> <DD><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetExplicitTxRequest.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetExplicitTxRequest</A></DD>
 </DL>
 <HR>
@@ -111,11 +116,28 @@ Series 2 XBee.  Sends a packet to a remote radio.  The remote radio
 <DL>
 <DT><B>Author:</B></DT>
   <DD>andrew</DD>
-</DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../../serialized-form.html#com.rapplogic.xbee.api.zigbee.ZNetTxRequest">Serialized Form</A></DL>
 <HR>
 
 <P>
-<!-- =========== FIELD SUMMARY =========== -->
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+
+<A NAME="nested_class_summary"><!-- --></A>
+<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
+<B>Nested Class Summary</B></FONT></TH>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;class</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.Option.html" title="enum in com.rapplogic.xbee.api.zigbee">ZNetTxRequest.Option</A></B></CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+</TABLE>
+&nbsp;<!-- =========== FIELD SUMMARY =========== -->
 
 <A NAME="field_summary"><!-- --></A>
 <TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
@@ -175,11 +197,11 @@ Series 2 XBee.  Sends a packet to a remote radio.  The remote radio
 <B>Constructor Summary</B></FONT></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#ZNetTxRequest(int, com.rapplogic.xbee.api.XBeeAddress64, com.rapplogic.xbee.api.XBeeAddress16, int, int, int[])">ZNetTxRequest</A></B>(int&nbsp;frameId,
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#ZNetTxRequest(int, com.rapplogic.xbee.api.XBeeAddress64, com.rapplogic.xbee.api.XBeeAddress16, int, com.rapplogic.xbee.api.zigbee.ZNetTxRequest.Option, int[])">ZNetTxRequest</A></B>(int&nbsp;frameId,
               <A HREF="../../../../../com/rapplogic/xbee/api/XBeeAddress64.html" title="class in com.rapplogic.xbee.api">XBeeAddress64</A>&nbsp;dest64,
               <A HREF="../../../../../com/rapplogic/xbee/api/XBeeAddress16.html" title="class in com.rapplogic.xbee.api">XBeeAddress16</A>&nbsp;dest16,
               int&nbsp;broadcastRadius,
-              int&nbsp;option,
+              <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.Option.html" title="enum in com.rapplogic.xbee.api.zigbee">ZNetTxRequest.Option</A>&nbsp;option,
               int[]&nbsp;payload)</CODE>
 
 <BR>
@@ -260,7 +282,7 @@ Series 2 XBee.  Sends a packet to a remote radio.  The remote radio
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;int</CODE></FONT></TD>
+<CODE>&nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.Option.html" title="enum in com.rapplogic.xbee.api.zigbee">ZNetTxRequest.Option</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#getOption()">getOption</A></B>()</CODE>
 
 <BR>
@@ -309,7 +331,7 @@ Series 2 XBee.  Sends a packet to a remote radio.  The remote radio
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#setOption(int)">setOption</A></B>(int&nbsp;option)</CODE>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html#setOption(com.rapplogic.xbee.api.zigbee.ZNetTxRequest.Option)">setOption</A></B>(<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.Option.html" title="enum in com.rapplogic.xbee.api.zigbee">ZNetTxRequest.Option</A>&nbsp;option)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -419,14 +441,14 @@ public static final int <B>BROADCAST_OPTION</B></PRE>
 </TR>
 </TABLE>
 
-<A NAME="ZNetTxRequest(int, com.rapplogic.xbee.api.XBeeAddress64, com.rapplogic.xbee.api.XBeeAddress16, int, int, int[])"><!-- --></A><H3>
+<A NAME="ZNetTxRequest(int, com.rapplogic.xbee.api.XBeeAddress64, com.rapplogic.xbee.api.XBeeAddress16, int, com.rapplogic.xbee.api.zigbee.ZNetTxRequest.Option, int[])"><!-- --></A><H3>
 ZNetTxRequest</H3>
 <PRE>
 public <B>ZNetTxRequest</B>(int&nbsp;frameId,
                      <A HREF="../../../../../com/rapplogic/xbee/api/XBeeAddress64.html" title="class in com.rapplogic.xbee.api">XBeeAddress64</A>&nbsp;dest64,
                      <A HREF="../../../../../com/rapplogic/xbee/api/XBeeAddress16.html" title="class in com.rapplogic.xbee.api">XBeeAddress16</A>&nbsp;dest16,
                      int&nbsp;broadcastRadius,
-                     int&nbsp;option,
+                     <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.Option.html" title="enum in com.rapplogic.xbee.api.zigbee">ZNetTxRequest.Option</A>&nbsp;option,
                      int[]&nbsp;payload)</PRE>
 <DL>
 <DD>From manual p. 33:
@@ -577,7 +599,7 @@ public void <B>setBroadcastRadius</B>(int&nbsp;broadcastRadius)</PRE>
 <A NAME="getOption()"><!-- --></A><H3>
 getOption</H3>
 <PRE>
-public int <B>getOption</B>()</PRE>
+public <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.Option.html" title="enum in com.rapplogic.xbee.api.zigbee">ZNetTxRequest.Option</A> <B>getOption</B>()</PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -585,10 +607,10 @@ public int <B>getOption</B>()</PRE>
 </DL>
 <HR>
 
-<A NAME="setOption(int)"><!-- --></A><H3>
+<A NAME="setOption(com.rapplogic.xbee.api.zigbee.ZNetTxRequest.Option)"><!-- --></A><H3>
 setOption</H3>
 <PRE>
-public void <B>setOption</B>(int&nbsp;option)</PRE>
+public void <B>setOption</B>(<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.Option.html" title="enum in com.rapplogic.xbee.api.zigbee">ZNetTxRequest.Option</A>&nbsp;option)</PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -683,7 +705,7 @@ public void <B>setMaxPayloadSize</B>(int&nbsp;maxPayloadSize)</PRE>
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
 &nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxResponse.html" title="class in com.rapplogic.xbee.api.zigbee"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxStatusResponse.html" title="class in com.rapplogic.xbee.api.zigbee"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.Option.html" title="enum in com.rapplogic.xbee.api.zigbee"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../../index.html?com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html" target="_top"><B>FRAMES</B></A>  &nbsp;
 &nbsp;<A HREF="ZNetTxRequest.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
@@ -703,7 +725,7 @@ public void <B>setMaxPayloadSize</B>(int&nbsp;maxPayloadSize)</PRE>
 </TR>
 <TR>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
-  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+  SUMMARY:&nbsp;<A HREF="#nested_class_summary">NESTED</A>&nbsp;|&nbsp;<A HREF="#field_summary">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
 DETAIL:&nbsp;<A HREF="#field_detail">FIELD</A>&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
 </TR>

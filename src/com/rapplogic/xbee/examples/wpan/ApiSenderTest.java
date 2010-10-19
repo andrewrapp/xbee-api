@@ -28,13 +28,12 @@ import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeePacket;
 import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.api.wpan.TxRequest16;
+import com.rapplogic.xbee.api.wpan.TxRequest64;
 import com.rapplogic.xbee.api.wpan.TxStatusResponse;
 
 /**
- * Sends a TX Request every 500 ms and waits for TX status packet.
+ * Sends a TX Request every 5000 ms and waits for TX status packet.
  * If the radio is sending samples it will continue to wait for tx status.
- * 
- * Sender is COM5 on my machine
  * 
  * @author andrew
  * 
@@ -59,24 +58,24 @@ public class ApiSenderTest {
 		
 		try {
 			// my coordinator
-			xbee.open("/dev/tty.usbserial-A4004Rim", 9600);
+//			xbee.open("/dev/tty.usbserial-A4004Rim", 9600);
+			xbee.open("/dev/tty.usbserial-A6005v5M", 57600);
 
 			while (true) {
 
 				// log.debug("Sending count " + count);
 				// XBeeResponse response = xbee.sendTxRequest16(destination, 0x0a, payload);
 
-				int frameId = 0x13;
 				// int[] payload = new int[] {1,2,3,4,5,6,7,8};
 				// to verify correct byte escaping, we'll send a start byte
 				int[] payload = new int[] { XBeePacket.SpecialByte.START_BYTE.getValue() };
 
-				// my end device B071
-				XBeeAddress16 destination = new XBeeAddress16(0xb0, 0x71);
-				TxRequest16 tx = new TxRequest16(destination, frameId, payload);
+				// specify the remote XBee 16-bit MY address
+				XBeeAddress16 destination = new XBeeAddress16(0x18, 0x74);
+				TxRequest16 tx = new TxRequest16(destination, payload);
 				// or send a TX64 (same thing except we are addressing by SH+SL address)
 //				XBeeAddress64 destination = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x08, 0xb4, 0x8f);
-//				TxRequest64 tx = new TxRequest64(destination, frameId, payload);
+//				TxRequest64 tx2 = new TxRequest64(destination64, payload);
 				
 				now = System.currentTimeMillis();
 				xbee.sendAsynchronous(tx);
@@ -92,7 +91,7 @@ public class ApiSenderTest {
 					} else {
 //						log.debug("got tx status");
 
-						if (((TxStatusResponse) response).getFrameId() != frameId) {
+						if (((TxStatusResponse) response).getFrameId() != tx.getFrameId()) {
 							throw new RuntimeException("frame id does not match");
 						}
 

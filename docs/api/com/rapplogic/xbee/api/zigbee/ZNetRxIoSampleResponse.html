@@ -6,14 +6,15 @@
 ZNetRxIoSampleResponse
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="ZNetRxIoSampleResponse";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="ZNetRxIoSampleResponse";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -92,6 +94,9 @@ java.lang.Object
       <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxBaseResponse.html" title="class in com.rapplogic.xbee.api.zigbee">com.rapplogic.xbee.api.zigbee.ZNetRxBaseResponse</A>
           <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse</B>
 </PRE>
+<DL>
+<DT><B>All Implemented Interfaces:</B> <DD>java.io.Serializable</DD>
+</DL>
 <HR>
 <DL>
 <DT><PRE>public class <B>ZNetRxIoSampleResponse</B><DT>extends <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxBaseResponse.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetRxBaseResponse</A></DL>
@@ -109,7 +114,7 @@ Series 2 XBee.  Represents an I/O Sample resposne sent from a remote radio.
 <DL>
 <DT><B>Author:</B></DT>
   <DD>andrew</DD>
-</DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../../serialized-form.html#com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse">Serialized Form</A></DL>
 <HR>
 
 <P>
@@ -182,10 +187,18 @@ Series 2 XBee.  Represents an I/O Sample resposne sent from a remote radio.
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;java.lang.Integer</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#getAnalog0()">getAnalog0</A></B>()</CODE>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#getAnalog(int)">getAnalog</A></B>(int&nbsp;pin)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns a 10 bit value of ADC line 0, if enabled.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;java.lang.Integer</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#getAnalog0()">getAnalog0</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider using getAnalog(pin) instead</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -222,7 +235,7 @@ Series 2 XBee.  Represents an I/O Sample resposne sent from a remote radio.
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;int</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#getDigitalChannelMask1()">getDigitalChannelMask1</A></B>()</CODE>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#getDigitalChannelMaskLsb()">getDigitalChannelMaskLsb</A></B>()</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -230,7 +243,7 @@ Series 2 XBee.  Represents an I/O Sample resposne sent from a remote radio.
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;int</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#getDigitalChannelMask2()">getDigitalChannelMask2</A></B>()</CODE>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#getDigitalChannelMaskMsb()">getDigitalChannelMaskMsb</A></B>()</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -265,7 +278,7 @@ Series 2 XBee.  Represents an I/O Sample resposne sent from a remote radio.
 <TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#isA0Enabled()">isA0Enabled</A></B>()</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider using isAnalogEnable(pin) instead</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -294,10 +307,18 @@ Series 2 XBee.  Represents an I/O Sample resposne sent from a remote radio.
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;boolean</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#isD0Enabled()">isD0Enabled</A></B>()</CODE>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#isAnalogEnabled(int)">isAnalogEnabled</A></B>(int&nbsp;pin)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;boolean</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#isD0Enabled()">isD0Enabled</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider using isDigitalEnabled(pin) instead</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -305,7 +326,7 @@ Series 2 XBee.  Represents an I/O Sample resposne sent from a remote radio.
 <TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#isD0On()">isD0On</A></B>()</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If digital I/O line (DIO0) is enabled: returns true if digital 0 is HIGH (ON); false if it is LOW (OFF).</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consider using isDigitalOn(pin)</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -470,6 +491,22 @@ Series 2 XBee.  Represents an I/O Sample resposne sent from a remote radio.
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;boolean</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#isDigitalEnabled(int)">isDigitalEnabled</A></B>(int&nbsp;pin)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;java.lang.Boolean</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#isDigitalOn(int)">isDigitalOn</A></B>(int&nbsp;pin)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If digital I/O line (DIO0) is enabled: returns true if digital 0 is HIGH (ON); false if it is LOW (OFF).</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;boolean</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#isSupplyVoltageEnabled()">isSupplyVoltageEnabled</A></B>()</CODE>
 
 <BR>
@@ -482,7 +519,55 @@ Series 2 XBee.  Represents an I/O Sample resposne sent from a remote radio.
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method is a bit non standard since it needs to parse an IO sample
- from either a RX response or a Remote AT/AT response (IS).</TD>
+ from either a RX response or a Remote AT/Local AT response (IS).</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetRxIoSampleResponse</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#parseIsSample(com.rapplogic.xbee.api.AtCommandResponse)">parseIsSample</A></B>(<A HREF="../../../../../com/rapplogic/xbee/api/AtCommandResponse.html" title="class in com.rapplogic.xbee.api">AtCommandResponse</A>&nbsp;response)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#setAnalog0(java.lang.Integer)">setAnalog0</A></B>(java.lang.Integer&nbsp;analog0)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#setAnalog1(java.lang.Integer)">setAnalog1</A></B>(java.lang.Integer&nbsp;analog1)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#setAnalog2(java.lang.Integer)">setAnalog2</A></B>(java.lang.Integer&nbsp;analog2)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#setAnalog3(java.lang.Integer)">setAnalog3</A></B>(java.lang.Integer&nbsp;analog3)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html#setSupplyVoltage(java.lang.Integer)">setSupplyVoltage</A></B>(java.lang.Integer&nbsp;supplyVoltage)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -508,7 +593,7 @@ Series 2 XBee.  Represents an I/O Sample resposne sent from a remote radio.
 <TH ALIGN="left"><B>Methods inherited from class com.rapplogic.xbee.api.<A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A></B></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getApiId()">getApiId</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getChecksum()">getChecksum</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getLength()">getLength</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getPacketBytes()">getPacketBytes</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#isError()">isError</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setApiId(com.rapplogic.xbee.api.ApiId)">setApiId</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setChecksum(int)">setChecksum</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setError(boolean)">setError</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setLength(com.rapplogic.xbee.api.XBeePacketLength)">setLength</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setPacketBytes(int[])">setPacketBytes</A></CODE></TD>
+<TD><CODE><A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#equals(java.lang.Object)">equals</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#finish()">finish</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getApiId()">getApiId</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getChecksum()">getChecksum</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getLength()">getLength</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getPacketBytes()">getPacketBytes</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getProcessedPacketBytes()">getProcessedPacketBytes</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#getRawPacketBytes()">getRawPacketBytes</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#hashCode()">hashCode</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#isError()">isError</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setApiId(com.rapplogic.xbee.api.ApiId)">setApiId</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setChecksum(int)">setChecksum</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setError(boolean)">setError</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setLength(com.rapplogic.xbee.api.XBeePacketLength)">setLength</A>, <A HREF="../../../../../com/rapplogic/xbee/api/XBeeResponse.html#setRawPacketBytes(int[])">setRawPacketBytes</A></CODE></TD>
 </TR>
 </TABLE>
 &nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
@@ -517,7 +602,7 @@ Series 2 XBee.  Represents an I/O Sample resposne sent from a remote radio.
 <TH ALIGN="left"><B>Methods inherited from class java.lang.Object</B></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE>clone, equals, finalize, getClass, hashCode, notify, notifyAll, wait, wait, wait</CODE></TD>
+<TD><CODE>clone, finalize, getClass, notify, notifyAll, wait, wait, wait</CODE></TD>
 </TR>
 </TABLE>
 &nbsp;
@@ -550,6 +635,20 @@ public <B>ZNetRxIoSampleResponse</B>()</PRE>
 </TR>
 </TABLE>
 
+<A NAME="parseIsSample(com.rapplogic.xbee.api.AtCommandResponse)"><!-- --></A><H3>
+parseIsSample</H3>
+<PRE>
+public static <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSampleResponse.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetRxIoSampleResponse</A> <B>parseIsSample</B>(<A HREF="../../../../../com/rapplogic/xbee/api/AtCommandResponse.html" title="class in com.rapplogic.xbee.api">AtCommandResponse</A>&nbsp;response)
+                                            throws java.io.IOException</PRE>
+<DL>
+<DD><DL>
+
+<DT><B>Throws:</B>
+<DD><CODE>java.io.IOException</CODE></DL>
+</DD>
+</DL>
+<HR>
+
 <A NAME="parse(com.rapplogic.xbee.util.IIntArrayInputStream)"><!-- --></A><H3>
 parse</H3>
 <PRE>
@@ -557,7 +656,7 @@ public void <B>parse</B>(<A HREF="../../../../../com/rapplogic/xbee/util/IIntArr
            throws java.io.IOException</PRE>
 <DL>
 <DD>This method is a bit non standard since it needs to parse an IO sample
- from either a RX response or a Remote AT/AT response (IS).
+ from either a RX response or a Remote AT/Local AT response (IS).
 <P>
 <DD><DL>
 <DT><B>Parameters:</B><DD><CODE>ps</CODE> - 
@@ -567,10 +666,10 @@ public void <B>parse</B>(<A HREF="../../../../../com/rapplogic/xbee/util/IIntArr
 </DL>
 <HR>
 
-<A NAME="getDigitalChannelMask1()"><!-- --></A><H3>
-getDigitalChannelMask1</H3>
+<A NAME="getDigitalChannelMaskMsb()"><!-- --></A><H3>
+getDigitalChannelMaskMsb</H3>
 <PRE>
-public int <B>getDigitalChannelMask1</B>()</PRE>
+public int <B>getDigitalChannelMaskMsb</B>()</PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -578,10 +677,10 @@ public int <B>getDigitalChannelMask1</B>()</PRE>
 </DL>
 <HR>
 
-<A NAME="getDigitalChannelMask2()"><!-- --></A><H3>
-getDigitalChannelMask2</H3>
+<A NAME="getDigitalChannelMaskLsb()"><!-- --></A><H3>
+getDigitalChannelMaskLsb</H3>
 <PRE>
-public int <B>getDigitalChannelMask2</B>()</PRE>
+public int <B>getDigitalChannelMaskLsb</B>()</PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -605,8 +704,11 @@ isD0Enabled</H3>
 <PRE>
 public boolean <B>isD0Enabled</B>()</PRE>
 <DL>
+<DD>Consider using isDigitalEnabled(pin) instead
+<P>
 <DD><DL>
-</DL>
+
+<DT><B>Returns:</B><DD></DL>
 </DD>
 </DL>
 <HR>
@@ -726,8 +828,11 @@ isA0Enabled</H3>
 <PRE>
 public boolean <B>isA0Enabled</B>()</PRE>
 <DL>
+<DD>Consider using isAnalogEnable(pin) instead
+<P>
 <DD><DL>
-</DL>
+
+<DT><B>Returns:</B><DD></DL>
 </DD>
 </DL>
 <HR>
@@ -765,6 +870,28 @@ public boolean <B>isA3Enabled</B>()</PRE>
 </DL>
 <HR>
 
+<A NAME="isDigitalEnabled(int)"><!-- --></A><H3>
+isDigitalEnabled</H3>
+<PRE>
+public boolean <B>isDigitalEnabled</B>(int&nbsp;pin)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="isAnalogEnabled(int)"><!-- --></A><H3>
+isAnalogEnabled</H3>
+<PRE>
+public boolean <B>isAnalogEnabled</B>(int&nbsp;pin)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
 <A NAME="isSupplyVoltageEnabled()"><!-- --></A><H3>
 isSupplyVoltageEnabled</H3>
 <PRE>
@@ -786,10 +913,7 @@ isD0On</H3>
 <PRE>
 public java.lang.Boolean <B>isD0On</B>()</PRE>
 <DL>
-<DD>If digital I/O line (DIO0) is enabled: returns true if digital 0 is HIGH (ON); false if it is LOW (OFF).
- If digital I/O line is not enabled this method returns null as it has no value.
- 
- Digital I/O pins seem to report high when open circuit (unconnected)
+<DD>Consider using isDigitalOn(pin)
 <P>
 <DD><DL>
 
@@ -908,6 +1032,25 @@ public java.lang.Boolean <B>isD12On</B>()</PRE>
 </DL>
 <HR>
 
+<A NAME="isDigitalOn(int)"><!-- --></A><H3>
+isDigitalOn</H3>
+<PRE>
+public java.lang.Boolean <B>isDigitalOn</B>(int&nbsp;pin)</PRE>
+<DL>
+<DD>If digital I/O line (DIO0) is enabled: returns true if digital 0 is HIGH (ON); false if it is LOW (OFF).
+ If digital I/O line is not enabled this method returns null as it has no value.
+ <p/>
+ Important: the pin number corresponds to the logical pin (e.g. D4), not the physical pin number.
+ <p/>
+ Digital I/O pins seem to report high when open circuit (unconnected)
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD></DL>
+</DD>
+</DL>
+<HR>
+
 <A NAME="containsDigital()"><!-- --></A><H3>
 containsDigital</H3>
 <PRE>
@@ -975,17 +1118,7 @@ getAnalog0</H3>
 <PRE>
 public java.lang.Integer <B>getAnalog0</B>()</PRE>
 <DL>
-<DD>Returns a 10 bit value of ADC line 0, if enabled.
- Returns null if ADC line 0 is not enabled.
- 
- The range of Digi XBee series 2 ADC is 0 - 1.2V and although I couldn't find this in the spec 
- a few google searches seems to confirm.  When I connected 3.3V to just one of the ADC pins, it 
- displayed it's displeasure by reporting all ADC pins at 1023.
- 
- Analog pins seem to float around 512 when open circuit
- 
- The reason this returns null is to prevent bugs in the event that you thought you were reading the 
- actual value when the pin is not enabled.
+<DD>Consider using getAnalog(pin) instead
 <P>
 <DD><DL>
 
@@ -994,10 +1127,32 @@ public java.lang.Integer <B>getAnalog0</B>()</PRE>
 </DL>
 <HR>
 
+<A NAME="setAnalog0(java.lang.Integer)"><!-- --></A><H3>
+setAnalog0</H3>
+<PRE>
+public void <B>setAnalog0</B>(java.lang.Integer&nbsp;analog0)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
 <A NAME="getAnalog1()"><!-- --></A><H3>
 getAnalog1</H3>
 <PRE>
 public java.lang.Integer <B>getAnalog1</B>()</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="setAnalog1(java.lang.Integer)"><!-- --></A><H3>
+setAnalog1</H3>
+<PRE>
+public void <B>setAnalog1</B>(java.lang.Integer&nbsp;analog1)</PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -1016,6 +1171,17 @@ public java.lang.Integer <B>getAnalog2</B>()</PRE>
 </DL>
 <HR>
 
+<A NAME="setAnalog2(java.lang.Integer)"><!-- --></A><H3>
+setAnalog2</H3>
+<PRE>
+public void <B>setAnalog2</B>(java.lang.Integer&nbsp;analog2)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
 <A NAME="getAnalog3()"><!-- --></A><H3>
 getAnalog3</H3>
 <PRE>
@@ -1027,10 +1193,56 @@ public java.lang.Integer <B>getAnalog3</B>()</PRE>
 </DL>
 <HR>
 
+<A NAME="setAnalog3(java.lang.Integer)"><!-- --></A><H3>
+setAnalog3</H3>
+<PRE>
+public void <B>setAnalog3</B>(java.lang.Integer&nbsp;analog3)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="getAnalog(int)"><!-- --></A><H3>
+getAnalog</H3>
+<PRE>
+public java.lang.Integer <B>getAnalog</B>(int&nbsp;pin)</PRE>
+<DL>
+<DD>Returns a 10 bit value of ADC line 0, if enabled.
+ Returns null if ADC line 0 is not enabled.
+ <p/>
+ The range of Digi XBee series 2 ADC is 0 - 1.2V and although I couldn't find this in the spec 
+ a few google searches seems to confirm.  When I connected 3.3V to just one of the ADC pins, it 
+ displayed its displeasure by reporting all ADC pins at 1023.
+ <p/>
+ Analog pins seem to float around 512 when open circuit
+ <p/>
+ The reason this returns null is to prevent bugs in the event that you thought you were reading the 
+ actual value when the pin is not enabled.
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD></DL>
+</DD>
+</DL>
+<HR>
+
 <A NAME="getSupplyVoltage()"><!-- --></A><H3>
 getSupplyVoltage</H3>
 <PRE>
 public java.lang.Integer <B>getSupplyVoltage</B>()</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="setSupplyVoltage(java.lang.Integer)"><!-- --></A><H3>
+setSupplyVoltage</H3>
+<PRE>
+public void <B>setSupplyVoltage</B>(java.lang.Integer&nbsp;supplyVoltage)</PRE>
 <DL>
 <DD><DL>
 </DL>

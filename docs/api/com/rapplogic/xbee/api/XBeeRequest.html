@@ -6,14 +6,15 @@
 XBeeRequest
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.XBeeRequest class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="XBeeRequest";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="XBeeRequest";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -91,11 +93,14 @@ java.lang.Object
   <IMG SRC="../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.XBeeRequest</B>
 </PRE>
 <DL>
+<DT><B>All Implemented Interfaces:</B> <DD>java.io.Serializable</DD>
+</DL>
+<DL>
 <DT><B>Direct Known Subclasses:</B> <DD><A HREF="../../../../com/rapplogic/xbee/api/AtCommand.html" title="class in com.rapplogic.xbee.api">AtCommand</A>, <A HREF="../../../../com/rapplogic/xbee/api/wpan/TxRequestBase.html" title="class in com.rapplogic.xbee.api.wpan">TxRequestBase</A>, <A HREF="../../../../com/rapplogic/xbee/api/zigbee/ZNetTxRequest.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetTxRequest</A></DD>
 </DL>
 <HR>
 <DL>
-<DT><PRE>public abstract class <B>XBeeRequest</B><DT>extends java.lang.Object</DL>
+<DT><PRE>public abstract class <B>XBeeRequest</B><DT>extends java.lang.Object<DT>implements java.io.Serializable</DL>
 </PRE>
 
 <P>
@@ -108,7 +113,7 @@ The super class of all XBee transmit packets.
 <DL>
 <DT><B>Author:</B></DT>
   <DD>andrew</DD>
-</DL>
+<DT><B>See Also:</B><DD><A HREF="../../../../serialized-form.html#com.rapplogic.xbee.api.XBeeRequest">Serialized Form</A></DL>
 <HR>
 
 <P>
@@ -295,6 +300,9 @@ public <A HREF="../../../../com/rapplogic/xbee/api/XBeePacket.html" title="class
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -303,6 +311,9 @@ getFrameData</H3>
 <PRE>
 public abstract int[] <B>getFrameData</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -317,6 +328,9 @@ public <A HREF="../../../../com/rapplogic/xbee/api/ApiId.html" title="enum in co
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -325,6 +339,9 @@ getFrameId</H3>
 <PRE>
 public int <B>getFrameId</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -353,6 +370,9 @@ public void <B>setApiId</B>(<A HREF="../../../../com/rapplogic/xbee/api/ApiId.ht
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -361,6 +381,9 @@ setFrameId</H3>
 <PRE>
 public void <B>setFrameId</B>(int&nbsp;frameId)</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>

@@ -17,17 +17,19 @@
  * along with XBee-API.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.rapplogic.xbee.examples.zigbee;
+package com.rapplogic.xbee.examples;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.rapplogic.xbee.api.XBee;
+import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.api.XBeeException;
+import com.rapplogic.xbee.api.XBeeRequest;
 import com.rapplogic.xbee.api.XBeeTimeoutException;
-import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtRequest;
-import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtResponse;
+import com.rapplogic.xbee.api.RemoteAtRequest;
+import com.rapplogic.xbee.api.RemoteAtResponse;
 
 /** 
  * This example uses Remote AT to turn on/off I/O pins.  
@@ -40,11 +42,11 @@ import com.rapplogic.xbee.api.zigbee.ZNetRemoteAtResponse;
  * @author andrew
  *
  */
-public class ZNetRemoteAtTest {
+public class RemoteAtTest {
 
-	private final static Logger log = Logger.getLogger(ZNetRemoteAtTest.class);
+	private final static Logger log = Logger.getLogger(RemoteAtTest.class);
 	
-	private ZNetRemoteAtTest() throws XBeeException, InterruptedException {
+	private RemoteAtTest() throws XBeeException, InterruptedException {
 		
 		XBee xbee = new XBee();
 		
@@ -57,9 +59,14 @@ public class ZNetRemoteAtTest {
 			XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x0a, 0x3e, 0x02);
 			
 			// turn on end device (pin 20) D0 (Digital output high = 5) 
-			ZNetRemoteAtRequest request = new ZNetRemoteAtRequest(addr64, "D0", new int[] {5});
+			//RemoteAtRequest request = new RemoteAtRequest(addr64, "D0", new int[] {5});
+			//RemoteAtRequest request = new RemoteAtRequest(addr64, "IR", new int[] {0x7f, 0xff});
+			//RemoteAtRequest request = new RemoteAtRequest(addr64, "D5", new int[] {3});
+			//RemoteAtRequest request = new RemoteAtRequest(addr64, "D0", new int[] {2});
+			//RemoteAtRequest request = new RemoteAtRequest(addr64, "P2", new int[] {3});
+			RemoteAtRequest request = new RemoteAtRequest(addr64, "P0", new int[] {1});
 			
-			ZNetRemoteAtResponse response = (ZNetRemoteAtResponse) xbee.sendSynchronous(request, 10000);
+			RemoteAtResponse response = (RemoteAtResponse) xbee.sendSynchronous(request, 10000);
 			
 			if (response.isOk()) {
 				log.info("successfully turned on pin 20 (D0)");	
@@ -67,19 +74,22 @@ public class ZNetRemoteAtTest {
 				throw new RuntimeException("failed to turn on pin 20.  status is " + response.getStatus());
 			}
 	
+			System.exit(0);
+			
 			// wait a bit
 			Thread.sleep(5000);
 //			
 //			// now turn off end device D0
 			request.setValue(new int[] {4});
 			
-			response = (ZNetRemoteAtResponse) xbee.sendSynchronous(request, 10000);
+			response = (RemoteAtResponse) xbee.sendSynchronous(request, 10000);
 			
 			if (response.isOk()) {
 				log.info("successfully turned off pin 20 (D0)");	
 			} else {
 				throw new RuntimeException("failed to turn off pin 20.  status is " + response.getStatus());
 			}
+			
 		} catch (XBeeTimeoutException e) {
 			log.error("request timed out. make sure you remote XBee is configured and powered on");
 		} catch (Exception e) {
@@ -91,6 +101,6 @@ public class ZNetRemoteAtTest {
 	
 	public static void main(String[] args) throws XBeeException, InterruptedException {
 		PropertyConfigurator.configure("log4j.properties");
-		new ZNetRemoteAtTest();
+		new RemoteAtTest();
 	}
 }

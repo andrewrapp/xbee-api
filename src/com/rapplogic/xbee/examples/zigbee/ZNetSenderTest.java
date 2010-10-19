@@ -22,6 +22,7 @@ package com.rapplogic.xbee.examples.zigbee;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import com.rapplogic.xbee.api.FrameIdGenerator;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
@@ -89,7 +90,7 @@ import com.rapplogic.xbee.util.ByteUtils;
  * 
  * How to find the COM port:
  * 
- * Java is nice in that it runs on many platforms.  I use mac/windows and linux (server) and the com port is different on all there.
+ * Java is nice in that it runs on many platforms.  I use mac/windows and linux (server) and the com port is different on all three.
  * On the mac it appears as /dev/tty.usbserial-A6005v5M on my machine.  I just plug in each XBee one at a time and check the /dev dir
  * to match the XBee to the device name: ls -l /dev/tty.u (hit tab twice to see all entries)
  *
@@ -126,20 +127,9 @@ public class ZNetSenderTest {
 //			XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x0a, 0x3e, 0x02);
 			// my other remote
 			XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x30, 0x3a, 0x23);
-			
-			// coordinator address
-			//XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x3e, 0xf, 0x30);
-			
+			 
 			// create an array of arbitrary data to send
 			int[] payload = new int[] { 'X', 'B', 'e', 'e' };
-			//int[] payload = new int[] { 0x48, 0x69 };
-			
-//			// testing max payload size
-//			int bigPacket = ZNetTxRequest.MAX_DATA_SIZE;
-//			int[] payload = new int[bigPacket];
-//			for (int i = 0; i < bigPacket; i++) {
-//				payload[i] = 0x0;
-//			}
 			
 			// first request we just send 64-bit address.  we get 16-bit network address with status response
 			ZNetTxRequest request = new ZNetTxRequest(addr64, payload);
@@ -183,7 +173,7 @@ public class ZNetSenderTest {
 	
 				try {
 					// wait a bit then send another packet
-					Thread.sleep(5000);
+					Thread.sleep(10000);
 				} catch (InterruptedException e) {
 				}
 			}

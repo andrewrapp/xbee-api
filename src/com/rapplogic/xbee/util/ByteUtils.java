@@ -30,7 +30,8 @@ public class ByteUtils {
 	
 	/**
 	 * There is a slight problem with this method that you might have noticed;  a Java int is signed, so we can't make
-	 * use of the 32nd bit.  This means we this method does not support a four byte value with msb greater than 01111111 ((2^7-1) or 127).
+	 * use of the 32nd bit.  This means this method does not support a four byte value with msb greater than 01111111 ((2^7-1) or 127)
+     * and will throw a runtime exception if it encounters this situation.
 	 * 
 	 * TODO use long instead of int to support 4 bytes values.  note that long assignments are not atomic.
 	 * 
@@ -42,7 +43,7 @@ public class ByteUtils {
 			throw new RuntimeException("too big");
 		} else if (bytes.length == 4 && ((bytes[0] & 0x80) == 0x80)) {
 			// 0x80 == 10000000, 0x7e == 01111111
-			throw new RuntimeException("Java int can't support a four byte value with msb byte greater than 7e");
+			throw new IllegalArgumentException("Java int can't support a four byte value with msb byte greater than 7e");
 		}
 		
 		int val = 0;
@@ -50,7 +51,7 @@ public class ByteUtils {
 		for (int i = 0; i < bytes.length; i++) {
 			
 			if (bytes[i] > 0xFF) {
-				throw new RuntimeException("Values exceeds byte range: " + bytes[i]);
+				throw new IllegalArgumentException("Values exceeds byte range: " + bytes[i]);
 			}
 			
 			if (i == (bytes.length - 1)) {
@@ -62,9 +63,19 @@ public class ByteUtils {
 		
 		return val;
 	}
-	
+
+    /**
+     * Works for positive values only
+     *
+     * @param val
+     * @return
+     */
 	public static int[] convertInttoMultiByte(int val) {
-		
+
+        if (val < 0) {
+            throw new IllegalArgumentException("Negative values are not supported");
+        }
+        
 		// must decompose into a max of 4 bytes
 		// b1		b2		 b3		  b4
 		// 01111111 11111111 11111111 11111111
@@ -92,6 +103,10 @@ public class ByteUtils {
 	}
 
 	public static String toBase16(int[] arr) {
+		return toBase16(arr, " ");
+	}
+
+	public static String toBase16(int[] arr, String delimiter) {
 		
 		if (arr == null) {
 			return "";
@@ -103,13 +118,13 @@ public class ByteUtils {
 			sb.append(toBase16(arr[i]));
 			
 			if (i < arr.length - 1) {
-				sb.append(" ");
+				sb.append(delimiter);
 			}
 		}
 		
 		return sb.toString();
 	}
-
+	
 	public static String toBase2(int[] arr) {
 
 		if (arr == null) {

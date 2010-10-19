@@ -6,14 +6,15 @@
 ByteUtils
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.util.ByteUtils class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="ByteUtils";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="ByteUtils";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -114,7 +116,7 @@ java.lang.Object
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/util/ByteUtils.html#convertInttoMultiByte(int)">convertInttoMultiByte</A></B>(int&nbsp;val)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Works for positive values only</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -196,6 +198,15 @@ java.lang.Object
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>static&nbsp;java.lang.String</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/util/ByteUtils.html#toBase16(int[], java.lang.String)">toBase16</A></B>(int[]&nbsp;arr,
+         java.lang.String&nbsp;delimiter)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>static&nbsp;java.lang.String</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/util/ByteUtils.html#toBase2(int)">toBase2</A></B>(int&nbsp;b)</CODE>
 
 <BR>
@@ -254,7 +265,8 @@ convertMultiByteToInt</H3>
 public static int <B>convertMultiByteToInt</B>(int[]&nbsp;bytes)</PRE>
 <DL>
 <DD>There is a slight problem with this method that you might have noticed;  a Java int is signed, so we can't make
- use of the 32nd bit.  This means we this method does not support a four byte value with msb greater than 01111111 ((2^7-1) or 127).
+ use of the 32nd bit.  This means this method does not support a four byte value with msb greater than 01111111 ((2^7-1) or 127)
+ and will throw a runtime exception if it encounters this situation.
  
  TODO use long instead of int to support 4 bytes values.  note that long assignments are not atomic.
  
@@ -271,8 +283,11 @@ convertInttoMultiByte</H3>
 <PRE>
 public static int[] <B>convertInttoMultiByte</B>(int&nbsp;val)</PRE>
 <DL>
+<DD>Works for positive values only
+<P>
 <DD><DL>
-</DL>
+<DT><B>Parameters:</B><DD><CODE>val</CODE> - 
+<DT><B>Returns:</B><DD></DL>
 </DD>
 </DL>
 <HR>
@@ -281,6 +296,18 @@ public static int[] <B>convertInttoMultiByte</B>(int&nbsp;val)</PRE>
 toBase16</H3>
 <PRE>
 public static java.lang.String <B>toBase16</B>(int[]&nbsp;arr)</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="toBase16(int[], java.lang.String)"><!-- --></A><H3>
+toBase16</H3>
+<PRE>
+public static java.lang.String <B>toBase16</B>(int[]&nbsp;arr,
+                                        java.lang.String&nbsp;delimiter)</PRE>
 <DL>
 <DD><DL>
 </DL>

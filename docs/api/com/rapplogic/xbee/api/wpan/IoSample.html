@@ -6,14 +6,15 @@
 IoSample
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.api.wpan.IoSample class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="IoSample";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="IoSample";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -50,7 +52,7 @@ function windowTitle()
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;PREV CLASS&nbsp;
+&nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/wpan/CopyOfRxResponseIoSample.html" title="class in com.rapplogic.xbee.api.wpan"><B>PREV CLASS</B></A>&nbsp;
 &nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/wpan/NodeDiscover.html" title="class in com.rapplogic.xbee.api.wpan"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../../index.html?com/rapplogic/xbee/api/wpan/IoSample.html" target="_top"><B>FRAMES</B></A>  &nbsp;
@@ -142,11 +144,18 @@ Series 1 XBee.  Represents an I/O Sample, sent from a remote radio.
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;java.lang.Integer</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/wpan/IoSample.html#getAnalog(int)">getAnalog</A></B>(int&nbsp;pin)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the 10-bit analog value of the specified pin.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;java.lang.Integer</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/wpan/IoSample.html#getAnalog0()">getAnalog0</A></B>()</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the 10-bit analog value of pin 20 (D0), when this pin is configured for Analog Input (D0=2)
- Returns null if pin 20 is not configured for Analog input.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -289,6 +298,14 @@ Series 1 XBee.  Represents an I/O Sample, sent from a remote radio.
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the digital value of pin 9 (D8) when this pin is configured for Digital input (D8=3)
  Returns null if pin 9 is not configured for Digital input</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;java.lang.Boolean</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../../com/rapplogic/xbee/api/wpan/IoSample.html#isDigitalOn(int)">isDigitalOn</A></B>(int&nbsp;pin)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returns the digital value of the specified pin.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -446,17 +463,28 @@ public java.lang.Integer <B>getDioLsb</B>()</PRE>
 </DL>
 <HR>
 
+<A NAME="getAnalog(int)"><!-- --></A><H3>
+getAnalog</H3>
+<PRE>
+public java.lang.Integer <B>getAnalog</B>(int&nbsp;pin)</PRE>
+<DL>
+<DD>Returns the 10-bit analog value of the specified pin.
+ Returns null if pin is not configured for Analog input.
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD></DL>
+</DD>
+</DL>
+<HR>
+
 <A NAME="getAnalog0()"><!-- --></A><H3>
 getAnalog0</H3>
 <PRE>
 public java.lang.Integer <B>getAnalog0</B>()</PRE>
 <DL>
-<DD>Returns the 10-bit analog value of pin 20 (D0), when this pin is configured for Analog Input (D0=2)
- Returns null if pin 20 is not configured for Analog input.
-<P>
 <DD><DL>
-
-<DT><B>Returns:</B><DD></DL>
+</DL>
 </DD>
 </DL>
 <HR>
@@ -598,6 +626,21 @@ public void <B>setAnalog5</B>(java.lang.Integer&nbsp;analog5)</PRE>
 <DL>
 <DD><DL>
 </DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="isDigitalOn(int)"><!-- --></A><H3>
+isDigitalOn</H3>
+<PRE>
+public java.lang.Boolean <B>isDigitalOn</B>(int&nbsp;pin)</PRE>
+<DL>
+<DD>Returns the digital value of the specified pin.
+ Returns null if pin is not configured for Digital input
+<P>
+<DD><DL>
+
+<DT><B>Returns:</B><DD></DL>
 </DD>
 </DL>
 <HR>
@@ -779,7 +822,7 @@ public java.lang.String <B>toString</B>()</PRE>
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;PREV CLASS&nbsp;
+&nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/wpan/CopyOfRxResponseIoSample.html" title="class in com.rapplogic.xbee.api.wpan"><B>PREV CLASS</B></A>&nbsp;
 &nbsp;<A HREF="../../../../../com/rapplogic/xbee/api/wpan/NodeDiscover.html" title="class in com.rapplogic.xbee.api.wpan"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../../index.html?com/rapplogic/xbee/api/wpan/IoSample.html" target="_top"><B>FRAMES</B></A>  &nbsp;

@@ -6,14 +6,15 @@
 XBeePin
 </TITLE>
 
-<META NAME="keywords" CONTENT="com.rapplogic.xbee.XBeePin class">
 
 <LINK REL ="stylesheet" TYPE="text/css" HREF="../../../stylesheet.css" TITLE="Style">
 
 <SCRIPT type="text/javascript">
 function windowTitle()
 {
-    parent.document.title="XBeePin";
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="XBeePin";
+    }
 }
 </SCRIPT>
 <NOSCRIPT>
@@ -22,6 +23,7 @@ function windowTitle()
 </HEAD>
 
 <BODY BGCOLOR="white" onload="windowTitle();">
+<HR>
 
 
 <!-- ========= START OF TOP NAVBAR ======= -->
@@ -50,7 +52,7 @@ function windowTitle()
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../com/rapplogic/xbee/RxTxSerialComm.html" title="class in com.rapplogic.xbee"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../com/rapplogic/xbee/Shutdowner.html" title="class in com.rapplogic.xbee"><B>PREV CLASS</B></A>&nbsp;
 &nbsp;<A HREF="../../../com/rapplogic/xbee/XBeePin.Capability.html" title="enum in com.rapplogic.xbee"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../index.html?com/rapplogic/xbee/XBeePin.html" target="_top"><B>FRAMES</B></A>  &nbsp;
@@ -98,9 +100,6 @@ java.lang.Object
 <P>
 Represents a configurable XBee pin and associated name, pin number, AT command, default capability and list of supported 
  capabilities.
- 
- TODO add pin direction
- TODO methods to filter list by Capability
 <P>
 
 <P>
@@ -577,7 +576,7 @@ public static void <B>main</B>(java.lang.String[]&nbsp;args)</PRE>
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../com/rapplogic/xbee/RxTxSerialComm.html" title="class in com.rapplogic.xbee"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../com/rapplogic/xbee/Shutdowner.html" title="class in com.rapplogic.xbee"><B>PREV CLASS</B></A>&nbsp;
 &nbsp;<A HREF="../../../com/rapplogic/xbee/XBeePin.Capability.html" title="enum in com.rapplogic.xbee"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../index.html?com/rapplogic/xbee/XBeePin.html" target="_top"><B>FRAMES</B></A>  &nbsp;

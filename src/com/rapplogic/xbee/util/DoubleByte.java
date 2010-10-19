@@ -82,4 +82,24 @@ public class DoubleByte {
 	public int[] getArray() {
 		return new int[] { this.msb, this.lsb };
 	}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DoubleByte that = (DoubleByte) o;
+
+        if (lsb != that.lsb) return false;
+        if (msb != that.msb) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = msb;
+        result = 31 * result + lsb;
+        return result;
+    }
 }
