@@ -93,11 +93,11 @@ java.lang.Object
   <IMG SRC="../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.RxTxSerialComm</B>
 </PRE>
 <DL>
-<DT><B>All Implemented Interfaces:</B> <DD>gnu.io.SerialPortEventListener, java.util.EventListener</DD>
+<DT><B>All Implemented Interfaces:</B> <DD><A HREF="../../../com/rapplogic/xbee/XBeeConnection.html" title="interface in com.rapplogic.xbee">XBeeConnection</A>, gnu.io.SerialPortEventListener, java.util.EventListener</DD>
 </DL>
 <HR>
 <DL>
-<DT><PRE>public class <B>RxTxSerialComm</B><DT>extends java.lang.Object<DT>implements gnu.io.SerialPortEventListener</DL>
+<DT><PRE>public class <B>RxTxSerialComm</B><DT>extends java.lang.Object<DT>implements <A HREF="../../../com/rapplogic/xbee/XBeeConnection.html" title="interface in com.rapplogic.xbee">XBeeConnection</A>, gnu.io.SerialPortEventListener</DL>
 </PRE>
 
 <P>
@@ -201,14 +201,6 @@ This class encapsulates a RXTX serial port, providing access to input/output str
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../com/rapplogic/xbee/RxTxSerialComm.html#serialEvent(gnu.io.SerialPortEvent)">serialEvent</A></B>(gnu.io.SerialPortEvent&nbsp;event)</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../com/rapplogic/xbee/RxTxSerialComm.html#setSerialEventHandler(com.rapplogic.xbee.RxTxSerialEventListener)">setSerialEventHandler</A></B>(<A HREF="../../../com/rapplogic/xbee/RxTxSerialEventListener.html" title="interface in com.rapplogic.xbee">RxTxSerialEventListener</A>&nbsp;handler)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -347,7 +339,7 @@ public void <B>close</B>()</PRE>
 <DD>Shuts down RXTX
 <P>
 <DD><DL>
-</DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="../../../com/rapplogic/xbee/XBeeConnection.html#close()">close</A></CODE> in interface <CODE><A HREF="../../../com/rapplogic/xbee/XBeeConnection.html" title="interface in com.rapplogic.xbee">XBeeConnection</A></CODE></DL>
 </DD>
 <DD><DL>
 </DL>
@@ -361,7 +353,7 @@ getOutputStream</H3>
 public java.io.OutputStream <B>getOutputStream</B>()</PRE>
 <DL>
 <DD><DL>
-</DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="../../../com/rapplogic/xbee/XBeeConnection.html#getOutputStream()">getOutputStream</A></CODE> in interface <CODE><A HREF="../../../com/rapplogic/xbee/XBeeConnection.html" title="interface in com.rapplogic.xbee">XBeeConnection</A></CODE></DL>
 </DD>
 <DD><DL>
 </DL>
@@ -375,21 +367,7 @@ getInputStream</H3>
 public java.io.InputStream <B>getInputStream</B>()</PRE>
 <DL>
 <DD><DL>
-</DL>
-</DD>
-<DD><DL>
-</DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="setSerialEventHandler(com.rapplogic.xbee.RxTxSerialEventListener)"><!-- --></A><H3>
-setSerialEventHandler</H3>
-<PRE>
-public void <B>setSerialEventHandler</B>(<A HREF="../../../com/rapplogic/xbee/RxTxSerialEventListener.html" title="interface in com.rapplogic.xbee">RxTxSerialEventListener</A>&nbsp;handler)</PRE>
-<DL>
-<DD><DL>
-</DL>
+<DT><B>Specified by:</B><DD><CODE><A HREF="../../../com/rapplogic/xbee/XBeeConnection.html#getInputStream()">getInputStream</A></CODE> in interface <CODE><A HREF="../../../com/rapplogic/xbee/XBeeConnection.html" title="interface in com.rapplogic.xbee">XBeeConnection</A></CODE></DL>
 </DD>
 <DD><DL>
 </DL>

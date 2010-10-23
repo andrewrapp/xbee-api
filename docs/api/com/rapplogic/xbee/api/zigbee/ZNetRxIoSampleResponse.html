@@ -95,11 +95,11 @@ java.lang.Object
           <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse</B>
 </PRE>
 <DL>
-<DT><B>All Implemented Interfaces:</B> <DD>java.io.Serializable</DD>
+<DT><B>All Implemented Interfaces:</B> <DD><A HREF="../../../../../com/rapplogic/xbee/api/NoRequestResponse.html" title="interface in com.rapplogic.xbee.api">NoRequestResponse</A>, java.io.Serializable</DD>
 </DL>
 <HR>
 <DL>
-<DT><PRE>public class <B>ZNetRxIoSampleResponse</B><DT>extends <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxBaseResponse.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetRxBaseResponse</A></DL>
+<DT><PRE>public class <B>ZNetRxIoSampleResponse</B><DT>extends <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxBaseResponse.html" title="class in com.rapplogic.xbee.api.zigbee">ZNetRxBaseResponse</A><DT>implements <A HREF="../../../../../com/rapplogic/xbee/api/NoRequestResponse.html" title="interface in com.rapplogic.xbee.api">NoRequestResponse</A></DL>
 </PRE>
 
 <P>
@@ -642,6 +642,9 @@ public static <A HREF="../../../../../com/rapplogic/xbee/api/zigbee/ZNetRxIoSamp
                                             throws java.io.IOException</PRE>
 <DL>
 <DD><DL>
+</DL>
+</DD>
+<DD><DL>
 
 <DT><B>Throws:</B>
 <DD><CODE>java.io.IOException</CODE></DL>
@@ -659,6 +662,9 @@ public void <B>parse</B>(<A HREF="../../../../../com/rapplogic/xbee/util/IIntArr
  from either a RX response or a Remote AT/Local AT response (IS).
 <P>
 <DD><DL>
+</DL>
+</DD>
+<DD><DL>
 <DT><B>Parameters:</B><DD><CODE>ps</CODE> - 
 <DT><B>Throws:</B>
 <DD><CODE>java.io.IOException</CODE></DL>
@@ -674,6 +680,9 @@ public int <B>getDigitalChannelMaskMsb</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -682,6 +691,9 @@ getDigitalChannelMaskLsb</H3>
 <PRE>
 public int <B>getDigitalChannelMaskLsb</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -696,6 +708,9 @@ public int <B>getAnalogChannelMask</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -706,6 +721,9 @@ public boolean <B>isD0Enabled</B>()</PRE>
 <DL>
 <DD>Consider using isDigitalEnabled(pin) instead
 <P>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 
 <DT><B>Returns:</B><DD></DL>
@@ -721,6 +739,9 @@ public boolean <B>isD1Enabled</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -729,6 +750,9 @@ isD2Enabled</H3>
 <PRE>
 public boolean <B>isD2Enabled</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -743,6 +767,9 @@ public boolean <B>isD3Enabled</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -751,6 +778,9 @@ isD4Enabled</H3>
 <PRE>
 public boolean <B>isD4Enabled</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -765,6 +795,9 @@ public boolean <B>isD5Enabled</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -773,6 +806,9 @@ isD6Enabled</H3>
 <PRE>
 public boolean <B>isD6Enabled</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -787,6 +823,9 @@ public boolean <B>isD7Enabled</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -795,6 +834,9 @@ isD10Enabled</H3>
 <PRE>
 public boolean <B>isD10Enabled</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -809,6 +851,9 @@ public boolean <B>isD11Enabled</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -817,6 +862,9 @@ isD12Enabled</H3>
 <PRE>
 public boolean <B>isD12Enabled</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -830,6 +878,9 @@ public boolean <B>isA0Enabled</B>()</PRE>
 <DL>
 <DD>Consider using isAnalogEnable(pin) instead
 <P>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 
 <DT><B>Returns:</B><DD></DL>
@@ -845,6 +896,9 @@ public boolean <B>isA1Enabled</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -853,6 +907,9 @@ isA2Enabled</H3>
 <PRE>
 public boolean <B>isA2Enabled</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -867,6 +924,9 @@ public boolean <B>isA3Enabled</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -878,6 +938,9 @@ public boolean <B>isDigitalEnabled</B>(int&nbsp;pin)</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -886,6 +949,9 @@ isAnalogEnabled</H3>
 <PRE>
 public boolean <B>isAnalogEnabled</B>(int&nbsp;pin)</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -902,6 +968,9 @@ public boolean <B>isSupplyVoltageEnabled</B>()</PRE>
  set to 0 by default (do not include the supply voltage).
 <P>
 <DD><DL>
+</DL>
+</DD>
+<DD><DL>
 
 <DT><B>Returns:</B><DD></DL>
 </DD>
@@ -915,6 +984,9 @@ public java.lang.Boolean <B>isD0On</B>()</PRE>
 <DL>
 <DD>Consider using isDigitalOn(pin)
 <P>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 
 <DT><B>Returns:</B><DD></DL>
@@ -930,6 +1002,9 @@ public java.lang.Boolean <B>isD1On</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -938,6 +1013,9 @@ isD2On</H3>
 <PRE>
 public java.lang.Boolean <B>isD2On</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -952,6 +1030,9 @@ public java.lang.Boolean <B>isD3On</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -960,6 +1041,9 @@ isD4On</H3>
 <PRE>
 public java.lang.Boolean <B>isD4On</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -974,6 +1058,9 @@ public java.lang.Boolean <B>isD5On</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -982,6 +1069,9 @@ isD6On</H3>
 <PRE>
 public java.lang.Boolean <B>isD6On</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -996,6 +1086,9 @@ public java.lang.Boolean <B>isD7On</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -1004,6 +1097,9 @@ isD10On</H3>
 <PRE>
 public java.lang.Boolean <B>isD10On</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -1018,6 +1114,9 @@ public java.lang.Boolean <B>isD11On</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -1026,6 +1125,9 @@ isD12On</H3>
 <PRE>
 public java.lang.Boolean <B>isD12On</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -1045,6 +1147,9 @@ public java.lang.Boolean <B>isDigitalOn</B>(int&nbsp;pin)</PRE>
  Digital I/O pins seem to report high when open circuit (unconnected)
 <P>
 <DD><DL>
+</DL>
+</DD>
+<DD><DL>
 
 <DT><B>Returns:</B><DD></DL>
 </DD>
@@ -1060,6 +1165,9 @@ public boolean <B>containsDigital</B>()</PRE>
  
  See manual page 68 for byte bit mapping
 <P>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 
 <DT><B>Returns:</B><DD></DL>
@@ -1079,6 +1187,9 @@ public boolean <B>containsAnalog</B>()</PRE>
  See manual page 68 for byte bit mapping
 <P>
 <DD><DL>
+</DL>
+</DD>
+<DD><DL>
 
 <DT><B>Returns:</B><DD></DL>
 </DD>
@@ -1092,6 +1203,9 @@ public java.lang.Integer <B>getDioMsb</B>()</PRE>
 <DL>
 <DD>Returns the DIO MSB, only if sample contains digital; null otherwise
 <P>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 
 <DT><B>Returns:</B><DD></DL>
@@ -1107,6 +1221,9 @@ public java.lang.Integer <B>getDioLsb</B>()</PRE>
 <DD>Returns the DIO LSB, only if sample contains digital; null otherwise
 <P>
 <DD><DL>
+</DL>
+</DD>
+<DD><DL>
 
 <DT><B>Returns:</B><DD></DL>
 </DD>
@@ -1120,6 +1237,9 @@ public java.lang.Integer <B>getAnalog0</B>()</PRE>
 <DL>
 <DD>Consider using getAnalog(pin) instead
 <P>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 
 <DT><B>Returns:</B><DD></DL>
@@ -1135,6 +1255,9 @@ public void <B>setAnalog0</B>(java.lang.Integer&nbsp;analog0)</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -1143,6 +1266,9 @@ getAnalog1</H3>
 <PRE>
 public java.lang.Integer <B>getAnalog1</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -1157,6 +1283,9 @@ public void <B>setAnalog1</B>(java.lang.Integer&nbsp;analog1)</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -1165,6 +1294,9 @@ getAnalog2</H3>
 <PRE>
 public java.lang.Integer <B>getAnalog2</B>()</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -1179,6 +1311,9 @@ public void <B>setAnalog2</B>(java.lang.Integer&nbsp;analog2)</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -1190,6 +1325,9 @@ public java.lang.Integer <B>getAnalog3</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -1198,6 +1336,9 @@ setAnalog3</H3>
 <PRE>
 public void <B>setAnalog3</B>(java.lang.Integer&nbsp;analog3)</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>
@@ -1222,6 +1363,9 @@ public java.lang.Integer <B>getAnalog</B>(int&nbsp;pin)</PRE>
  actual value when the pin is not enabled.
 <P>
 <DD><DL>
+</DL>
+</DD>
+<DD><DL>
 
 <DT><B>Returns:</B><DD></DL>
 </DD>
@@ -1236,6 +1380,9 @@ public java.lang.Integer <B>getSupplyVoltage</B>()</PRE>
 <DD><DL>
 </DL>
 </DD>
+<DD><DL>
+</DL>
+</DD>
 </DL>
 <HR>
 
@@ -1244,6 +1391,9 @@ setSupplyVoltage</H3>
 <PRE>
 public void <B>setSupplyVoltage</B>(java.lang.Integer&nbsp;supplyVoltage)</PRE>
 <DL>
+<DD><DL>
+</DL>
+</DD>
 <DD><DL>
 </DL>
 </DD>

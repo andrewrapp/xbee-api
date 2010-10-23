@@ -52,7 +52,7 @@ function windowTitle()
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/RemoteAtResponse.html" title="class in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/ResponseQueueFilter.html" title="interface in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
 &nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeAddress.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../index.html?com/rapplogic/xbee/api/XBee.html" target="_top"><B>FRAMES</B></A>  &nbsp;
@@ -125,6 +125,12 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#XBee()">XBee</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#XBee(com.rapplogic.xbee.api.XBeeConfiguration)">XBee</A></B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeConfiguration.html" title="class in com.rapplogic.xbee.api">XBeeConfiguration</A>&nbsp;conf)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -213,14 +219,6 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;boolean</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#isStartupChecks()">isStartupChecks</A></B>()</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#open(java.lang.String, int)">open</A></B>(java.lang.String&nbsp;port,
      int&nbsp;baudRate)</CODE>
@@ -228,6 +226,14 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If startChecks is set to true (default), this method will check if the AP parameter
  is set correctly and attempt to update if AP=1.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../com/rapplogic/xbee/XBeeConnection.html" title="interface in com.rapplogic.xbee">XBeeConnection</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#providerConnection()">providerConnection</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Override to provide a specific XBeeConnection implementation (e.g.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -281,28 +287,20 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A></CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#sendSynchronous(com.rapplogic.xbee.api.XBeeRequest)">sendSynchronous</A></B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeRequest.html" title="class in com.rapplogic.xbee.api">XBeeRequest</A>&nbsp;request)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Uses sendSynchronous timeout defined in XBeeConfiguration (default is 5000ms)</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A></CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#sendSynchronous(com.rapplogic.xbee.api.XBeeRequest, int)">sendSynchronous</A></B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeRequest.html" title="class in com.rapplogic.xbee.api">XBeeRequest</A>&nbsp;xbeeRequest,
                 int&nbsp;timeout)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Synchronous method for sending an XBeeRequest and obtaining the 
  corresponding response (response that has same frame id).</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#setMaxQueueSize(int)">setMaxQueueSize</A></B>(int&nbsp;size)</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sets the maximum size of the internal queue that supports the getResponse(..) method.</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#setStartupChecks(boolean)">setStartupChecks</A></B>(boolean&nbsp;startupChecks)</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Controls is a startup check is performed when connecting to the XBee.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -339,6 +337,14 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 XBee</H3>
 <PRE>
 public <B>XBee</B>()</PRE>
+<DL>
+</DL>
+<HR>
+
+<A NAME="XBee(com.rapplogic.xbee.api.XBeeConfiguration)"><!-- --></A><H3>
+XBee</H3>
+<PRE>
+public <B>XBee</B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeConfiguration.html" title="class in com.rapplogic.xbee.api">XBeeConfiguration</A>&nbsp;conf)</PRE>
 <DL>
 </DL>
 
@@ -387,6 +393,23 @@ public void <B>open</B>(java.lang.String&nbsp;port,
 
 <DT><B>Throws:</B>
 <DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="providerConnection()"><!-- --></A><H3>
+providerConnection</H3>
+<PRE>
+public <A HREF="../../../../com/rapplogic/xbee/XBeeConnection.html" title="interface in com.rapplogic.xbee">XBeeConnection</A> <B>providerConnection</B>()</PRE>
+<DL>
+<DD>Override to provide a specific XBeeConnection implementation (e.g. socket, xmpp, etc)
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+
+<DT><B>Returns:</B><DD>An open XBeeConnection implementation</DL>
 </DD>
 </DL>
 <HR>
@@ -571,6 +594,27 @@ public <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="cla
 </DL>
 <HR>
 
+<A NAME="sendSynchronous(com.rapplogic.xbee.api.XBeeRequest)"><!-- --></A><H3>
+sendSynchronous</H3>
+<PRE>
+public <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A> <B>sendSynchronous</B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeRequest.html" title="class in com.rapplogic.xbee.api">XBeeRequest</A>&nbsp;request)
+                             throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A>,
+                                    <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
+<DL>
+<DD>Uses sendSynchronous timeout defined in XBeeConfiguration (default is 5000ms)
+<P>
+<DD><DL>
+</DL>
+</DD>
+<DD><DL>
+
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A></CODE>
+<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE></DL>
+</DD>
+</DL>
+<HR>
+
 <A NAME="getResponse()"><!-- --></A><H3>
 getResponse</H3>
 <PRE>
@@ -652,55 +696,6 @@ public boolean <B>isConnected</B>()</PRE>
 <DD><DL>
 
 <DT><B>Returns:</B><DD></DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="isStartupChecks()"><!-- --></A><H3>
-isStartupChecks</H3>
-<PRE>
-public boolean <B>isStartupChecks</B>()</PRE>
-<DL>
-<DD><DL>
-</DL>
-</DD>
-<DD><DL>
-</DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="setStartupChecks(boolean)"><!-- --></A><H3>
-setStartupChecks</H3>
-<PRE>
-public void <B>setStartupChecks</B>(boolean&nbsp;startupChecks)</PRE>
-<DL>
-<DD>Controls is a startup check is performed when connecting to the XBee.
- The startup check attempts to determine the firmware type and if it is 
- configured correctly for use with this software.  Default is true.
-<P>
-<DD><DL>
-</DL>
-</DD>
-<DD><DL>
-<DT><B>Parameters:</B><DD><CODE>startupChecks</CODE> - </DL>
-</DD>
-</DL>
-<HR>
-
-<A NAME="setMaxQueueSize(int)"><!-- --></A><H3>
-setMaxQueueSize</H3>
-<PRE>
-public void <B>setMaxQueueSize</B>(int&nbsp;size)</PRE>
-<DL>
-<DD>Sets the maximum size of the internal queue that supports the getResponse(..) method.
- Packets are removed from the head of the queue once this limit is reached.  The default is 100
-<P>
-<DD><DL>
-</DL>
-</DD>
-<DD><DL>
-<DT><B>Parameters:</B><DD><CODE>size</CODE> - </DL>
 </DD>
 </DL>
 <HR>
@@ -800,7 +795,7 @@ public void <B>clearResponseQueue</B>()</PRE>
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/RemoteAtResponse.html" title="class in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/ResponseQueueFilter.html" title="interface in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
 &nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBeeAddress.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
   <A HREF="../../../../index.html?com/rapplogic/xbee/api/XBee.html" target="_top"><B>FRAMES</B></A>  &nbsp;

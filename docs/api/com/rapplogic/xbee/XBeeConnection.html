@@ -3,7 +3,7 @@
 <HTML>
 <HEAD>
 <TITLE>
-Shutdowner
+XBeeConnection
 </TITLE>
 
 
@@ -13,7 +13,7 @@ Shutdowner
 function windowTitle()
 {
     if (location.href.indexOf('is-external=true') == -1) {
-        parent.document.title="Shutdowner";
+        parent.document.title="XBeeConnection";
     }
 }
 </SCRIPT>
@@ -52,11 +52,11 @@ function windowTitle()
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../com/rapplogic/xbee/RxTxSerialEventListener.html" title="interface in com.rapplogic.xbee"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../../../com/rapplogic/xbee/XBeeConnection.html" title="interface in com.rapplogic.xbee"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../com/rapplogic/xbee/Shutdowner.html" title="class in com.rapplogic.xbee"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../com/rapplogic/xbee/XBeePin.html" title="class in com.rapplogic.xbee"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-  <A HREF="../../../index.html?com/rapplogic/xbee/Shutdowner.html" target="_top"><B>FRAMES</B></A>  &nbsp;
-&nbsp;<A HREF="Shutdowner.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+  <A HREF="../../../index.html?com/rapplogic/xbee/XBeeConnection.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="XBeeConnection.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
 &nbsp;<SCRIPT type="text/javascript">
   <!--
   if(window==top) {
@@ -73,9 +73,9 @@ function windowTitle()
 </TR>
 <TR>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
-  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
-DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
 </TR>
 </TABLE>
 <A NAME="skip-navbar_top"></A>
@@ -87,37 +87,30 @@ DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&n
 <FONT SIZE="-1">
 com.rapplogic.xbee</FONT>
 <BR>
-Class Shutdowner</H2>
-<PRE>
-java.lang.Object
-  <IMG SRC="../../../resources/inherit.gif" ALT="extended by "><B>com.rapplogic.xbee.Shutdowner</B>
-</PRE>
+Interface XBeeConnection</H2>
+<DL>
+<DT><B>All Known Implementing Classes:</B> <DD><A HREF="../../../com/rapplogic/xbee/RxTxSerialComm.html" title="class in com.rapplogic.xbee">RxTxSerialComm</A></DD>
+</DL>
 <HR>
 <DL>
-<DT><PRE>public class <B>Shutdowner</B><DT>extends java.lang.Object</DL>
+<DT><PRE>public interface <B>XBeeConnection</B></DL>
 </PRE>
 
 <P>
+Represents a protocol independent connection to a XBee radio (e.g. could be a serial connection, socket, xmpp etc.)
+ Important: The implementation must call this.notify() when new data is available; otherwise the XBee input stream thread
+ will go into a forever wait.
+<P>
+
+<P>
+<DL>
+<DT><B>Author:</B></DT>
+  <DD>andrew</DD>
+</DL>
 <HR>
 
 <P>
 
-<!-- ======== CONSTRUCTOR SUMMARY ======== -->
-
-<A NAME="constructor_summary"><!-- --></A>
-<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
-<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
-<TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
-<B>Constructor Summary</B></FONT></TH>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../com/rapplogic/xbee/Shutdowner.html#Shutdowner()">Shutdowner</A></B>()</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-</TR>
-</TABLE>
-&nbsp;
 <!-- ========== METHOD SUMMARY =========== -->
 
 <A NAME="method_summary"><!-- --></A>
@@ -128,41 +121,31 @@ java.lang.Object
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>static&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../com/rapplogic/xbee/Shutdowner.html#main(java.lang.String[])">main</A></B>(java.lang.String[]&nbsp;args)</CODE>
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/rapplogic/xbee/XBeeConnection.html#close()">close</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;java.io.InputStream</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/rapplogic/xbee/XBeeConnection.html#getInputStream()">getInputStream</A></B>()</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;java.io.OutputStream</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../com/rapplogic/xbee/XBeeConnection.html#getOutputStream()">getOutputStream</A></B>()</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
 </TR>
 </TABLE>
-&nbsp;<A NAME="methods_inherited_from_class_java.lang.Object"><!-- --></A>
-<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
-<TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
-<TH ALIGN="left"><B>Methods inherited from class java.lang.Object</B></TH>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</CODE></TD>
-</TR>
-</TABLE>
 &nbsp;
 <P>
-
-<!-- ========= CONSTRUCTOR DETAIL ======== -->
-
-<A NAME="constructor_detail"><!-- --></A>
-<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
-<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
-<TH ALIGN="left" COLSPAN="1"><FONT SIZE="+2">
-<B>Constructor Detail</B></FONT></TH>
-</TR>
-</TABLE>
-
-<A NAME="Shutdowner()"><!-- --></A><H3>
-Shutdowner</H3>
-<PRE>
-public <B>Shutdowner</B>()</PRE>
-<DL>
-</DL>
 
 <!-- ============ METHOD DETAIL ========== -->
 
@@ -174,16 +157,35 @@ public <B>Shutdowner</B>()</PRE>
 </TR>
 </TABLE>
 
-<A NAME="main(java.lang.String[])"><!-- --></A><H3>
-main</H3>
+<A NAME="getOutputStream()"><!-- --></A><H3>
+getOutputStream</H3>
 <PRE>
-public static void <B>main</B>(java.lang.String[]&nbsp;args)
-                 throws java.lang.InterruptedException</PRE>
+java.io.OutputStream <B>getOutputStream</B>()</PRE>
 <DL>
 <DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
 
-<DT><B>Throws:</B>
-<DD><CODE>java.lang.InterruptedException</CODE></DL>
+<A NAME="getInputStream()"><!-- --></A><H3>
+getInputStream</H3>
+<PRE>
+java.io.InputStream <B>getInputStream</B>()</PRE>
+<DL>
+<DD><DL>
+</DL>
+</DD>
+</DL>
+<HR>
+
+<A NAME="close()"><!-- --></A><H3>
+close</H3>
+<PRE>
+void <B>close</B>()</PRE>
+<DL>
+<DD><DL>
+</DL>
 </DD>
 </DL>
 <!-- ========= END OF CLASS DATA ========= -->
@@ -216,11 +218,11 @@ public static void <B>main</B>(java.lang.String[]&nbsp;args)
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../com/rapplogic/xbee/RxTxSerialEventListener.html" title="interface in com.rapplogic.xbee"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../../../com/rapplogic/xbee/XBeeConnection.html" title="interface in com.rapplogic.xbee"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../com/rapplogic/xbee/Shutdowner.html" title="class in com.rapplogic.xbee"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../com/rapplogic/xbee/XBeePin.html" title="class in com.rapplogic.xbee"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-  <A HREF="../../../index.html?com/rapplogic/xbee/Shutdowner.html" target="_top"><B>FRAMES</B></A>  &nbsp;
-&nbsp;<A HREF="Shutdowner.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+  <A HREF="../../../index.html?com/rapplogic/xbee/XBeeConnection.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="XBeeConnection.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
 &nbsp;<SCRIPT type="text/javascript">
   <!--
   if(window==top) {
@@ -237,9 +239,9 @@ public static void <B>main</B>(java.lang.String[]&nbsp;args)
 </TR>
 <TR>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
-  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_summary">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
+  SUMMARY:&nbsp;NESTED&nbsp;|&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_summary">METHOD</A></FONT></TD>
 <TD VALIGN="top" CLASS="NavBarCell3"><FONT SIZE="-2">
-DETAIL:&nbsp;FIELD&nbsp;|&nbsp;<A HREF="#constructor_detail">CONSTR</A>&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
+DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHOD</A></FONT></TD>
 </TR>
 </TABLE>
 <A NAME="skip-navbar_bottom"></A>

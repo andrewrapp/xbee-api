@@ -3,7 +3,7 @@
 <HTML>
 <HEAD>
 <TITLE>
-PacketListener
+ResponseQueueFilter
 </TITLE>
 
 
@@ -13,7 +13,7 @@ PacketListener
 function windowTitle()
 {
     if (location.href.indexOf('is-external=true') == -1) {
-        parent.document.title="PacketListener";
+        parent.document.title="ResponseQueueFilter";
     }
 }
 </SCRIPT>
@@ -52,11 +52,11 @@ function windowTitle()
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/NoRequestResponse.html" title="interface in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/PacketParser.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/RemoteAtResponse.html" title="class in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBee.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-  <A HREF="../../../../index.html?com/rapplogic/xbee/api/PacketListener.html" target="_top"><B>FRAMES</B></A>  &nbsp;
-&nbsp;<A HREF="PacketListener.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+  <A HREF="../../../../index.html?com/rapplogic/xbee/api/ResponseQueueFilter.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="ResponseQueueFilter.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
 &nbsp;<SCRIPT type="text/javascript">
   <!--
   if(window==top) {
@@ -87,23 +87,13 @@ DETAIL:&nbsp;FIELD&nbsp;|&nbsp;CONSTR&nbsp;|&nbsp;<A HREF="#method_detail">METHO
 <FONT SIZE="-1">
 com.rapplogic.xbee.api</FONT>
 <BR>
-Interface PacketListener</H2>
+Interface ResponseQueueFilter</H2>
 <HR>
 <DL>
-<DT><PRE>public interface <B>PacketListener</B></DL>
+<DT><PRE>public interface <B>ResponseQueueFilter</B></DL>
 </PRE>
 
 <P>
-Add an implementation of this interface to xbee.addPacketListener to get notifications
- of new packets
- <p/>
-<P>
-
-<P>
-<DL>
-<DT><B>Author:</B></DT>
-  <DD>andrew</DD>
-</DL>
 <HR>
 
 <P>
@@ -118,8 +108,8 @@ Add an implementation of this interface to xbee.addPacketListener to get notific
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/PacketListener.html#processResponse(com.rapplogic.xbee.api.XBeeResponse)">processResponse</A></B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A>&nbsp;response)</CODE>
+<CODE>&nbsp;boolean</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/ResponseQueueFilter.html#accept(com.rapplogic.xbee.api.XBeeResponse)">accept</A></B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A>&nbsp;response)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -138,10 +128,10 @@ Add an implementation of this interface to xbee.addPacketListener to get notific
 </TR>
 </TABLE>
 
-<A NAME="processResponse(com.rapplogic.xbee.api.XBeeResponse)"><!-- --></A><H3>
-processResponse</H3>
+<A NAME="accept(com.rapplogic.xbee.api.XBeeResponse)"><!-- --></A><H3>
+accept</H3>
 <PRE>
-void <B>processResponse</B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A>&nbsp;response)</PRE>
+boolean <B>accept</B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="class in com.rapplogic.xbee.api">XBeeResponse</A>&nbsp;response)</PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -177,11 +167,11 @@ void <B>processResponse</B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeResp
 
 <TR>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/NoRequestResponse.html" title="interface in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
-&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/PacketParser.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
+&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/RemoteAtResponse.html" title="class in com.rapplogic.xbee.api"><B>PREV CLASS</B></A>&nbsp;
+&nbsp;<A HREF="../../../../com/rapplogic/xbee/api/XBee.html" title="class in com.rapplogic.xbee.api"><B>NEXT CLASS</B></A></FONT></TD>
 <TD BGCOLOR="white" CLASS="NavBarCell2"><FONT SIZE="-2">
-  <A HREF="../../../../index.html?com/rapplogic/xbee/api/PacketListener.html" target="_top"><B>FRAMES</B></A>  &nbsp;
-&nbsp;<A HREF="PacketListener.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
+  <A HREF="../../../../index.html?com/rapplogic/xbee/api/ResponseQueueFilter.html" target="_top"><B>FRAMES</B></A>  &nbsp;
+&nbsp;<A HREF="ResponseQueueFilter.html" target="_top"><B>NO FRAMES</B></A>  &nbsp;
 &nbsp;<SCRIPT type="text/javascript">
   <!--
   if(window==top) {
