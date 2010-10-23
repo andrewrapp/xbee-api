@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+import com.rapplogic.xbee.api.NoRequestResponse;
 import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.IIntArrayInputStream;
 
@@ -37,7 +38,7 @@ import com.rapplogic.xbee.util.IIntArrayInputStream;
  * @author andrew
  *
  */
-public class RxResponseIoSample extends RxBaseResponse {
+public class RxResponseIoSample extends RxBaseResponse implements NoRequestResponse {
 	
 	private final static Logger log = Logger.getLogger(RxResponseIoSample.class);
 	

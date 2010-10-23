@@ -26,18 +26,23 @@ public class OpenCloseConnectionsTest {
 
 	public OpenCloseConnectionsTest() throws XBeeException, InterruptedException {
 		
+		// series 1
+		String device = "/dev/tty.usbserial-A4004Rim";
+		// series 2
+//		String device = "/dev/tty.usbserial-A6005v5M";
+		
 		log.info("opening connection");
 		
 //		xbee.setStartupChecks(false);
 		
 		// first connect directly to end device and configure.  then comment out configureXXX methods and connect to coordinator
-		xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
+		xbee.open(device, 9600);
 		
 		if (!xbee.isConnected()) throw new RuntimeException("Should be connected");
 		
 		try {
 			log.info("attempting duplicate open");
-			xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
+			xbee.open(device, 9600);
 			throw new RuntimeException("fail -- already open");
 		} catch (Exception e) {
 			log.debug("Expected", e);
@@ -62,7 +67,7 @@ public class OpenCloseConnectionsTest {
 		}
 		
 		log.info("reconnecting");
-		xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
+		xbee.open(device, 9600);
 		if (!xbee.sendAtCommand(new AtCommand("CH")).isOk()) throw new RuntimeException("fail");
 		
 		log.info("closing conn");

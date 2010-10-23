@@ -19,22 +19,21 @@
 
 package com.rapplogic.xbee.api;
 
-import gnu.io.SerialPortEvent;
-
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.log4j.Logger;
 
-import com.rapplogic.xbee.RxTxSerialComm;
-import com.rapplogic.xbee.RxTxSerialEventListener;
+import com.rapplogic.xbee.XBeeConnection;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /**
- * Reads data from the input stream had hands off to PacketParser for packet parsing.
+ * Reads data from the input stream and hands off to PacketParser for packet parsing.
  * Notifies XBee class when a new packet is parsed
  * <p/>
  * @author andrew
@@ -45,11 +44,13 @@ public class InputStreamThread implements Runnable {
 	private final static Logger log = Logger.getLogger(InputStreamThread.class);
 	
 	private Thread thread;
+	private ExecutorService listenerPool;
 	private volatile boolean done = false;
-	private final RxTxSerialComm serialPort;
+	private final XBeeConnection connection;
+	private XBeeConfiguration conf;
 	
-	public RxTxSerialComm getSerialPort() {
-		return serialPort;
+	public XBeeConnection getXBeeConnection() {
+		return connection;
 	}
 
 	private final BlockingQueue<XBeeResponse> responseQueue = new LinkedBlockingQueue<XBeeResponse>();
@@ -61,84 +62,63 @@ public class InputStreamThread implements Runnable {
 		return packetListenerList;
 	}
 
-	private int maxPacketQueueSize = 100;
-
-	public int getMaxPacketQueueSize() {
-		return maxPacketQueueSize;
-	}
-
-	public void setMaxPacketQueueSize(int maxPacketQueueSize) {
-		this.maxPacketQueueSize = maxPacketQueueSize;
-	}
-
 	public BlockingQueue<XBeeResponse> getResponseQueue() {
 		return responseQueue;
 	}
 
-	public InputStreamThread(final RxTxSerialComm serialPort) {
-		this.serialPort = serialPort;
+	public InputStreamThread(final XBeeConnection connection, XBeeConfiguration conf) {
+		this.connection = connection;
+		this.conf = conf;
 		
-		final InputStreamThread thiz = this;
-		
-		serialPort.setSerialEventHandler(new RxTxSerialEventListener() {
+//		executor = Executors.newFixedThreadPool(1);
+//		executor.submit(this);
 
-			public void handleSerialEvent(SerialPortEvent event) {
-				switch (event.getEventType()) {	
-					case SerialPortEvent.DATA_AVAILABLE:
-
-						try {
-							if (serialPort.getInputStream().available() > 0) {
-								try {
-									log.debug("serialEvent: " + serialPort.getInputStream().available() + " bytes available");
-									synchronized (thiz) {
-										thiz.notify();										
-									}
-								} catch (Exception e) {
-									log.error("Error in handleSerialData method", e);
-								}				
-							}
-						} catch (IOException ex) {
-							// it's best not to throw the exception because the RXTX thread may not be prepared to handle
-							log.error("RXTX error in serialEvent method", ex);
-						}
-					default:
-						log.debug("Ignoring serial port event type: " + event.getEventType());
-				}
-			}
-		});
+        // Create an executor to deliver incoming packets to listeners. We'll use a single
+        // thread with an unbounded queue.
+		listenerPool = Executors.newSingleThreadExecutor();
 		
 		thread = new Thread(this);
-		thread.setName("XBee Packet Parser Thread");
+		thread.setName("InputStreamThread");
 		thread.start();
 		
 		log.debug("starting packet parser thread");
 	}
 	
-	private void addResponse(XBeeResponse response) throws InterruptedException {
+	private void addResponse(final XBeeResponse response) throws InterruptedException {
 		
 		// trim the queue
-		while (responseQueue.size() >= (this.getMaxPacketQueueSize() - 1)) {
+		while (responseQueue.size() >= (conf.getMaxQueueSize() - 1)) {
+			log.debug("Response queue has reached the maximum size of " + conf.getMaxQueueSize() + " packets.  Trimming a packet from head of queue to make room");
 			responseQueue.poll();
 		}
 		
-		responseQueue.put(response);
-				
-		// TODO run in separate thread
-		// must synchronize to avoid  java.util.ConcurrentModificationException at java.util.AbstractList$Itr.checkForComodification(Unknown Source)
-		// this occurs if packet listener add/remove is called while we are iterating
-		synchronized (packetListenerList) {
-			for (PacketListener pl : packetListenerList) {
-				try {
-					if (pl != null) {
-						pl.processResponse(response);	
-					} else {
-						log.warn("PacketListener is null, size is " + packetListenerList.size());
-					}
-				} catch (Throwable th) {
-					log.warn("Exception in packet listener", th);
-				}
-			}			
-		}		
+		if (conf.getResponseQueueFilter() != null) {
+			if (conf.getResponseQueueFilter().accept(response)) {
+				responseQueue.put(response);
+			}
+		} else {
+			responseQueue.put(response);	
+		}
+		
+		listenerPool.submit(new Runnable() {
+			public void run() {
+				// must synchronize to avoid  java.util.ConcurrentModificationException at java.util.AbstractList$Itr.checkForComodification(Unknown Source)
+				// this occurs if packet listener add/remove is called while we are iterating
+				synchronized (packetListenerList) {
+					for (PacketListener pl : packetListenerList) {
+						try {
+							if (pl != null) {
+								pl.processResponse(response);	
+							} else {
+								log.warn("PacketListener is null, size is " + packetListenerList.size());
+							}
+						} catch (Throwable th) {
+							log.warn("Exception in packet listener", th);
+						}
+					}			
+				}				
+			}
+		});
 	}
 	
 	public void run() {
@@ -151,13 +131,13 @@ public class InputStreamThread implements Runnable {
 		try {
 			while (!done) {
 				try {
-					if (serialPort.getInputStream().available() > 0) {
+					if (connection.getInputStream().available() > 0) {
 						log.debug("About to read from input stream");
-						val = serialPort.getInputStream().read();
+						val = connection.getInputStream().read();
 						log.debug("Read " + ByteUtils.formatByte(val) + " from input stream");
 						
 						if (val == XBeePacket.SpecialByte.START_BYTE.getValue()) {
-							packetStream = new PacketParser(serialPort.getInputStream());
+							packetStream = new PacketParser(connection.getInputStream());
 							response = packetStream.parsePacket();
 							
 							if (log.isInfoEnabled()) {
@@ -174,29 +154,20 @@ public class InputStreamThread implements Runnable {
 						log.debug("No data available.. waiting for new data event");
 						
 						// we will wait here for RXTX to notify us of new data
-						synchronized (this) {
+						synchronized (this.connection) {
 							// There's a chance that we got notified after the first in.available check
-							if (serialPort.getInputStream().available() > 0) {
+							if (connection.getInputStream().available() > 0) {
 								continue;
 							}
 							
 							// wait until new data arrives
-							this.wait();
+							this.connection.wait();
 						}	
 					}				
 				} catch (Exception e) {
 					if (e instanceof InterruptedException) throw ((InterruptedException)e);
 					
 					log.error("Error while parsing packet:", e);
-					
-//					ErrorResponse error = new ErrorResponse();
-//					error.setException(e);
-//					
-//					try {
-//						this.addResponse(error);
-//					} catch (InterruptedException e1) {
-//						log.warn("Unable to add error response to queues", e1);
-//					}
 					
 					if (e instanceof IOException) {
 						// this is thrown by RXTX if the serial device unplugged while we are reading data; if we are waiting then it will waiting forever
@@ -206,28 +177,23 @@ public class InputStreamThread implements Runnable {
 				}
 			}
 		} catch(InterruptedException ie) {
-			// We've been told to stop -- the user called the close() method
-			
-			// TODO serialPort.getInputStream() case thread is waiting.. notify with error response
-//			ErrorResponse error = new ErrorResponse();
-//			error.setException(ie);
-//			
-//			try {
-//				this.addResponse(error);
-//			} catch (InterruptedException e) {
-//				log.warn("Interrupted while applying error repsonse to queue", e);
-//			}
-			
+			// We've been told to stop -- the user called the close() method			
 			log.info("Packet parser thread was interrupted.  This occurs when close() is called");
 		} finally {
-			try {				
-				serialPort.close();
-			} catch (Exception e) {
-				log.warn("Unable to shutdown input stream", e);
-			};
+			if (connection != null) {
+				connection.close();
+			}
+			
+			if (listenerPool != null) {
+				try {
+					listenerPool.shutdownNow();
+				} catch (Throwable t) {
+					log.warn("Failed to shutdown listner thread pool", t);
+				}
+			}
 		}
 		
-		log.info("Packet parser thread is exiting");
+		log.info("InputStreamThread is exiting");
 	}
 
 	public void setDone(boolean done) {

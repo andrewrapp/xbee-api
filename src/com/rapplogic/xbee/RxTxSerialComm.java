@@ -44,11 +44,10 @@ import com.rapplogic.xbee.api.XBeeException;
  * @author andrew
  * 
  */
-public class RxTxSerialComm implements SerialPortEventListener {
+public class RxTxSerialComm implements XBeeConnection, SerialPortEventListener {
 
 	private final static Logger log = Logger.getLogger(RxTxSerialComm.class);
 	
-	private RxTxSerialEventListener handler;
 	private InputStream inputStream;
 	private OutputStream outputStream;
 
@@ -143,14 +142,32 @@ public class RxTxSerialComm implements SerialPortEventListener {
 	public InputStream getInputStream() {
 		return inputStream;
 	}
-
-	public void setSerialEventHandler(RxTxSerialEventListener handler) {
-		this.handler = handler;
-	}
 	
 	public void serialEvent(SerialPortEvent event) {
-		if (this.handler != null) {
-			this.handler.handleSerialEvent(event);
+		
+		switch (event.getEventType()) {	
+			case SerialPortEvent.DATA_AVAILABLE:
+
+				try {
+					if (this.getInputStream().available() > 0) {
+						try {
+							log.debug("serialEvent: " + serialPort.getInputStream().available() + " bytes available");
+							
+							synchronized (this) {
+								this.notify();										
+							}
+						} catch (Exception e) {
+							log.error("Error in handleSerialData method", e);
+						}				
+					} else {
+						log.warn("We were notified of new data but available() is returning 0");
+					}
+				} catch (IOException ex) {
+					// it's best not to throw the exception because the RXTX thread may not be prepared to handle
+					log.error("RXTX error in serialEvent method", ex);
+				}
+			default:
+				log.debug("Ignoring serial port event type: " + event.getEventType());
 		}		
 	}
 }

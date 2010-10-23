@@ -55,9 +55,6 @@ public class ZNetTxRequest extends XBeeRequest {
 	 */
 	public final static int ZNET_MAX_PAYLOAD_SIZE = 72;
 	public final static int DEFAULT_BROADCAST_RADIUS = 0;
-	
-	public final static int UNICAST_OPTION = 0;
-	public final static int BROADCAST_OPTION = 0x8;
 				
 	private XBeeAddress64 destAddr64;
 	private XBeeAddress16 destAddr16;
@@ -126,7 +123,7 @@ public class ZNetTxRequest extends XBeeRequest {
 		this.option = option;
 		this.payload = payload;
 	}
-
+	
 	/**
 	 * Abbreviated constructor for sending a unicast TX packet
 	 * 

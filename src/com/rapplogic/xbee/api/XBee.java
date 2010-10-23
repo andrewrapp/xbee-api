@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 
 import com.rapplogic.xbee.RxTxSerialComm;
+import com.rapplogic.xbee.XBeeConnection;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /**
@@ -39,27 +40,21 @@ import com.rapplogic.xbee.util.ByteUtils;
 public class XBee implements IXBee {
 
 	private final static Logger log = Logger.getLogger(XBee.class);
-
-	// TODO create XBeeConfiguration object to be passed in constructor
 	
 	// object to synchronize on to protect access to sendPacket
 	private Object sendPacketBlock = new Object();
-	private boolean startupChecks = true;
-	private RxTxSerialComm serialComm;
+	private XBeeConnection xbeeConnection;
 	private InputStreamThread parser;	
+	private XBeeConfiguration conf;
 	
 	public XBee() {
-//		final XBee xbeeRef = this;
-//		Runtime.getRuntime().addShutdownHook(new Thread() {
-//		    public void run() {
-//		    	if (xbeeRef.isConnected()) {
-//		    		log.info("Shutting down");
-//		    		xbeeRef.close();
-//		    	}
-//		    }
-//		});
+		this.conf = new XBeeConfiguration().withMaxQueueSize(100).withStartupChecks(true);
 	}
 
+	public XBee(XBeeConfiguration conf) {
+		this.conf = conf;
+	}
+	
 	public void doStartupChecks() throws XBeeException {
 		// Perform startup checks
 		try {				
@@ -128,17 +123,28 @@ public class XBee implements IXBee {
 	 */
 	public void open(String port, int baudRate) throws XBeeException {
 		try {
-			if (serialComm != null && serialComm.getInputStream() != null) {			
-				throw new IllegalStateException("Cannot open new connection -- existing connect still open.  Please close first");
+			if (xbeeConnection != null && xbeeConnection.getInputStream() != null) {			
+				throw new IllegalStateException("Cannot open new connection -- existing connection is still open.  Please close first");
 			}
 			
-			serialComm = new RxTxSerialComm();
+			XBeeConnection conn = null;
 			
-			serialComm.openSerialPort(port, baudRate);
-			parser = new InputStreamThread(serialComm);
+			try {
+				conn = this.providerConnection();
+			} catch (UnsupportedOperationException e) {
+				RxTxSerialComm serial = new RxTxSerialComm(); 
+				
+				serial.openSerialPort(port, baudRate);
+				
+				conn = serial;
+			};
+			
+			this.xbeeConnection = conn;
+			
+			parser = new InputStreamThread(this.xbeeConnection, conf);
 			
 			// startup heuristics
-			if (!this.isStartupChecks()) {
+			if (conf.isStartupChecks()) {
 				this.doStartupChecks();
 			}
 		} catch (XBeeException e) {
@@ -146,6 +152,15 @@ public class XBee implements IXBee {
 		} catch (Exception e) {		
 			throw new XBeeException(e);
 		}
+	}
+	
+	/**
+	 * Override to provide a specific XBeeConnection implementation (e.g. socket, xmpp, etc)
+	 * 
+	 * @return An open XBeeConnection implementation
+	 */
+	public XBeeConnection providerConnection() {
+		throw new UnsupportedOperationException("You must override this method and return a open XBeeConnection");
 	}
 
 	public void addPacketListener(PacketListener packetListener) { 
@@ -209,10 +224,10 @@ public class XBee implements IXBee {
 		}
 
         for (int aPacket : packet) {
-        	serialComm.getOutputStream().write(aPacket);
+        	xbeeConnection.getOutputStream().write(aPacket);
         }
 
-        serialComm.getOutputStream().flush();
+        xbeeConnection.getOutputStream().flush();
 	}
 
 	/**
@@ -328,6 +343,14 @@ public class XBee implements IXBee {
 			}
 		}
 	}
+	
+	/**
+	 * Uses sendSynchronous timeout defined in XBeeConfiguration (default is 5000ms)
+	 */
+	public XBeeResponse sendSynchronous(final XBeeRequest request) throws XBeeTimeoutException, XBeeException {		
+		return this.sendSynchronous(request, conf.getSendSynchronousTimeout());
+	}
+	
 		
 	/**
 	 * Same as getResponse(int) but does not timeout.
@@ -340,7 +363,7 @@ public class XBee implements IXBee {
 	 * @throws XBeeException 
 	 */
 	public XBeeResponse getResponse() throws XBeeException {
-		return getResponse(null);
+		return getResponseTimeout(null);
 	}
 	
 	/**
@@ -357,10 +380,10 @@ public class XBee implements IXBee {
 	 * @throws XBeeTimeoutException if timeout occurs before a response is received
 	 */
 	public XBeeResponse getResponse(int timeout) throws XBeeException, XBeeTimeoutException {
-		return this.getResponse(timeout);
+		return this.getResponseTimeout(timeout);
 	}
 	
-	private XBeeResponse getResponse(Integer timeout) throws XBeeException, XBeeTimeoutException {
+	private XBeeResponse getResponseTimeout(Integer timeout) throws XBeeException, XBeeTimeoutException {
 		XBeeResponse response;
 		try {
 			if (timeout != null) {
@@ -398,7 +421,7 @@ public class XBee implements IXBee {
 		}
 		
 		parser = null;
-		serialComm = null;
+		xbeeConnection = null;
 	}
 
 	/**
@@ -408,47 +431,13 @@ public class XBee implements IXBee {
 	 */
 	public boolean isConnected() {
 		try {
-			if (parser.getSerialPort().getInputStream() != null && serialComm.getOutputStream() != null) {
+			if (parser.getXBeeConnection().getInputStream() != null && xbeeConnection.getOutputStream() != null) {
 				return true;
 			}
 			
 			return false;
 		} catch (Exception e) {
 			return false;
-		}
-	}
-	
-	public boolean isStartupChecks() {
-		return startupChecks;
-	}
-
-	/**
-	 * Controls is a startup check is performed when connecting to the XBee.
-	 * The startup check attempts to determine the firmware type and if it is 
-	 * configured correctly for use with this software.  Default is true.
-	 *  
-	 * @param startupChecks
-	 */
-	public void setStartupChecks(boolean startupChecks) {
-		this.startupChecks = startupChecks;
-	}
-	
-	/**
-	 * Sets the maximum size of the internal queue that supports the getResponse(..) method.
-	 * Packets are removed from the head of the queue once this limit is reached.  The default is 100
-	 * 
-	 * @param size
-	 */
-	public void setMaxQueueSize(int size) {
-		
-		if (parser == null) {
-			throw new IllegalStateException("No connection");
-		}
-		
-		if (size > 0) {
-			this.parser.setMaxPacketQueueSize(size);
-		} else {
-			throw new IllegalArgumentException("Size must be > 0");
 		}
 	}
 	

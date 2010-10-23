@@ -19,6 +19,7 @@
 
 package com.rapplogic.xbee.api.zigbee;
 
+import com.rapplogic.xbee.api.NoRequestResponse;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /**
@@ -30,7 +31,7 @@ import com.rapplogic.xbee.util.ByteUtils;
  * @author andrew
  *
  */
-public class ZNetRxResponse extends ZNetRxBaseResponse {
+public class ZNetRxResponse extends ZNetRxBaseResponse implements NoRequestResponse {
 
 	private int[] data;
 	

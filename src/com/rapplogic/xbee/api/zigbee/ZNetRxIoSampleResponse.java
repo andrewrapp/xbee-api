@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import com.rapplogic.xbee.api.AtCommandResponse;
+import com.rapplogic.xbee.api.NoRequestResponse;
 import com.rapplogic.xbee.api.XBeeParseException;
 import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.IIntArrayInputStream;
@@ -38,7 +39,7 @@ import com.rapplogic.xbee.util.IntArrayInputStream;
  * @author andrew
  *
  */
-public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse {
+public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse implements NoRequestResponse {
 	
 	private final static Logger log = Logger.getLogger(ZNetRxIoSampleResponse.class);
 	

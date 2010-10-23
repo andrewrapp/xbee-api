@@ -31,7 +31,7 @@ import java.util.Map;
  * @author andrew
  *
  */
-public class ModemStatusResponse extends XBeeResponse {
+public class ModemStatusResponse extends XBeeResponse implements NoRequestResponse {
 		
 	public enum Status {
 		HARDWARE_RESET (0),
