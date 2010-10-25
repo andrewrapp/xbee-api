@@ -123,22 +123,35 @@ public class XBee implements IXBee {
 	 */
 	public void open(String port, int baudRate) throws XBeeException {
 		try {
-			if (xbeeConnection != null && xbeeConnection.getInputStream() != null) {			
+			if (this.isConnected()) {
 				throw new IllegalStateException("Cannot open new connection -- existing connection is still open.  Please close first");
 			}
 			
-			XBeeConnection conn = null;
+			RxTxSerialComm serial = new RxTxSerialComm(); 
+			serial.openSerialPort(port, baudRate);
 			
-			try {
-				conn = this.providerConnection();
-			} catch (UnsupportedOperationException e) {
-				RxTxSerialComm serial = new RxTxSerialComm(); 
-				
-				serial.openSerialPort(port, baudRate);
-				
-				conn = serial;
-			};
-			
+			this.initConnection(serial);
+		} catch (XBeeException e) {
+			throw e;
+		} catch (Exception e) {		
+			throw new XBeeException(e);
+		}
+	}
+	
+	/**
+	 * Allows a protocol specific implementation of XBeeConnection to be used instead of the default RXTX connection.
+	 * The connection must already be established as the interface has no means to do so.
+	 */
+	public void initProviderConnection(XBeeConnection connection) throws XBeeException {
+		if (this.isConnected()) {
+			throw new IllegalStateException("Cannot open new connection -- existing connection is still open.  Please close first");
+		}
+		
+		initConnection(connection);
+	}
+	
+	private void initConnection(XBeeConnection conn) throws XBeeException {
+		try {			
 			this.xbeeConnection = conn;
 			
 			parser = new InputStreamThread(this.xbeeConnection, conf);
@@ -152,15 +165,6 @@ public class XBee implements IXBee {
 		} catch (Exception e) {		
 			throw new XBeeException(e);
 		}
-	}
-	
-	/**
-	 * Override to provide a specific XBeeConnection implementation (e.g. socket, xmpp, etc)
-	 * 
-	 * @return An open XBeeConnection implementation
-	 */
-	public XBeeConnection providerConnection() {
-		throw new UnsupportedOperationException("You must override this method and return a open XBeeConnection");
 	}
 
 	public void addPacketListener(PacketListener packetListener) { 
@@ -420,6 +424,12 @@ public class XBee implements IXBee {
 			parser.interrupt();
 		}
 		
+		try {
+			this.xbeeConnection.getOutputStream().close();
+		} catch (IOException e) {
+			log.warn("Failed to close output stream", e);
+		}
+		
 		parser = null;
 		xbeeConnection = null;
 	}
@@ -431,7 +441,7 @@ public class XBee implements IXBee {
 	 */
 	public boolean isConnected() {
 		try {
-			if (parser.getXBeeConnection().getInputStream() != null && xbeeConnection.getOutputStream() != null) {
+			if (parser.getXBeeConnection().getInputStream() != null && parser.getXBeeConnection().getOutputStream() != null) {
 				return true;
 			}
 			

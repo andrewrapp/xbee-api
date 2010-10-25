@@ -211,6 +211,14 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
+<CODE>&nbsp;void</CODE></FONT></TD>
+<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#initProviderConnection(com.rapplogic.xbee.XBeeConnection)">initProviderConnection</A></B>(<A HREF="../../../../com/rapplogic/xbee/XBeeConnection.html" title="interface in com.rapplogic.xbee">XBeeConnection</A>&nbsp;connection)</CODE>
+
+<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Allows a protocol specific implementation of XBeeConnection to be used instead of the default RXTX connection.</TD>
+</TR>
+<TR BGCOLOR="white" CLASS="TableRowColor">
+<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;boolean</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#isConnected()">isConnected</A></B>()</CODE>
 
@@ -226,14 +234,6 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If startChecks is set to true (default), this method will check if the AP parameter
  is set correctly and attempt to update if AP=1.</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;<A HREF="../../../../com/rapplogic/xbee/XBeeConnection.html" title="interface in com.rapplogic.xbee">XBeeConnection</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#providerConnection()">providerConnection</A></B>()</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Override to provide a specific XBeeConnection implementation (e.g.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -397,19 +397,22 @@ public void <B>open</B>(java.lang.String&nbsp;port,
 </DL>
 <HR>
 
-<A NAME="providerConnection()"><!-- --></A><H3>
-providerConnection</H3>
+<A NAME="initProviderConnection(com.rapplogic.xbee.XBeeConnection)"><!-- --></A><H3>
+initProviderConnection</H3>
 <PRE>
-public <A HREF="../../../../com/rapplogic/xbee/XBeeConnection.html" title="interface in com.rapplogic.xbee">XBeeConnection</A> <B>providerConnection</B>()</PRE>
+public void <B>initProviderConnection</B>(<A HREF="../../../../com/rapplogic/xbee/XBeeConnection.html" title="interface in com.rapplogic.xbee">XBeeConnection</A>&nbsp;connection)
+                            throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
 <DL>
-<DD>Override to provide a specific XBeeConnection implementation (e.g. socket, xmpp, etc)
+<DD>Allows a protocol specific implementation of XBeeConnection to be used instead of the default RXTX connection.
+ The connection must already be established as the interface has no means to do so.
 <P>
 <DD><DL>
 </DL>
 </DD>
 <DD><DL>
 
-<DT><B>Returns:</B><DD>An open XBeeConnection implementation</DL>
+<DT><B>Throws:</B>
+<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE></DL>
 </DD>
 </DL>
 <HR>
