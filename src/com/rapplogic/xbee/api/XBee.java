@@ -49,6 +49,15 @@ public class XBee implements IXBee {
 	
 	public XBee() {
 		this.conf = new XBeeConfiguration().withMaxQueueSize(100).withStartupChecks(true);
+		
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+		    public void run() { 
+		    	if (isConnected()) {
+		    		log.info("ShutdownHook is closing connection");
+		    		close();
+		    	}
+		    }
+		});
 	}
 
 	public XBee(XBeeConfiguration conf) {
