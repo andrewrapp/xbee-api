@@ -64,7 +64,7 @@ public class XBee implements IXBee {
 		this.conf = conf;
 	}
 	
-	public void doStartupChecks() throws XBeeException {
+	private void doStartupChecks() throws XBeeException {
 		// Perform startup checks
 		try {				
 			AtCommandResponse ap = this.sendAtCommand(new AtCommand("AP"));
@@ -126,7 +126,7 @@ public class XBee implements IXBee {
 	}
 	
 	/**
-	 * If startChecks is set to true (default), this method will check if the AP parameter
+	 * If XBeeConnection.startUpChecks is set to true (default), this method will check if the AP parameter
 	 * is set correctly and attempt to update if AP=1.  If AP=0 (Transparent mode), an
 	 * exception will be thrown.
 	 */
@@ -281,20 +281,18 @@ public class XBee implements IXBee {
 	 * corresponding response (response that has same frame id).
 	 * <p/>
 	 * This method returns the first response object with a matching frame id, within the timeout
-	 * period, so it is important to use q unique frame id (relative to previous subsequent requests).
+	 * period, so it is important to use a unique frame id (relative to previous subsequent requests).
 	 * <p/>
 	 * This method must only be called with requests that receive a response of
-	 * type XBeeFrameIdResponse.  All other request types with timeout.
+	 * type XBeeFrameIdResponse.  All other request types will timeout.
 	 * <p/>
 	 * Keep in mind responses received here will also be available through the getResponse method
-	 * and the packet listener.  You should call clearResponseQueue prior to calling this method
-	 * if you don't want the same packet to be returned by getResponse.
+	 * and the packet listener.  If you would prefer to not have these responses added to the response queue,
+	 * you can add a ResponseQueueFilter via XBeeConfiguration to ignore packets that are sent in response to
+	 * a request.  Another alternative is to call clearResponseQueue prior to calling this method.
 	 * <p/>
-	 * TX requests send status responses (ACK) that indicate if the packet was delivered.  
-	 * In my brief testing with series 2 radios in a simple 2 radio network, I got a status 
-	 * response of ADDRESS_NOT_FOUND in about 3 seconds when my end device is powered off.  
-	 * Keep in mind that you'll want to make sure your timeout is always larger than this 
-	 * value in order to receive status responses.
+	 * It is recommended to use a timeout of at least 5 seconds, since some responses can take a few seconds or more
+	 * (e.g. if remote radio is not powered on).
 	 * <p/>
 	 * This method is thread-safe 
 	 * 
@@ -380,12 +378,14 @@ public class XBee implements IXBee {
 	}
 	
 	/**
-	 * This method returns an XBeeResponse from the queue, if available.
+	 * This method returns an XBeeResponse from the queue, if available, or
+	 * waits up to "timeout" milliseconds for a response.
+	 * <p/>
 	 * There are three possible outcomes:
 	 * <p/>
-	 * 1.  Packet is returned <br/>
-	 * 2.  XBeeTimeoutException is thrown (i.e. queue was empty for duration of timeout) <br/>
-	 * 3.  Return null if timeout is 0 and queue is empty. <br/>
+	 * 1.  A packet is returned within "timeout" milliseconds <br/>
+	 * 2.  An XBeeTimeoutException is thrown (i.e. queue was empty for duration of timeout) <br/>
+	 * 3.  Null is returned if timeout is 0 and queue is empty. <br/>
 	 * <p/>
 	 * @param timeout milliseconds to wait for a response.  A value of zero disables the timeout
 	 * @return
@@ -444,7 +444,8 @@ public class XBee implements IXBee {
 	}
 
 	/**
-	 * Indicates if serial port connection has been established
+	 * Indicates if serial port connection has been established.
+	 * The open method may be called if true it returned
 	 * 
 	 * @return
 	 */
