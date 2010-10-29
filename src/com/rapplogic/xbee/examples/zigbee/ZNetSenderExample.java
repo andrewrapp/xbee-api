@@ -106,11 +106,11 @@ import com.rapplogic.xbee.util.ByteUtils;
  * 
  * @author andrew
  */
-public class ZNetSenderTest {
+public class ZNetSenderExample {
 
-	private final static Logger log = Logger.getLogger(ZNetSenderTest.class);
+	private final static Logger log = Logger.getLogger(ZNetSenderExample.class);
 	
-	private ZNetSenderTest() throws XBeeException {
+	private ZNetSenderExample() throws XBeeException {
 		
 		XBee xbee = new XBee();
 		
@@ -184,6 +184,6 @@ public class ZNetSenderTest {
 	
 	public static void main(String[] args) throws XBeeException, InterruptedException  {
 		PropertyConfigurator.configure("log4j.properties");
-		new ZNetSenderTest();
+		new ZNetSenderExample();
 	}
 }

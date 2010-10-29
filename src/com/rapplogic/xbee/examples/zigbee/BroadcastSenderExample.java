@@ -31,33 +31,24 @@ import com.rapplogic.xbee.util.ByteUtils;
 /** 
  * @author andrew
  */
-public class BroadcastSender {
+public class BroadcastSenderExample {
 
-	private final static Logger log = Logger.getLogger(BroadcastSender.class);
+	private final static Logger log = Logger.getLogger(BroadcastSenderExample.class);
 	
-	private BroadcastSender() throws XBeeException {
+	private BroadcastSenderExample() throws XBeeException {
 		
 		XBee xbee = new XBee();
 		
 		try {
-			// replace with your com port and baud rate. this is the com port of my coordinator
-			//xbee.open("COM5", 9600);
-			// my coordinator com/baud
-//			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
-			// my end device
-//			xbee.open("/dev/tty.usbserial-A6005uPi", 9600);
-			
-			//sheevaplug
+			// replace with your com port and baud rate. this is the com port of my coordinator		
 			xbee.open("/dev/ttyUSB0", 9600);
 			
 			while (true) {
-				// works great.  tested 8/4/09 with 1 sender and two receivers
-				
 				// put some arbitrary data in the payload
-				// kind of hacky but need to sneak an extra byte in there for the continuation/alert led bitset
-				int[] payload = ByteUtils.stringToIntArray("0" + "the\nquick\nbrown\nfox");
+				int[] payload = ByteUtils.stringToIntArray("the\nquick\nbrown\nfox");
 				
 				ZNetTxRequest request = new ZNetTxRequest(XBeeAddress64.BROADCAST, payload);
+				// make it a broadcast packet
 				request.setOption(ZNetTxRequest.Option.BROADCAST);
 
 				log.info("request packet bytes (base 16) " + ByteUtils.toBase16(request.getXBeePacket().getPacket()));
@@ -79,6 +70,6 @@ public class BroadcastSender {
 	
 	public static void main(String[] args) throws XBeeException, InterruptedException  {
 		PropertyConfigurator.configure("log4j.properties");
-		new BroadcastSender();
+		new BroadcastSenderExample();
 	}
 }

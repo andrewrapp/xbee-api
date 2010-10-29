@@ -40,16 +40,16 @@ import com.rapplogic.xbee.util.ByteUtils;
  * @author andrew
  *
  */
-public class NodeDiscoverTest {
+public class NodeDiscoverExample {
 
-	private final static Logger log = Logger.getLogger(NodeDiscoverTest.class);
+	private final static Logger log = Logger.getLogger(NodeDiscoverExample.class);
 	
 	private XBee xbee = new XBee();
 	
-	public NodeDiscoverTest() throws XBeeException, InterruptedException {
+	public NodeDiscoverExample() throws XBeeException, InterruptedException {
 		
 		try {
-			// my coordinator com/baud
+			// replace with your serial port
 			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
 			
 			// get the Node discovery timeout
@@ -88,6 +88,6 @@ public class NodeDiscoverTest {
 	
 	public static void main(String[] args) throws XBeeException, InterruptedException {
 		PropertyConfigurator.configure("log4j.properties");
-		new NodeDiscoverTest();
+		new NodeDiscoverExample();
 	}
 }

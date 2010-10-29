@@ -38,11 +38,11 @@ import com.rapplogic.xbee.api.wpan.TxStatusResponse;
  * @author andrew
  * 
  */
-public class ApiSenderTest {
+public class ApiSenderExample {
 
-	private final static Logger log = Logger.getLogger(ApiSenderTest.class);
+	private final static Logger log = Logger.getLogger(ApiSenderExample.class);
 
-	private ApiSenderTest() throws Exception {
+	private ApiSenderExample() throws Exception {
 
 		XBee xbee = new XBee();
 
@@ -129,6 +129,6 @@ public class ApiSenderTest {
 	public static void main(String[] args) throws Exception {
 		// init log4j
 		PropertyConfigurator.configure("log4j.properties");
-		new ApiSenderTest();
+		new ApiSenderExample();
 	}
 }

@@ -38,13 +38,13 @@ import com.rapplogic.xbee.util.ByteUtils;
  * @author andrew
  * 
  */
-public class ApiReceiverTest {
+public class ApiReceiverExample {
 
-	private final static Logger log = Logger.getLogger(ApiReceiverTest.class);
+	private final static Logger log = Logger.getLogger(ApiReceiverExample.class);
 
 	private long last = System.currentTimeMillis();
 	
-	private ApiReceiverTest() throws Exception {
+	private ApiReceiverExample() throws Exception {
 		XBee xbee = new XBee();		
 		
 		int count = 0;
@@ -92,6 +92,6 @@ public class ApiReceiverTest {
 	public static void main(String[] args) throws Exception {
 		// init log4j
 		PropertyConfigurator.configure("log4j.properties");
-		new ApiReceiverTest();
+		new ApiReceiverExample();
 	}
 }

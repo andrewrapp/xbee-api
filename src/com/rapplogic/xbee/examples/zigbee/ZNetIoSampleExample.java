@@ -38,11 +38,11 @@ import com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse;
  * @author andrew
  *
  */
-public class ZNetIoSampleTest implements PacketListener {
+public class ZNetIoSampleExample implements PacketListener {
 
-	private final static Logger log = Logger.getLogger(ZNetIoSampleTest.class);
+	private final static Logger log = Logger.getLogger(ZNetIoSampleExample.class);
 	
-	private ZNetIoSampleTest() throws Exception {
+	private ZNetIoSampleExample() throws Exception {
 		XBee xbee = new XBee();		
 
 		try {			
@@ -78,6 +78,6 @@ public class ZNetIoSampleTest implements PacketListener {
 	public static void main(String[] args) throws Exception {
 		// init log4j
 		PropertyConfigurator.configure("log4j.properties");
-		new ZNetIoSampleTest();
+		new ZNetIoSampleExample();
 	}
 }

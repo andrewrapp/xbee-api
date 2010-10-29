@@ -37,23 +37,18 @@ import com.rapplogic.xbee.api.XBeeException;
  * @author andrew
  *
  */
-public class ApiAtTest {
+public class ApiAtExample {
 
 //	TODO split class in to WPAN class
 	 
-	private final static Logger log = Logger.getLogger(ApiAtTest.class);
+	private final static Logger log = Logger.getLogger(ApiAtExample.class);
 	
 	private XBee xbee = new XBee();
 	
-	public ApiAtTest() throws XBeeException {
+	public ApiAtExample() throws XBeeException {
 			
 		try {	
 			// replace with port and baud rate of your XBee
-			// my coordinator com/baud
-			//xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
-			// my end device
-			//xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
-			// my FT232RL board
 			xbee.open("/dev/tty.usbserial-A4004Rim", 9600);
 			
 //			// set D1 analog input
@@ -75,6 +70,6 @@ public class ApiAtTest {
 	
 	public static void main(String[] args) throws XBeeException {
 		PropertyConfigurator.configure("log4j.properties");
-		new ApiAtTest();
+		new ApiAtExample();
 	}
 }

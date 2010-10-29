@@ -29,20 +29,16 @@ import com.rapplogic.xbee.api.XBeeResponse;
 /** 
  * @author andrew
  */
-public class BroadcastReceiver {
+public class BroadcastReceiverExample {
 
-	private final static Logger log = Logger.getLogger(BroadcastReceiver.class);
+	private final static Logger log = Logger.getLogger(BroadcastReceiverExample.class);
 	
-	private BroadcastReceiver() throws XBeeException {
+	private BroadcastReceiverExample() throws XBeeException {
 		
 		XBee xbee = new XBee();
 		
 		try {
 			// replace with your com port and baud rate. this is the com port of my coordinator
-			//xbee.open("COM5", 9600);
-			// my coordinator com/baud
-//			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
-			// my end device
 			xbee.open("/dev/tty.usbserial-A6005uPi", 9600);
 			
 			while (true) {				
@@ -56,6 +52,6 @@ public class BroadcastReceiver {
 	
 	public static void main(String[] args) throws XBeeException, InterruptedException  {
 		PropertyConfigurator.configure("log4j.properties");
-		new BroadcastReceiver();
+		new BroadcastReceiverExample();
 	}
 }

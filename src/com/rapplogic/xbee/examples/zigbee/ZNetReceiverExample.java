@@ -39,11 +39,11 @@ import com.rapplogic.xbee.util.ByteUtils;
  * @author andrew
  *
  */
-public class ZNetReceiverTest {
+public class ZNetReceiverExample {
 
-	private final static Logger log = Logger.getLogger(ZNetReceiverTest.class);
+	private final static Logger log = Logger.getLogger(ZNetReceiverExample.class);
 	
-	private ZNetReceiverTest() throws Exception {
+	private ZNetReceiverExample() throws Exception {
 		XBee xbee = new XBee();		
 
 		try {			
@@ -95,6 +95,6 @@ public class ZNetReceiverTest {
 	public static void main(String[] args) throws Exception {
 		// init log4j
 		PropertyConfigurator.configure("log4j.properties");
-		new ZNetReceiverTest();
+		new ZNetReceiverExample();
 	}
 }

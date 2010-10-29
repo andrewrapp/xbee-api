@@ -38,11 +38,11 @@ import com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse;
  * @author andrew
  *
  */
-public class ZigBeeIoLineMonitoringTest implements PacketListener {
+public class ZigBee implements PacketListener {
 	
 //	TODO split test/examples code into src/test, src/examples
 	
-	private final static Logger log = Logger.getLogger(ZigBeeIoLineMonitoringTest.class);
+	private final static Logger log = Logger.getLogger(ZigBee.class);
 	
 	private XBeeResponse response;
 	
@@ -50,10 +50,10 @@ public class ZigBeeIoLineMonitoringTest implements PacketListener {
 	
 	public static void main(String[] args) throws XBeeException, InterruptedException {
 		PropertyConfigurator.configure("log4j.properties");
-		new ZigBeeIoLineMonitoringTest();
+		new ZigBee();
 	}
 
-	public ZigBeeIoLineMonitoringTest() throws XBeeException, InterruptedException {
+	public ZigBee() throws XBeeException, InterruptedException {
 		
 	
 		try {
@@ -90,6 +90,17 @@ public class ZigBeeIoLineMonitoringTest implements PacketListener {
 		}
 	}
 
+	/**
+	 * Called by XBee when a packet is received
+	 */
+	public void processResponse(XBeeResponse response) {
+		synchronized(this) {
+			log.debug("received response " + response);
+			this.response = response;
+			this.notify();		
+		}
+	}
+	
 	public void configureForAnalogTest() throws InterruptedException, XBeeException {
 		// configure all digital input capable pins and change detect
 		// must connect gateway directly to end device since I didn't use remote at
@@ -144,17 +155,6 @@ public class ZigBeeIoLineMonitoringTest implements PacketListener {
 			} else {
 				throw new RuntimeException("didn't get a response back from remote at or got failure");
 			}
-		}
-	}
-	
-	/**
-	 * Called by XBee when a packet is received
-	 */
-	public void processResponse(XBeeResponse response) {
-		synchronized(this) {
-			log.debug("received response " + response);
-			this.response = response;
-			this.notify();		
 		}
 	}
 }

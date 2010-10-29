@@ -39,11 +39,11 @@ import com.rapplogic.xbee.util.DoubleByte;
  * @author andrew
  *
  */
-public class ZNetExplicitSenderTest {
+public class ZNetExplicitSenderExample {
 
-	private final static Logger log = Logger.getLogger(ZNetExplicitSenderTest.class);
+	private final static Logger log = Logger.getLogger(ZNetExplicitSenderExample.class);
 	
-	private ZNetExplicitSenderTest() throws XBeeException {
+	private ZNetExplicitSenderExample() throws XBeeException {
 		
 		XBee xbee = new XBee();
 		
@@ -91,6 +91,6 @@ public class ZNetExplicitSenderTest {
 	
 	public static void main(String[] args) throws XBeeException, InterruptedException  {
 		PropertyConfigurator.configure("log4j.properties");
-		new ZNetExplicitSenderTest();
+		new ZNetExplicitSenderExample();
 	}
 }

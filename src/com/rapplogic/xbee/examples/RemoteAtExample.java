@@ -22,31 +22,29 @@ package com.rapplogic.xbee.examples;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import com.rapplogic.xbee.api.XBee;
-import com.rapplogic.xbee.api.XBeeAddress16;
-import com.rapplogic.xbee.api.XBeeAddress64;
-import com.rapplogic.xbee.api.XBeeException;
-import com.rapplogic.xbee.api.XBeeRequest;
-import com.rapplogic.xbee.api.XBeeTimeoutException;
 import com.rapplogic.xbee.api.RemoteAtRequest;
 import com.rapplogic.xbee.api.RemoteAtResponse;
+import com.rapplogic.xbee.api.XBee;
+import com.rapplogic.xbee.api.XBeeAddress64;
+import com.rapplogic.xbee.api.XBeeException;
+import com.rapplogic.xbee.api.XBeeTimeoutException;
 
 /** 
  * This example uses Remote AT to turn on/off I/O pins.  
  * This example is more interesting if you connect a LED to pin 20 on your end device.  
  * Remember to use a resistor to limit the current flow.  I used a 215 Ohm resistor.
- * 
+ * <p/>
  * Note: if your coordinator is powered on and receiving I/O samples, make sure you power off/on to drain 
  * the traffic before running this example.
  * 
  * @author andrew
  *
  */
-public class RemoteAtTest {
+public class RemoteAtExample {
 
-	private final static Logger log = Logger.getLogger(RemoteAtTest.class);
+	private final static Logger log = Logger.getLogger(RemoteAtExample.class);
 	
-	private RemoteAtTest() throws XBeeException, InterruptedException {
+	private RemoteAtExample() throws XBeeException, InterruptedException {
 		
 		XBee xbee = new XBee();
 		
@@ -101,6 +99,6 @@ public class RemoteAtTest {
 	
 	public static void main(String[] args) throws XBeeException, InterruptedException {
 		PropertyConfigurator.configure("log4j.properties");
-		new RemoteAtTest();
+		new RemoteAtExample();
 	}
 }

@@ -74,11 +74,11 @@ import com.rapplogic.xbee.util.ByteUtils;
  * @author andrew
  * 
  */
-public class IoSamplesTest {
+public class IoSamplesExample {
 
-	private final static Logger log = Logger.getLogger(IoSamplesTest.class);
+	private final static Logger log = Logger.getLogger(IoSamplesExample.class);
 	
-	private IoSamplesTest() throws Exception {
+	private IoSamplesExample() throws Exception {
 		XBee xbee = new XBee();		
 		
 		try {			
@@ -130,6 +130,6 @@ public class IoSamplesTest {
 	public static void main(String[] args) throws Exception {
 		// init log4j
 		PropertyConfigurator.configure("log4j.properties");
-		new IoSamplesTest();
+		new IoSamplesExample();
 	}
 }

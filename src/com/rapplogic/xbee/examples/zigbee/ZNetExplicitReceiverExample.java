@@ -33,11 +33,11 @@ import com.rapplogic.xbee.api.zigbee.ZNetExplicitRxResponse;
  * @author andrew
  *
  */
-public class ZNetExplicitReceiverTest {
+public class ZNetExplicitReceiverExample {
 
-	private final static Logger log = Logger.getLogger(ZNetExplicitReceiverTest.class);
+	private final static Logger log = Logger.getLogger(ZNetExplicitReceiverExample.class);
 	
-	private ZNetExplicitReceiverTest() throws Exception {
+	private ZNetExplicitReceiverExample() throws Exception {
 		XBee xbee = new XBee();		
 
 		try {			
@@ -70,6 +70,6 @@ public class ZNetExplicitReceiverTest {
 	public static void main(String[] args) throws Exception {
 		// init log4j
 		PropertyConfigurator.configure("log4j.properties");
-		new ZNetExplicitReceiverTest();
+		new ZNetExplicitReceiverExample();
 	}
 }

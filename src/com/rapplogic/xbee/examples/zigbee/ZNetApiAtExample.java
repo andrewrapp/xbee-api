@@ -37,13 +37,13 @@ import com.rapplogic.xbee.util.ByteUtils;
  * @author andrew
  *
  */
-public class ZNetApiAtTest {
+public class ZNetApiAtExample {
 
-	private final static Logger log = Logger.getLogger(ZNetApiAtTest.class);
+	private final static Logger log = Logger.getLogger(ZNetApiAtExample.class);
 	
 	private XBee xbee = new XBee();
 	
-	public ZNetApiAtTest() throws XBeeException {
+	public ZNetApiAtExample() throws XBeeException {
 		try {
 			
 			// replace with port and baud rate of your XBee
@@ -174,6 +174,6 @@ public class ZNetApiAtTest {
 	
 	public static void main(String[] args) throws XBeeException {
 		PropertyConfigurator.configure("log4j.properties");
-		new ZNetApiAtTest();
+		new ZNetApiAtExample();
 	}
 }
