@@ -351,13 +351,6 @@ public class PacketParser implements IIntArrayInputStream {
 		if (this.apiId == ApiId.ZNET_IO_SAMPLE_RESPONSE) {
 			parseZNetIoSampleResponse((ZNetRxIoSampleResponse)response);
 		} else {		
-			// FIXME major WTF here.. doc shows IO packet having option byte, p. 67 (znet), yet we were not applying it.
-			// p.43 shows no option.
-			// I have verified ZigBee Pro firmware provides the option byte, but it's likely that ZNet does not, 
-			// or I would have gotten an exception when testing, right? cause I test everything.
-			
-			// TODO test this -- option only set for rx response??
-// 			((ZNetRxBaseResponse)response).setOption(ZNetRxBaseResponse.Option.get(option));							
 			((ZNetRxResponse)response).setData(this.readRemainingBytes());			
 		}
 	}
