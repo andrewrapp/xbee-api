@@ -207,9 +207,6 @@ Static variable in class com.rapplogic.xbee.api.<A HREF="./com/rapplogic/xbee/ap
 <DT><A HREF="./com/rapplogic/xbee/api/wpan/RxResponseIoSample.html#DIO_CHANNEL1"><B>DIO_CHANNEL1</B></A> - 
 Static variable in class com.rapplogic.xbee.api.wpan.<A HREF="./com/rapplogic/xbee/api/wpan/RxResponseIoSample.html" title="class in com.rapplogic.xbee.api.wpan">RxResponseIoSample</A>
 <DD>&nbsp;
-<DT><A HREF="./com/rapplogic/xbee/api/XBee.html#doStartupChecks()"><B>doStartupChecks()</B></A> - 
-Method in class com.rapplogic.xbee.api.<A HREF="./com/rapplogic/xbee/api/XBee.html" title="class in com.rapplogic.xbee.api">XBee</A>
-<DD>&nbsp;
 <DT><A HREF="./com/rapplogic/xbee/util/DoubleByte.html" title="class in com.rapplogic.xbee.util"><B>DoubleByte</B></A> - Class in <A HREF="./com/rapplogic/xbee/util/package-summary.html">com.rapplogic.xbee.util</A><DD>&nbsp;<DT><A HREF="./com/rapplogic/xbee/util/DoubleByte.html#DoubleByte()"><B>DoubleByte()</B></A> - 
 Constructor for class com.rapplogic.xbee.util.<A HREF="./com/rapplogic/xbee/util/DoubleByte.html" title="class in com.rapplogic.xbee.util">DoubleByte</A>
 <DD>&nbsp;
@@ -777,7 +774,8 @@ Method in class com.rapplogic.xbee.api.<A HREF="./com/rapplogic/xbee/api/XBee.ht
 <DD>Same as getResponse(int) but does not timeout.
 <DT><A HREF="./com/rapplogic/xbee/api/XBee.html#getResponse(int)"><B>getResponse(int)</B></A> - 
 Method in class com.rapplogic.xbee.api.<A HREF="./com/rapplogic/xbee/api/XBee.html" title="class in com.rapplogic.xbee.api">XBee</A>
-<DD>This method returns an XBeeResponse from the queue, if available.
+<DD>This method returns an XBeeResponse from the queue, if available, or
+ waits up to "timeout" milliseconds for a response.
 <DT><A HREF="./com/rapplogic/xbee/api/InputStreamThread.html#getResponseQueue()"><B>getResponseQueue()</B></A> - 
 Method in class com.rapplogic.xbee.api.<A HREF="./com/rapplogic/xbee/api/InputStreamThread.html" title="class in com.rapplogic.xbee.api">InputStreamThread</A>
 <DD>&nbsp;
@@ -1004,7 +1002,7 @@ Method in interface com.rapplogic.xbee.api.<A HREF="./com/rapplogic/xbee/api/IXB
 <DD>&nbsp;
 <DT><A HREF="./com/rapplogic/xbee/api/XBee.html#isConnected()"><B>isConnected()</B></A> - 
 Method in class com.rapplogic.xbee.api.<A HREF="./com/rapplogic/xbee/api/XBee.html" title="class in com.rapplogic.xbee.api">XBee</A>
-<DD>Indicates if serial port connection has been established
+<DD>Indicates if serial port connection has been established.
 <DT><A HREF="./com/rapplogic/xbee/api/wpan/RxResponseIoSample.html#isD0Enabled()"><B>isD0Enabled()</B></A> - 
 Method in class com.rapplogic.xbee.api.wpan.<A HREF="./com/rapplogic/xbee/api/wpan/RxResponseIoSample.html" title="class in com.rapplogic.xbee.api.wpan">RxResponseIoSample</A>
 <DD>&nbsp;
@@ -1187,9 +1185,6 @@ Method in class com.rapplogic.xbee.api.zigbee.<A HREF="./com/rapplogic/xbee/api/
 <DT><A HREF="./com/rapplogic/xbee/api/Checksum.html#main(java.lang.String[])"><B>main(String[])</B></A> - 
 Static method in class com.rapplogic.xbee.api.<A HREF="./com/rapplogic/xbee/api/Checksum.html" title="class in com.rapplogic.xbee.api">Checksum</A>
 <DD>&nbsp;
-<DT><A HREF="./com/rapplogic/xbee/Shutdowner.html#main(java.lang.String[])"><B>main(String[])</B></A> - 
-Static method in class com.rapplogic.xbee.<A HREF="./com/rapplogic/xbee/Shutdowner.html" title="class in com.rapplogic.xbee">Shutdowner</A>
-<DD>&nbsp;
 <DT><A HREF="./com/rapplogic/xbee/XBeePin.html#main(java.lang.String[])"><B>main(String[])</B></A> - 
 Static method in class com.rapplogic.xbee.<A HREF="./com/rapplogic/xbee/XBeePin.html" title="class in com.rapplogic.xbee">XBeePin</A>
 <DD>&nbsp;
@@ -1223,7 +1218,7 @@ Method in interface com.rapplogic.xbee.api.<A HREF="./com/rapplogic/xbee/api/IXB
 <DD>&nbsp;
 <DT><A HREF="./com/rapplogic/xbee/api/XBee.html#open(java.lang.String, int)"><B>open(String, int)</B></A> - 
 Method in class com.rapplogic.xbee.api.<A HREF="./com/rapplogic/xbee/api/XBee.html" title="class in com.rapplogic.xbee.api">XBee</A>
-<DD>If startChecks is set to true (default), this method will check if the AP parameter
+<DD>If XBeeConnection.startUpChecks is set to true (default), this method will check if the AP parameter
  is set correctly and attempt to update if AP=1.
 <DT><A HREF="./com/rapplogic/xbee/RxTxSerialComm.html#openSerialPort(java.lang.String, int)"><B>openSerialPort(String, int)</B></A> - 
 Method in class com.rapplogic.xbee.<A HREF="./com/rapplogic/xbee/RxTxSerialComm.html" title="class in com.rapplogic.xbee">RxTxSerialComm</A>
@@ -1751,9 +1746,6 @@ Method in class com.rapplogic.xbee.api.<A HREF="./com/rapplogic/xbee/api/AtComma
 <DD>&nbsp;
 <DT><A HREF="./com/rapplogic/xbee/api/AtCommandResponse.html#setValue(int[])"><B>setValue(int[])</B></A> - 
 Method in class com.rapplogic.xbee.api.<A HREF="./com/rapplogic/xbee/api/AtCommandResponse.html" title="class in com.rapplogic.xbee.api">AtCommandResponse</A>
-<DD>&nbsp;
-<DT><A HREF="./com/rapplogic/xbee/Shutdowner.html" title="class in com.rapplogic.xbee"><B>Shutdowner</B></A> - Class in <A HREF="./com/rapplogic/xbee/package-summary.html">com.rapplogic.xbee</A><DD>&nbsp;<DT><A HREF="./com/rapplogic/xbee/Shutdowner.html#Shutdowner()"><B>Shutdowner()</B></A> - 
-Constructor for class com.rapplogic.xbee.<A HREF="./com/rapplogic/xbee/Shutdowner.html" title="class in com.rapplogic.xbee">Shutdowner</A>
 <DD>&nbsp;
 <DT><A HREF="./com/rapplogic/xbee/util/ByteUtils.html#stringToIntArray(java.lang.String)"><B>stringToIntArray(String)</B></A> - 
 Static method in class com.rapplogic.xbee.util.<A HREF="./com/rapplogic/xbee/util/ByteUtils.html" title="class in com.rapplogic.xbee.util">ByteUtils</A>

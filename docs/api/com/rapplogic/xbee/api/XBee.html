@@ -171,14 +171,6 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#doStartupChecks()">doStartupChecks</A></B>()</CODE>
-
-<BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-</TR>
-<TR BGCOLOR="white" CLASS="TableRowColor">
-<TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;int</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#getCurrentFrameId()">getCurrentFrameId</A></B>()</CODE>
 
@@ -207,7 +199,8 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#getResponse(int)">getResponse</A></B>(int&nbsp;timeout)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method returns an XBeeResponse from the queue, if available.</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This method returns an XBeeResponse from the queue, if available, or
+ waits up to "timeout" milliseconds for a response.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -223,7 +216,7 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
 <TD><CODE><B><A HREF="../../../../com/rapplogic/xbee/api/XBee.html#isConnected()">isConnected</A></B>()</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indicates if serial port connection has been established</TD>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indicates if serial port connection has been established.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
@@ -232,7 +225,7 @@ This is an API for communicating with Digi XBee 802.15.4 and ZigBee radios
      int&nbsp;baudRate)</CODE>
 
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If startChecks is set to true (default), this method will check if the AP parameter
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If XBeeConnection.startUpChecks is set to true (default), this method will check if the AP parameter
  is set correctly and attempt to update if AP=1.</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
@@ -358,23 +351,6 @@ public <B>XBee</B>(<A HREF="../../../../com/rapplogic/xbee/api/XBeeConfiguration
 </TR>
 </TABLE>
 
-<A NAME="doStartupChecks()"><!-- --></A><H3>
-doStartupChecks</H3>
-<PRE>
-public void <B>doStartupChecks</B>()
-                     throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
-<DL>
-<DD><DL>
-</DL>
-</DD>
-<DD><DL>
-
-<DT><B>Throws:</B>
-<DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></CODE></DL>
-</DD>
-</DL>
-<HR>
-
 <A NAME="open(java.lang.String, int)"><!-- --></A><H3>
 open</H3>
 <PRE>
@@ -382,7 +358,7 @@ public void <B>open</B>(java.lang.String&nbsp;port,
                  int&nbsp;baudRate)
           throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A></PRE>
 <DL>
-<DD>If startChecks is set to true (default), this method will check if the AP parameter
+<DD>If XBeeConnection.startUpChecks is set to true (default), this method will check if the AP parameter
  is set correctly and attempt to update if AP=1.  If AP=0 (Transparent mode), an
  exception will be thrown.
 <P>
@@ -567,20 +543,18 @@ public <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="cla
  corresponding response (response that has same frame id).
  <p/>
  This method returns the first response object with a matching frame id, within the timeout
- period, so it is important to use q unique frame id (relative to previous subsequent requests).
+ period, so it is important to use a unique frame id (relative to previous subsequent requests).
  <p/>
  This method must only be called with requests that receive a response of
- type XBeeFrameIdResponse.  All other request types with timeout.
+ type XBeeFrameIdResponse.  All other request types will timeout.
  <p/>
  Keep in mind responses received here will also be available through the getResponse method
- and the packet listener.  You should call clearResponseQueue prior to calling this method
- if you don't want the same packet to be returned by getResponse.
+ and the packet listener.  If you would prefer to not have these responses added to the response queue,
+ you can add a ResponseQueueFilter via XBeeConfiguration to ignore packets that are sent in response to
+ a request.  Another alternative is to call clearResponseQueue prior to calling this method.
  <p/>
- TX requests send status responses (ACK) that indicate if the packet was delivered.  
- In my brief testing with series 2 radios in a simple 2 radio network, I got a status 
- response of ADDRESS_NOT_FOUND in about 3 seconds when my end device is powered off.  
- Keep in mind that you'll want to make sure your timeout is always larger than this 
- value in order to receive status responses.
+ It is recommended to use a timeout of at least 5 seconds, since some responses can take a few seconds or more
+ (e.g. if remote radio is not powered on).
  <p/>
  This method is thread-safe
 <P>
@@ -649,12 +623,14 @@ public <A HREF="../../../../com/rapplogic/xbee/api/XBeeResponse.html" title="cla
                          throws <A HREF="../../../../com/rapplogic/xbee/api/XBeeException.html" title="class in com.rapplogic.xbee.api">XBeeException</A>,
                                 <A HREF="../../../../com/rapplogic/xbee/api/XBeeTimeoutException.html" title="class in com.rapplogic.xbee.api">XBeeTimeoutException</A></PRE>
 <DL>
-<DD>This method returns an XBeeResponse from the queue, if available.
+<DD>This method returns an XBeeResponse from the queue, if available, or
+ waits up to "timeout" milliseconds for a response.
+ <p/>
  There are three possible outcomes:
  <p/>
- 1.  Packet is returned <br/>
- 2.  XBeeTimeoutException is thrown (i.e. queue was empty for duration of timeout) <br/>
- 3.  Return null if timeout is 0 and queue is empty. <br/>
+ 1.  A packet is returned within "timeout" milliseconds <br/>
+ 2.  An XBeeTimeoutException is thrown (i.e. queue was empty for duration of timeout) <br/>
+ 3.  Null is returned if timeout is 0 and queue is empty. <br/>
  <p/>
 <P>
 <DD><DL>
@@ -691,7 +667,8 @@ isConnected</H3>
 <PRE>
 public boolean <B>isConnected</B>()</PRE>
 <DL>
-<DD>Indicates if serial port connection has been established
+<DD>Indicates if serial port connection has been established.
+ The open method may be called if true it returned
 <P>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html#isConnected()">isConnected</A></CODE> in interface <CODE><A HREF="../../../../com/rapplogic/xbee/api/IXBee.html" title="interface in com.rapplogic.xbee.api">IXBee</A></CODE></DL>

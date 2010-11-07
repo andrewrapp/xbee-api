@@ -27,7 +27,6 @@ import com.rapplogic.xbee.api.AtCommandResponse;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeException;
 import com.rapplogic.xbee.api.XBeeResponse;
-import com.rapplogic.xbee.api.XBeeTimeoutException;
 import com.rapplogic.xbee.api.zigbee.AssociationStatus;
 import com.rapplogic.xbee.util.ByteUtils;
 
@@ -47,16 +46,7 @@ public class ZNetApiAtExample {
 		try {
 			
 			// replace with port and baud rate of your XBee
-			//xbee.open("COM6", 9600);	
-			
-			// my coordinator com/baud
-			xbee.open("/dev/tty.usbserial-A6005v5M", 57600);
-			
-			// my end device
-			//xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
-			
-			// my other end device
-//			xbee.open("/dev/tty.usbserial-A6005uPi", 9600);
+			xbee.open("COM6", 9600);	
 			
 			// get the 8 byte SH/SL address
 			log.debug("SH is " + ByteUtils.toBase16(((AtCommandResponse)xbee.sendAtCommand(new AtCommand("SH"))).getValue()));
