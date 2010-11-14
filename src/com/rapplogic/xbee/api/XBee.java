@@ -438,6 +438,14 @@ public class XBee implements IXBee {
 		return response;
 	}
 	
+	/**
+	 * Returns the number of packets available in the response queue for immediate consumption
+	 * 
+	 * @return
+	 */
+	public int getResponseQueueSize() {
+		return parser.getResponseQueue().size();
+	}
 	
 	/**
 	 * Shuts down RXTX and packet parser thread

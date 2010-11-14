@@ -22,10 +22,8 @@ package com.rapplogic.xbee.examples.wpan;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import com.rapplogic.xbee.api.ApiId;
 import com.rapplogic.xbee.api.AtCommand;
 import com.rapplogic.xbee.api.AtCommandResponse;
-import com.rapplogic.xbee.api.PacketListener;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeException;
 import com.rapplogic.xbee.api.XBeeResponse;
@@ -57,30 +55,45 @@ public class NodeDiscoverExample {
 			AtCommandResponse nodeTimeout = (AtCommandResponse) xbee.getResponse();
 			
 			// default is 6 seconds
-			long nodeDiscoveryTimeout = ByteUtils.convertMultiByteToInt(nodeTimeout.getValue()) * 100;
-			
-			log.debug("Node discovery timeout is " + nodeDiscoveryTimeout + " milliseconds");
+			int nodeDiscoveryTimeout = ByteUtils.convertMultiByteToInt(nodeTimeout.getValue()) * 100;			
+			log.info("Node discovery timeout is " + nodeDiscoveryTimeout + " milliseconds");
 						
-			xbee.addPacketListener(new PacketListener() {
-				
-				public void processResponse(XBeeResponse response) {
-					if (response.getApiId() == ApiId.AT_RESPONSE) {
-						NodeDiscover nd = NodeDiscover.parse((AtCommandResponse)response);
-						log.debug("Node discover response is: " + nd);
-					} else {
-						log.debug("Ignoring unexpected response: " + response);	
-					}					
-				}
-				
-			});
-						
-			log.debug("Sending node discover command");
+			log.info("Sending Node Discover command");
 			xbee.sendAsynchronous(new AtCommand("ND"));
 			
-			// wait for nodeDiscoveryTimeout milliseconds
-			Thread.sleep(nodeDiscoveryTimeout);
+			long start = System.currentTimeMillis();
 			
-			log.debug("Time is up!  You should have heard back from all nodes by now.  If not make sure all nodes are associated and/or try increasing the node timeout (NT)");
+			// I've found that the default NT is often not enough time, so I'm using 20 secs
+			final int timeout = 20000;
+			
+			while (true) {
+				XBeeResponse response = xbee.getResponse(5000);
+				
+				if (response instanceof AtCommandResponse) {
+					AtCommandResponse atResponse = (AtCommandResponse) response;
+					
+					if (atResponse.getCommand().equals("ND")) {
+						if (atResponse.getValue() != null && atResponse.getValue().length > 0) {
+							NodeDiscover nd = NodeDiscover.parse((AtCommandResponse)response);
+							log.info("Node Discover is " + nd);							
+						} else {
+							log.info("Found terminating ND response.. exiting");
+							break;
+						}
+					} else {
+						log.info("Ignoring non-ND AT response: " + response);
+					}
+				} else {
+					log.info("Ignoring non-AT response" + response);
+				}
+				
+				if (System.currentTimeMillis() - start > timeout) {
+					log.error("Did not receive ND response correctly");
+					break;
+				}
+			}
+			
+			log.info("Time is up!  You should have heard back from all nodes by now.  If not make sure all nodes are associated and/or try increasing the node timeout (NT)");
 		} finally {
 			xbee.close();
 		}
