@@ -20,6 +20,7 @@
 package com.rapplogic.xbee.api;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -436,6 +437,76 @@ public class XBee implements IXBee {
 		}
 		
 		return response;
+	}
+	
+//	public List<? extends XBeeResponse> collectResponses(int wait, ResponseFilter filter, CollectTerminator terminator) throws XBeeException {
+//
+//	}
+	
+	/**
+	 * Collects responses until the timeout is reached or the CollectTerminator returns true
+	 * 
+	 * @param wait
+	 * @param terminator
+	 * @return
+	 * @throws XBeeException
+	 */
+	public List<? extends XBeeResponse> collectResponses(int wait, CollectTerminator terminator) throws XBeeException {
+		long start = System.currentTimeMillis();
+		long callStart = 0;
+		int waitTime;
+		
+		List<XBeeResponse> responseList = new ArrayList<XBeeResponse>();
+		XBeeResponse response = null;
+		
+		try {
+			while (true) {
+				// compute the remaining wait time
+				waitTime = wait - (int)(System.currentTimeMillis() - start);
+								
+				if (waitTime <= 0) {
+					break;
+				}
+				
+				log.debug("calling getResponse with waitTime: " + waitTime);
+				
+				if (log.isDebugEnabled()) {
+					callStart = System.currentTimeMillis();					
+				}
+				
+				response = this.getResponse(waitTime);
+
+				if (log.isDebugEnabled()) {
+					log.debug("Got response in " + (System.currentTimeMillis() - callStart));
+				}
+				
+				responseList.add(response);
+				
+				if (terminator != null && terminator.stop(response)) {
+					log.debug("Found terminating response.. exiting");
+					break;
+				}
+			}			
+		} catch (XBeeTimeoutException e) {
+			// ok, we'll just return whatever is in the list
+		} catch (XBeeException e) {
+			throw e;
+		}
+		
+		log.debug("Time is up.. returning list with " + responseList.size() + " packets");
+
+		return responseList;	
+	}
+
+	/**
+	 * Collects responses for wait milliseconds and returns responses as List
+	 * 
+	 * @param wait
+	 * @return
+	 * @throws XBeeException
+	 */
+	public List<? extends XBeeResponse> collectResponses(int wait) throws XBeeException {
+		return this.collectResponses(wait, null);
 	}
 	
 	/**

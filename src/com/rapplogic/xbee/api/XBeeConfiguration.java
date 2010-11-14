@@ -5,9 +5,9 @@ public class XBeeConfiguration {
 	private boolean startupChecks = true;
 	private int maxQueueSize = 100;
 	private int sendSynchronousTimeout = 5000;
-	private ResponseQueueFilter responseQueueFilter;
+	private ResponseFilter responseQueueFilter;
 	
-	private final ResponseQueueFilter noRequestResponseQueueFilter = new ResponseQueueFilter() {
+	private final ResponseFilter noRequestResponseQueueFilter = new ResponseFilter() {
 		public boolean accept(XBeeResponse response) {
 			return response instanceof NoRequestResponse;
 		}
@@ -46,7 +46,7 @@ public class XBeeConfiguration {
 		return this;
 	}
 	
-	public XBeeConfiguration withResponseQueueFilter(ResponseQueueFilter filter) {
+	public XBeeConfiguration withResponseQueueFilter(ResponseFilter filter) {
 		this.responseQueueFilter = filter;
 		return this;
 	}
@@ -74,7 +74,7 @@ public class XBeeConfiguration {
 		return maxQueueSize;
 	}
 
-	public ResponseQueueFilter getResponseQueueFilter() {
+	public ResponseFilter getResponseQueueFilter() {
 		return responseQueueFilter;
 	}
 

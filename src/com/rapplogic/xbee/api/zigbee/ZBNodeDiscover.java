@@ -37,9 +37,9 @@ import com.rapplogic.xbee.util.IntArrayInputStream;
  * @author andrew
  *
  */
-public class NodeDiscover {
+public class ZBNodeDiscover {
 
-	private final static Logger log = Logger.getLogger(NodeDiscover.class);
+	private final static Logger log = Logger.getLogger(ZBNodeDiscover.class);
 	
 	public enum DeviceType {
 		DEV_TYPE_COORDINATOR (0),
@@ -118,7 +118,7 @@ public class NodeDiscover {
 	}
 
 
-	public static NodeDiscover parse(AtCommandResponse response) {
+	public static ZBNodeDiscover parse(AtCommandResponse response) {
 		
 		if (!response.getCommand().equals("ND")) {
 			throw new RuntimeException("This method is only applicable for the ND command");
@@ -128,7 +128,7 @@ public class NodeDiscover {
 		
 		IntArrayInputStream in = new IntArrayInputStream(data);
 		
-		NodeDiscover nd = new NodeDiscover();
+		ZBNodeDiscover nd = new ZBNodeDiscover();
 		
 		nd.setNodeAddress16(new XBeeAddress16(in.read(2)));
 		

@@ -19,6 +19,8 @@
 
 package com.rapplogic.xbee.examples.zigbee;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -29,7 +31,7 @@ import com.rapplogic.xbee.api.PacketListener;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeException;
 import com.rapplogic.xbee.api.XBeeResponse;
-import com.rapplogic.xbee.api.zigbee.NodeDiscover;
+import com.rapplogic.xbee.api.zigbee.ZBNodeDiscover;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /** 
@@ -40,47 +42,46 @@ import com.rapplogic.xbee.util.ByteUtils;
  * @author andrew
  *
  */
-public class NodeDiscoverExample {
+public class ZBNodeDiscoverExample {
 
-	private final static Logger log = Logger.getLogger(NodeDiscoverExample.class);
+	private final static Logger log = Logger.getLogger(ZBNodeDiscoverExample.class);
 	
 	private XBee xbee = new XBee();
 	
-	public NodeDiscoverExample() throws XBeeException, InterruptedException {
+	public ZBNodeDiscoverExample() throws XBeeException, InterruptedException {
 		
 		try {
 			// replace with your serial port
 			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
+			
 			
 			// get the Node discovery timeout
 			xbee.sendAsynchronous(new AtCommand("NT"));
 			AtCommandResponse nodeTimeout = (AtCommandResponse) xbee.getResponse();
 			
 			// default is 6 seconds
-			long nodeDiscoveryTimeout = ByteUtils.convertMultiByteToInt(nodeTimeout.getValue()) * 100;
-			
-			log.debug("Node discovery timeout is " + nodeDiscoveryTimeout + " milliseconds");
+			int nodeDiscoveryTimeout = ByteUtils.convertMultiByteToInt(nodeTimeout.getValue()) * 100;			
+			log.info("Node discovery timeout is " + nodeDiscoveryTimeout + " milliseconds");
 						
-			xbee.addPacketListener(new PacketListener() {
-				
-				public void processResponse(XBeeResponse response) {
-					if (response.getApiId() == ApiId.AT_RESPONSE) {
-						NodeDiscover nd = NodeDiscover.parse((AtCommandResponse)response);
-						log.debug("Node discover response is: " + nd);
-					} else {
-						log.debug("Ignoring unexpected response: " + response);	
-					}					
-				}
-				
-			});
-						
-			log.debug("Sending node discover command");
+			log.info("Sending Node Discover command");
 			xbee.sendAsynchronous(new AtCommand("ND"));
+
+			// NOTE: increase NT if you are not seeing all your nodes reported
 			
-			// wait for nodeDiscoveryTimeout milliseconds
-			Thread.sleep(nodeDiscoveryTimeout);
+			List<? extends XBeeResponse> responses = xbee.collectResponses(nodeDiscoveryTimeout);
 			
-			log.debug("Time is up!  You should have heard back from all nodes by now.  If not make sure all nodes are associated and/or try increasing the node timeout (NT)");
+			log.info("Time is up!  You should have heard back from all nodes by now.  If not make sure all nodes are associated and/or try increasing the node timeout (NT)");
+			
+			for (XBeeResponse response : responses) {
+				if (response instanceof AtCommandResponse) {
+					AtCommandResponse atResponse = (AtCommandResponse) response;
+					
+					if (atResponse.getCommand().equals("ND") && atResponse.getValue() != null && atResponse.getValue().length > 0) {
+						ZBNodeDiscover nd = ZBNodeDiscover.parse((AtCommandResponse)response);
+						log.info("Node Discover is " + nd);							
+					}
+				}
+			}
 		} finally {
 			xbee.close();
 		}
@@ -88,6 +89,6 @@ public class NodeDiscoverExample {
 	
 	public static void main(String[] args) throws XBeeException, InterruptedException {
 		PropertyConfigurator.configure("log4j.properties");
-		new NodeDiscoverExample();
+		new ZBNodeDiscoverExample();
 	}
 }

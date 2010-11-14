@@ -19,15 +19,18 @@
 
 package com.rapplogic.xbee.examples.wpan;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.rapplogic.xbee.api.AtCommand;
 import com.rapplogic.xbee.api.AtCommandResponse;
+import com.rapplogic.xbee.api.CollectTerminator;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeException;
 import com.rapplogic.xbee.api.XBeeResponse;
-import com.rapplogic.xbee.api.wpan.NodeDiscover;
+import com.rapplogic.xbee.api.wpan.WpanNodeDiscover;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /** 
@@ -38,13 +41,13 @@ import com.rapplogic.xbee.util.ByteUtils;
  * @author andrew
  *
  */
-public class NodeDiscoverExample {
+public class WpanNodeDiscoverExample {
 
-	private final static Logger log = Logger.getLogger(NodeDiscoverExample.class);
+	private final static Logger log = Logger.getLogger(WpanNodeDiscoverExample.class);
 	
 	private XBee xbee = new XBee();
 	
-	public NodeDiscoverExample() throws XBeeException, InterruptedException {
+	public WpanNodeDiscoverExample() throws XBeeException, InterruptedException {
 		
 		try {
 			// my coordinator com/baud
@@ -54,46 +57,38 @@ public class NodeDiscoverExample {
 			xbee.sendAsynchronous(new AtCommand("NT"));
 			AtCommandResponse nodeTimeout = (AtCommandResponse) xbee.getResponse();
 			
-			// default is 6 seconds
+			// default is 2.5 seconds for series 1
 			int nodeDiscoveryTimeout = ByteUtils.convertMultiByteToInt(nodeTimeout.getValue()) * 100;			
 			log.info("Node discovery timeout is " + nodeDiscoveryTimeout + " milliseconds");
-						
-			log.info("Sending Node Discover command");
+			
 			xbee.sendAsynchronous(new AtCommand("ND"));
+
+			// collect responses up to the timeout or until the terminating response is received, whichever occurs first
+			List<? extends XBeeResponse> responses = xbee.collectResponses(10000, new CollectTerminator() {
+				public boolean stop(XBeeResponse response) {
+					if (response instanceof AtCommandResponse) {
+						AtCommandResponse at = (AtCommandResponse) response;
+						if (at.getCommand().equals("ND") && at.getValue() != null && at.getValue().length == 0) {
+							log.debug("Found terminating response");
+							return true;
+						}							
+					}
+					return false;
+				}
+			});
 			
-			long start = System.currentTimeMillis();
+			log.info("Time is up!  You should have heard back from all nodes by now.  If not make sure all nodes are associated and/or try increasing the node timeout (NT)");
 			
-			// I've found that the default NT is often not enough time, so I'm using 20 secs
-			final int timeout = 20000;
-			
-			while (true) {
-				XBeeResponse response = xbee.getResponse(5000);
-				
+			for (XBeeResponse response : responses) {
 				if (response instanceof AtCommandResponse) {
 					AtCommandResponse atResponse = (AtCommandResponse) response;
 					
-					if (atResponse.getCommand().equals("ND")) {
-						if (atResponse.getValue() != null && atResponse.getValue().length > 0) {
-							NodeDiscover nd = NodeDiscover.parse((AtCommandResponse)response);
-							log.info("Node Discover is " + nd);							
-						} else {
-							log.info("Found terminating ND response.. exiting");
-							break;
-						}
-					} else {
-						log.info("Ignoring non-ND AT response: " + response);
+					if (atResponse.getCommand().equals("ND") && atResponse.getValue() != null && atResponse.getValue().length > 0) {
+						WpanNodeDiscover nd = WpanNodeDiscover.parse((AtCommandResponse)response);
+						log.info("Node Discover is " + nd);							
 					}
-				} else {
-					log.info("Ignoring non-AT response" + response);
-				}
-				
-				if (System.currentTimeMillis() - start > timeout) {
-					log.error("Did not receive ND response correctly");
-					break;
 				}
 			}
-			
-			log.info("Time is up!  You should have heard back from all nodes by now.  If not make sure all nodes are associated and/or try increasing the node timeout (NT)");
 		} finally {
 			xbee.close();
 		}
@@ -101,6 +96,6 @@ public class NodeDiscoverExample {
 	
 	public static void main(String[] args) throws XBeeException, InterruptedException {
 		PropertyConfigurator.configure("log4j.properties");
-		new NodeDiscoverExample();
+		new WpanNodeDiscoverExample();
 	}
 }

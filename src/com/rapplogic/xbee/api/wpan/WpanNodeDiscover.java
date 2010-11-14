@@ -31,16 +31,16 @@ import com.rapplogic.xbee.util.IntArrayInputStream;
 /**
  * Series 1 XBee.  Parses a Node Discover (ND) AT Command Response
  */
-public class NodeDiscover {
+public class WpanNodeDiscover {
 
-	private final static Logger log = Logger.getLogger(NodeDiscover.class);
+	private final static Logger log = Logger.getLogger(WpanNodeDiscover.class);
 	
 	private XBeeAddress16 nodeAddress16;
 	private XBeeAddress64 nodeAddress64;
 	private int rssi;
 	private String nodeIdentifier;
 
-	public static NodeDiscover parse(AtCommandResponse response) {
+	public static WpanNodeDiscover parse(AtCommandResponse response) {
 		
 		if (!response.getCommand().equals("ND")) {
 			throw new IllegalArgumentException("This method is only applicable for the ND command");
@@ -54,7 +54,7 @@ public class NodeDiscover {
 		
 		IntArrayInputStream in = new IntArrayInputStream(data);
 		
-		NodeDiscover nd = new NodeDiscover();
+		WpanNodeDiscover nd = new WpanNodeDiscover();
 		
 		nd.setNodeAddress16(new XBeeAddress16(in.read(2)));
 		
