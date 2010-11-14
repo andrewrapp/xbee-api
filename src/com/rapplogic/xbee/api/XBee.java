@@ -46,6 +46,7 @@ public class XBee implements IXBee {
 	private XBeeConnection xbeeConnection;
 	private InputStreamThread parser;	
 	private XBeeConfiguration conf;
+	private RadioType type;
 	
 	public XBee() {
 		this.conf = new XBeeConfiguration().withMaxQueueSize(100).withStartupChecks(true);
@@ -60,6 +61,11 @@ public class XBee implements IXBee {
 		});
 	}
 
+	public enum RadioType {
+		SERIES1,
+		SERIES2;
+	}
+	
 	public XBee(XBeeConfiguration conf) {
 		this.conf = conf;
 	}
@@ -98,15 +104,19 @@ public class XBee implements IXBee {
 				switch (ap.getValue()[0]) {
 				case 0x17:
 					log.info("XBee radio is Series 1");
+					this.type = RadioType.SERIES1;
 					break;
 				case 0x18:
 					log.info("XBee radio is Series 1 Pro");
+					this.type = RadioType.SERIES1;
 					break;
 				case 0x19:
 					log.info("XBee radio is Series 2");
+					this.type = RadioType.SERIES2;
 					break;
 				case 0x1a:
 					log.info("XBee radio is Series 2 Pro");
+					this.type = RadioType.SERIES2;
 					break;
 				default:
 					log.warn("Unknown radio type (HV): " + ap.getValue()[0]);
@@ -136,6 +146,8 @@ public class XBee implements IXBee {
 				throw new IllegalStateException("Cannot open new connection -- existing connection is still open.  Please close first");
 			}
 			
+			this.type = null;
+			
 			RxTxSerialComm serial = new RxTxSerialComm(); 
 			serial.openSerialPort(port, baudRate);
 			
@@ -146,6 +158,9 @@ public class XBee implements IXBee {
 			throw new XBeeException(e);
 		}
 	}
+	
+	// TODO
+//	public void registerResponseHandler(XBeeResponse);
 	
 	/**
 	 * Allows a protocol specific implementation of XBeeConnection to be used instead of the default RXTX connection.
@@ -197,6 +212,15 @@ public class XBee implements IXBee {
 	}
 	
 	public void sendRequest(XBeeRequest request) throws IOException {
+		if (this.type != null) {
+			// TODO use interface to mark series type
+			if (type == RadioType.SERIES1 && request.getClass().getPackage().getName().indexOf("api.zigbee") > -1) {
+				throw new IllegalArgumentException("You are connected to a Series 1 radio but attempting to send Series 2 requests");
+			} else if (type == RadioType.SERIES2 && request.getClass().getPackage().getName().indexOf("api.wpan") > -1) {
+				throw new IllegalArgumentException("You are connected to a Series 2 radio but attempting to send Series 1 requests");
+			}
+		}
+		
 		log.info("Sending request to XBee: " + request);
 		this.sendPacket(request.getXBeePacket());
 	}
@@ -327,7 +351,6 @@ public class XBee implements IXBee {
 						synchronized(container) {
 							container.notify();	
 						}
-						
 					}
 				}
 			};
@@ -439,6 +462,7 @@ public class XBee implements IXBee {
 			log.warn("Failed to close output stream", e);
 		}
 		
+		this.type = null;
 		parser = null;
 		xbeeConnection = null;
 	}

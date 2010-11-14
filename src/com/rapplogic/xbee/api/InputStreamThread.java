@@ -86,24 +86,19 @@ public class InputStreamThread implements Runnable {
 	
 	private void addResponse(final XBeeResponse response) throws InterruptedException {
 		
-		// trim the queue
-		while (responseQueue.size() >= (conf.getMaxQueueSize() - 1)) {
-			log.debug("Response queue has reached the maximum size of " + conf.getMaxQueueSize() + " packets.  Trimming a packet from head of queue to make room");
-			responseQueue.poll();
-		}
-		
 		if (conf.getResponseQueueFilter() != null) {
 			if (conf.getResponseQueueFilter().accept(response)) {
-				responseQueue.put(response);
+				this.addToResponseQueue(response);
 			}
 		} else {
-			responseQueue.put(response);	
+			this.addToResponseQueue(response);
 		}
 		
 		listenerPool.submit(new Runnable() {
 			public void run() {
 				// must synchronize to avoid  java.util.ConcurrentModificationException at java.util.AbstractList$Itr.checkForComodification(Unknown Source)
 				// this occurs if packet listener add/remove is called while we are iterating
+				
 				synchronized (packetListenerList) {
 					for (PacketListener pl : packetListenerList) {
 						try {
@@ -119,6 +114,21 @@ public class InputStreamThread implements Runnable {
 				}				
 			}
 		});
+	}
+	
+	private void addToResponseQueue(final XBeeResponse response) throws InterruptedException{
+		
+		if (conf.getMaxQueueSize() == 0) {
+			// warn
+			return;
+		}
+		// trim the queue
+		while (responseQueue.size() >= conf.getMaxQueueSize()) {
+			log.debug("Response queue has reached the maximum size of " + conf.getMaxQueueSize() + " packets.  Trimming a packet from head of queue to make room");
+			responseQueue.poll();
+		}
+		
+		responseQueue.put(response);
 	}
 	
 	public void run() {
@@ -142,7 +152,7 @@ public class InputStreamThread implements Runnable {
 							
 							if (log.isInfoEnabled()) {
 								log.info("Received packet from XBee: " + response);	
-								log.debug("Received packet: int[] packet = {" + ByteUtils.toBase16(response.getRawPacketBytes(), ", ") + "};");	
+//								log.debug("Received packet: int[] packet = {" + ByteUtils.toBase16(response.getRawPacketBytes(), ", ") + "};");	
 							}
 							
 							// success

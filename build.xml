@@ -43,18 +43,13 @@ TODO provide bin, src, and examples distributions
 	</target>
 	
 	<target name="compile" depends="init">
-
-    	<available property="jdk1.3+" classname="java.lang.StrictMath"/>
-    	<available property="jdk1.4+" classname="java.lang.CharSequence"/>
-    	<available property="jdk1.5+" classname="java.lang.Readable"/>
-    
-  		<fail unless="jdk1.5+" message="This software requires Java 1.5.  Please obtain the Java 1.5 SDK, update your JAVA_HOME, and try again"/>
-  		
 		<javac 
 			classpathref="compile-classpath" 
 			debug="true" 
 			destdir="${build.dir}" 
-			srcdir="${src.dir}" 
+			srcdir="${src.dir}"
+			source="1.5"
+			target="1.5"
 			failonerror="true">
 			<include name="*/**"/>
 		</javac>

@@ -43,10 +43,14 @@ public class NodeDiscover {
 	public static NodeDiscover parse(AtCommandResponse response) {
 		
 		if (!response.getCommand().equals("ND")) {
-			throw new RuntimeException("This method is only applicable for the ND command");
+			throw new IllegalArgumentException("This method is only applicable for the ND command");
 		}
 		
 		int[] data = response.getValue();
+		
+		if (data == null || data.length == 0) {
+			throw new IllegalArgumentException("ND command has no value");
+		}
 		
 		IntArrayInputStream in = new IntArrayInputStream(data);
 		
