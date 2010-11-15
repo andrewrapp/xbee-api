@@ -49,26 +49,28 @@ public class XBee implements IXBee {
 	private XBeeConfiguration conf;
 	private RadioType type;
 	
-	public XBee() {
-		this.conf = new XBeeConfiguration().withMaxQueueSize(100).withStartupChecks(true);
-		
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-		    public void run() { 
-		    	if (isConnected()) {
-		    		log.info("ShutdownHook is closing connection");
-		    		close();
-		    	}
-		    }
-		});
-	}
-
 	public enum RadioType {
 		SERIES1,
 		SERIES2;
 	}
 	
+	public XBee() {
+		this(new XBeeConfiguration().withMaxQueueSize(100).withStartupChecks(true));
+	}
+	
 	public XBee(XBeeConfiguration conf) {
 		this.conf = conf;
+		
+		if (this.conf.isShutdownHook()) {
+			Runtime.getRuntime().addShutdownHook(new Thread() {
+			    public void run() { 
+			    	if (isConnected()) {
+			    		log.info("ShutdownHook is closing connection");
+			    		close();
+			    	}
+			    }
+			});			
+		}
 	}
 	
 	private void doStartupChecks() throws XBeeException {

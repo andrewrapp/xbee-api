@@ -77,6 +77,8 @@ public class WpanNodeDiscoverExample {
 				}
 			});
 			
+			//TODO check for terminating node
+			
 			log.info("Time is up!  You should have heard back from all nodes by now.  If not make sure all nodes are associated and/or try increasing the node timeout (NT)");
 			
 			for (XBeeResponse response : responses) {

@@ -2,6 +2,7 @@ package com.rapplogic.xbee.api;
 
 public class XBeeConfiguration {
 
+	private boolean shutdownHook = true;
 	private boolean startupChecks = true;
 	private int maxQueueSize = 100;
 	private int sendSynchronousTimeout = 5000;
@@ -17,7 +18,17 @@ public class XBeeConfiguration {
 
 	}
 
-	// response queue filter
+	/**
+	 * Controls is a startup check is performed when connecting to the XBee.
+	 * The startup check attempts to determine the firmware type and if it is 
+	 * configured correctly for use with this software.  Default is true.
+	 *  
+	 * @param startupChecks
+	 */
+	public XBeeConfiguration withShutdownHook(boolean shutdownHook) {
+		this.shutdownHook = shutdownHook;
+		return this;
+	}
 	
 	/**
 	 * Controls is a startup check is performed when connecting to the XBee.
@@ -80,5 +91,9 @@ public class XBeeConfiguration {
 
 	public int getSendSynchronousTimeout() {
 		return sendSynchronousTimeout;
+	}
+
+	public boolean isShutdownHook() {
+		return shutdownHook;
 	}
 }
