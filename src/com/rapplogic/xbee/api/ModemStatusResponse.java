@@ -19,9 +19,12 @@
 
 package com.rapplogic.xbee.api;
 
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.rapplogic.xbee.util.IIntInputStream;
 
 /**
  * RF module status messages are sent from the module in response to specific conditions. 
@@ -79,6 +82,10 @@ public class ModemStatusResponse extends XBeeResponse implements NoRequestRespon
 		this.status = status;
 	}
 
+	protected void parse(IPacketParser parser) throws IOException {
+		this.setStatus(ModemStatusResponse.Status.get(parser.read("Modem Status")));
+	}
+	
 	public String toString() {
 		return super.toString() + ",status=" + this.status;
 	}

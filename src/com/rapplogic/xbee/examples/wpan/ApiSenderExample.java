@@ -57,9 +57,8 @@ public class ApiSenderExample {
 		long now;
 		
 		try {
-			// my coordinator
-//			xbee.open("/dev/tty.usbserial-A4004Rim", 9600);
-			xbee.open("/dev/tty.usbserial-A6005v5M", 57600);
+			// replace with port and baud rate of your XBee
+			xbee.open("/dev/tty.usbserial-A6005uPi", 9600);
 
 			while (true) {
 

@@ -19,10 +19,12 @@
 
 package com.rapplogic.xbee.api.zigbee;
 
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.rapplogic.xbee.api.IPacketParser;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeFrameIdResponse;
 
@@ -152,6 +154,19 @@ public class ZNetTxStatusResponse extends XBeeFrameIdResponse {
 	 */
 	public boolean isSuccess() {
 		return this.getDeliveryStatus() == DeliveryStatus.SUCCESS;
+	}
+	
+	public void parse(IPacketParser parser) throws IOException {		
+		this.setFrameId(parser.read("ZNet Tx Status Frame Id"));
+
+		this.setRemoteAddress16(parser.parseAddress16());
+		this.setRetryCount(parser.read("ZNet Tx Status Tx Count"));
+		
+		int deliveryStatus = parser.read("ZNet Tx Status Delivery Status");
+		this.setDeliveryStatus(ZNetTxStatusResponse.DeliveryStatus.get(deliveryStatus));
+		
+		int discoveryStatus = parser.read("ZNet Tx Status Discovery Status");
+		this.setDiscoveryStatus(ZNetTxStatusResponse.DiscoveryStatus.get(discoveryStatus));
 	}
 	
 	public String toString() {

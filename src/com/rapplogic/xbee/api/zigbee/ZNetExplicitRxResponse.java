@@ -19,6 +19,9 @@
 
 package com.rapplogic.xbee.api.zigbee;
 
+import java.io.IOException;
+
+import com.rapplogic.xbee.api.IPacketParser;
 import com.rapplogic.xbee.util.ByteUtils;
 import com.rapplogic.xbee.util.DoubleByte;
 
@@ -73,6 +76,25 @@ public class ZNetExplicitRxResponse extends ZNetRxResponse {
 		this.profileId = profileId;
 	}
 	
+	public void parse(IPacketParser parser) throws IOException {
+		this.parseAddress(parser);
+
+		this.setSourceEndpoint(parser.read("Reading Source Endpoint"));
+		this.setDestinationEndpoint(parser.read("Reading Destination Endpoint"));
+		DoubleByte clusterId = new DoubleByte();
+		clusterId.setMsb(parser.read("Reading Cluster Id MSB"));
+		clusterId.setLsb(parser.read("Reading Cluster Id LSB"));
+		this.setClusterId(clusterId);
+		
+		DoubleByte profileId = new DoubleByte();
+		profileId.setMsb(parser.read("Reading Profile Id MSB"));
+		profileId.setMsb(parser.read("Reading Profile Id LSB"));
+		this.setProfileId(profileId);
+		
+		this.parseOption(parser);
+		this.setData(parser.readRemainingBytes());	
+	}
+
 	public String toString() {
 		return super.toString() + 
 			",sourceEndpoint=" + ByteUtils.toBase16(this.getSourceEndpoint()) +

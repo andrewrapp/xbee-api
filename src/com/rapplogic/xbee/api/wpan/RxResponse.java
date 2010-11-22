@@ -19,6 +19,9 @@
 
 package com.rapplogic.xbee.api.wpan;
 
+import java.io.IOException;
+
+import com.rapplogic.xbee.api.IPacketParser;
 import com.rapplogic.xbee.util.ByteUtils;
 
 public class RxResponse extends RxBaseResponse {
@@ -35,6 +38,19 @@ public class RxResponse extends RxBaseResponse {
 
 	public void setData(int[] data) {
 		this.data = data;
+	}
+
+	public void parse(IPacketParser parser) throws IOException {		
+		int[] payload = new int[parser.getLength().getLength() - parser.getFrameDataBytesRead()];
+		
+		int bytesRead = parser.getFrameDataBytesRead();
+		
+		for (int i = 0; i < parser.getLength().getLength() - bytesRead; i++) {
+			payload[i] = parser.read("Payload byte " + i);
+			//log.debug("rx data payload [" + i + "] " + payload[i]);
+		}				
+		
+		this.setData(payload);	
 	}
 	
 	public String toString() {

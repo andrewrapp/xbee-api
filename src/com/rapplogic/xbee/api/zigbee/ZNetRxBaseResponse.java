@@ -19,10 +19,12 @@
 
 package com.rapplogic.xbee.api.zigbee;
 
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.rapplogic.xbee.api.IPacketParser;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.api.XBeeResponse;
@@ -38,7 +40,7 @@ import com.rapplogic.xbee.api.XBeeResponse;
  * @author Andrew Rapp
  *
  */
-public class ZNetRxBaseResponse extends XBeeResponse {
+public abstract class ZNetRxBaseResponse extends XBeeResponse {
 
 	public enum Option {
 		PACKET_ACKNOWLEDGED (0x01),
@@ -99,6 +101,16 @@ public class ZNetRxBaseResponse extends XBeeResponse {
 
 	public void setOption(Option option) {
 		this.option = option;
+	}
+	
+	protected void parseAddress(IPacketParser parser) throws IOException {
+		this.setRemoteAddress64(parser.parseAddress64());
+		this.setRemoteAddress16(parser.parseAddress16());		
+	}
+
+	protected void parseOption(IPacketParser parser) throws IOException {
+		int option = parser.read("ZNet RX Response Option");
+		this.setOption(ZNetRxBaseResponse.Option.get(option));		
 	}
 	
 	public String toString() {

@@ -19,6 +19,8 @@
 
 package com.rapplogic.xbee.api;
 
+import java.io.IOException;
+
 
 //TODO Now supported by series 1 XBee. parseIoSample now needs to handle series 1 and 2
 
@@ -77,6 +79,25 @@ public class RemoteAtResponse extends AtCommandResponse {
 		return super.getValue();
 	}
 	
+	public void parse(IPacketParser parser) throws IOException {		
+		this.setFrameId(parser.read("Remote AT Response Frame Id"));
+		
+		this.setRemoteAddress64(parser.parseAddress64());
+		
+		this.setRemoteAddress16(parser.parseAddress16());
+		
+		char cmd1 = (char)parser.read("Command char 1");
+		char cmd2 = (char)parser.read("Command char 2");
+		//this.setCommand(new String(new char[] {cmd1, cmd2}));
+		this.setChar1(cmd1);
+		this.setChar2(cmd2);
+		
+		int status = parser.read("AT Response Status");
+		this.setStatus(RemoteAtResponse.Status.get(status));
+		
+		this.setValue(parser.readRemainingBytes());		
+	}
+		
 	public String toString() {
 		return super.toString() +
 			",remoteAddress64=" + this.remoteAddress64 +

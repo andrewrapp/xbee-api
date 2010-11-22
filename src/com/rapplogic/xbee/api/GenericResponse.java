@@ -19,6 +19,8 @@
 
 package com.rapplogic.xbee.api;
 
+import java.io.IOException;
+
 /**
  * Container for unknown response
  * <p/>
@@ -39,5 +41,12 @@ public class GenericResponse extends XBeeResponse {
 
 	public void setGenericApiId(int genericApiId) {
 		this.genericApiId = genericApiId;
+	}
+	
+	public void parse(IPacketParser parser) throws IOException {
+		//eat packet bytes -- they will be save to bytearray and stored in response
+		parser.readRemainingBytes();
+		// TODO gotta save it because it isn't know to the enum apiId won't
+		this.setGenericApiId(parser.getIntApiId());		
 	}
 }

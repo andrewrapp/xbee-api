@@ -49,7 +49,7 @@ public class ApiAtExample {
 			
 		try {	
 			// replace with port and baud rate of your XBee
-			xbee.open("/dev/tty.usbserial-A4004Rim", 9600);
+			xbee.open("/dev/tty.usbserial-A6005uPi", 9600);
 			
 //			// set D1 analog input
 //			this.sendCommand(new AtCommand("D1", 2));

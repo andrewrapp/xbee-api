@@ -2,7 +2,7 @@ package com.rapplogic.xbee.api;
 
 public class XBeeConfiguration {
 
-	private boolean shutdownHook = true;
+	private boolean shutdownHook = false;
 	private boolean startupChecks = true;
 	private int maxQueueSize = 100;
 	private int sendSynchronousTimeout = 5000;

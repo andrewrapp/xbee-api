@@ -19,6 +19,9 @@
 
 package com.rapplogic.xbee.api.wpan;
 
+import java.io.IOException;
+
+import com.rapplogic.xbee.api.IPacketParser;
 import com.rapplogic.xbee.api.XBeeAddress64;
 
 /**
@@ -37,4 +40,10 @@ public class RxResponse64 extends RxResponse {
 	public XBeeAddress64 getRemoteAddress() {
 		return (XBeeAddress64) this.getSourceAddress();
 	}
+	
+	public void parse(IPacketParser parser) throws IOException {
+		this.setSourceAddress(parser.parseAddress64());	
+		super.parseBase(parser);
+		super.parse(parser);
+	}	
 }

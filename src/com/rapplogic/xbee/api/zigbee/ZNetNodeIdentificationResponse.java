@@ -19,10 +19,12 @@
 
 package com.rapplogic.xbee.api.zigbee;
 
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.rapplogic.xbee.api.IPacketParser;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
 import com.rapplogic.xbee.api.XBeeResponse;
@@ -219,6 +221,47 @@ public class ZNetNodeIdentificationResponse extends XBeeResponse {
 		this.mfgId = mfgId;
 	}
 
+	public void parse(IPacketParser parser) throws IOException {		
+		this.setRemoteAddress64(parser.parseAddress64());
+		this.setRemoteAddress16(parser.parseAddress16());
+		
+		int option = parser.read("Option");
+		this.setOption(ZNetNodeIdentificationResponse.Option.get(option));		
+
+		// again with the addresses
+		this.setRemoteAddress64_2(parser.parseAddress64());
+		this.setRemoteAddress16_2(parser.parseAddress16());
+		
+		StringBuffer ni = new StringBuffer();
+		
+		int ch = 0;
+		
+		// NI is terminated with 0
+		while ((ch = parser.read("Node Identifier")) != 0) {
+			ni.append((char)ch);			
+		}
+		
+		this.setNodeIdentifier(ni.toString());
+		this.setParentAddress(parser.parseAddress16());		
+		
+		int deviceType = parser.read("Device Type");
+		
+		this.setDeviceType(ZNetNodeIdentificationResponse.DeviceType.get(deviceType));		
+		
+		int sourceAction = parser.read("Source Action");
+		this.setSourceAction(ZNetNodeIdentificationResponse.SourceAction.get(sourceAction));	
+		
+		DoubleByte profileId = new DoubleByte();
+		profileId.setMsb(parser.read("Profile MSB"));
+		profileId.setLsb(parser.read("Profile LSB"));
+		this.setProfileId(profileId);
+		
+		DoubleByte mfgId = new DoubleByte();
+		mfgId.setMsb(parser.read("MFG MSB"));
+		mfgId.setLsb(parser.read("MFG LSB"));
+		this.setMfgId(mfgId);		
+	}
+	
 	@Override
 	public String toString() {
 		return "ZNetNodeIdentificationResponse [deviceType=" + deviceType

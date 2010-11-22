@@ -19,10 +19,12 @@
 
 package com.rapplogic.xbee.api.wpan;
 
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.rapplogic.xbee.api.IPacketParser;
 import com.rapplogic.xbee.api.XBeeFrameIdResponse;
 
 /**
@@ -101,6 +103,19 @@ public class TxStatusResponse extends XBeeFrameIdResponse {
 	public boolean isPurged() {
 		return this.status == Status.PURGED;
 	}
+	
+	
+	public void parse(IPacketParser parser) throws IOException {
+		// frame id
+		int frameId = parser.read("TxStatus Frame Id");
+		this.setFrameId(frameId);
+		
+		//log.debug("frame id is " + frameId);
+
+		// Status: 0=Success, 1= No Ack, 2= CCA Failure, 3= Purge
+		int status = parser.read("TX Status");
+		this.setStatus(TxStatusResponse.Status.get(status));	
+	}	
 	
 	public String toString() {
 		return super.toString() + ",status=" + this.getStatus();

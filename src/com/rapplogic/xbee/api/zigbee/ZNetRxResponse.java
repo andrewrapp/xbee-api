@@ -19,6 +19,9 @@
 
 package com.rapplogic.xbee.api.zigbee;
 
+import java.io.IOException;
+
+import com.rapplogic.xbee.api.IPacketParser;
 import com.rapplogic.xbee.api.NoRequestResponse;
 import com.rapplogic.xbee.util.ByteUtils;
 
@@ -47,6 +50,12 @@ public class ZNetRxResponse extends ZNetRxBaseResponse implements NoRequestRespo
 		this.data = data;
 	}
 	
+	public void parse(IPacketParser parser) throws IOException {
+		this.parseAddress(parser);
+		this.parseOption(parser);
+		this.setData(parser.readRemainingBytes());	
+	}
+			
 	public String toString() {
 		return super.toString() + 
 			",data=" + ByteUtils.toBase16(this.data);

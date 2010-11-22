@@ -23,9 +23,11 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+import com.rapplogic.xbee.api.ApiId;
+import com.rapplogic.xbee.api.IPacketParser;
 import com.rapplogic.xbee.api.NoRequestResponse;
 import com.rapplogic.xbee.util.ByteUtils;
-import com.rapplogic.xbee.util.IIntArrayInputStream;
+import com.rapplogic.xbee.util.IIntInputStream;
 
 /**
  * Series 1 XBee. Represents an I/O sample
@@ -54,21 +56,30 @@ public class RxResponseIoSample extends RxBaseResponse implements NoRequestRespo
 		
 	}
 
-	public void parse(IIntArrayInputStream ps) throws IOException {
+	public void parse(IPacketParser parser) throws IOException {
+
+		if (parser.getApiId() == ApiId.RX_16_IO_RESPONSE) {
+			this.setSourceAddress(parser.parseAddress16());	
+		} else {
+			this.setSourceAddress(parser.parseAddress64());
+		}	
 		
+		super.parseBase(parser);
+
+		log.debug("this is a I/O sample!");
 		// first byte is # of samples
-		int sampleSize = ps.read("# I/O Samples");
+		int sampleSize = parser.read("# I/O Samples");
 		
 		// create i/o samples array
 		this.setSamples(new IoSample[sampleSize]);
 		
 		// channel indicator 1
-		this.setChannelIndicator1(ps.read("Channel Indicator 1"));
+		this.setChannelIndicator1(parser.read("Channel Indicator 1"));
 		
 		log.debug("channel indicator 1 is " + ByteUtils.formatByte(this.getChannelIndicator1()));
 		
 		// channel indicator 2 (dio)
-		this.setChannelIndicator2(ps.read("Channel Indicator 2"));
+		this.setChannelIndicator2(parser.read("Channel Indicator 2"));
 		
 		log.debug("channel indicator 2 is " + ByteUtils.formatByte(this.getChannelIndicator2()));	
 		
@@ -77,14 +88,14 @@ public class RxResponseIoSample extends RxBaseResponse implements NoRequestRespo
 			
 			log.debug("parsing sample " + (i + 1));
 			
-			IoSample sample = parseIoSample(ps);
+			IoSample sample = parseIoSample((IIntInputStream)parser);
 			
 			// attach sample to parent
 			this.getSamples()[i] = sample;
 		}		
 	}
 			
-	private IoSample parseIoSample(IIntArrayInputStream ps) throws IOException {
+	private IoSample parseIoSample(IIntInputStream parser) throws IOException {
 
 		IoSample sample = new IoSample(this);
 		
@@ -95,8 +106,8 @@ public class RxResponseIoSample extends RxBaseResponse implements NoRequestRespo
 			
 			log.debug("Digital I/O was received");
 			
-			sample.setDioMsb(ps.read("DIO MSB"));
-			sample.setDioLsb(ps.read("DIO LSB"));
+			sample.setDioMsb(parser.read("DIO MSB"));
+			sample.setDioLsb(parser.read("DIO LSB"));
 		}
 		
 		// ADC is active if any of bits 2-7 are on
@@ -113,32 +124,32 @@ public class RxResponseIoSample extends RxBaseResponse implements NoRequestRespo
 			// Analog inputs A0-A5 are bits 2-7 of the adcHeader
 			
 			if (this.isA0Enabled()) {
-				sample.setAnalog0(ByteUtils.parse10BitAnalog(ps, analog));
+				sample.setAnalog0(ByteUtils.parse10BitAnalog(parser, analog));
 				analog++;				
 			}
 
 			if (this.isA1Enabled()) {
-				sample.setAnalog1(ByteUtils.parse10BitAnalog(ps, analog));
+				sample.setAnalog1(ByteUtils.parse10BitAnalog(parser, analog));
 				analog++;
 			}
 
 			if (this.isA2Enabled()) {
-				sample.setAnalog2(ByteUtils.parse10BitAnalog(ps, analog));
+				sample.setAnalog2(ByteUtils.parse10BitAnalog(parser, analog));
 				analog++;
 			}
 
 			if (this.isA3Enabled()) {
-				sample.setAnalog3(ByteUtils.parse10BitAnalog(ps, analog));
+				sample.setAnalog3(ByteUtils.parse10BitAnalog(parser, analog));
 				analog++;
 			}
 
 			if (this.isA4Enabled()) {
-				sample.setAnalog4(ByteUtils.parse10BitAnalog(ps, analog));
+				sample.setAnalog4(ByteUtils.parse10BitAnalog(parser, analog));
 				analog++;
 			}
 			
 			if (this.isA5Enabled()) {
-				sample.setAnalog5(ByteUtils.parse10BitAnalog(ps, analog));
+				sample.setAnalog5(ByteUtils.parse10BitAnalog(parser, analog));
 				analog++;
 			}
 			

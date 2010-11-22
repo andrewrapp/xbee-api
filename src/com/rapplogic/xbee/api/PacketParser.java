@@ -21,25 +21,22 @@ package com.rapplogic.xbee.api;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.rapplogic.xbee.api.AtCommandResponse.Status;
-import com.rapplogic.xbee.api.wpan.RxBaseResponse;
-import com.rapplogic.xbee.api.wpan.RxResponse;
 import com.rapplogic.xbee.api.wpan.RxResponse16;
 import com.rapplogic.xbee.api.wpan.RxResponse64;
 import com.rapplogic.xbee.api.wpan.RxResponseIoSample;
 import com.rapplogic.xbee.api.wpan.TxStatusResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetExplicitRxResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetNodeIdentificationResponse;
-import com.rapplogic.xbee.api.zigbee.ZNetRxBaseResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRxIoSampleResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetRxResponse;
 import com.rapplogic.xbee.api.zigbee.ZNetTxStatusResponse;
 import com.rapplogic.xbee.util.ByteUtils;
-import com.rapplogic.xbee.util.DoubleByte;
-import com.rapplogic.xbee.util.IIntArrayInputStream;
+import com.rapplogic.xbee.util.IIntInputStream;
 import com.rapplogic.xbee.util.InputStreamWrapper;
 import com.rapplogic.xbee.util.IntArrayOutputStream;
 
@@ -54,11 +51,11 @@ import com.rapplogic.xbee.util.IntArrayOutputStream;
  * @author Andrew Rapp
  *
  */
-public class PacketParser implements IIntArrayInputStream {
+public class PacketParser implements IIntInputStream, IPacketParser {
 
 	private final static Logger log = Logger.getLogger(PacketParser.class);
 
-	private IIntArrayInputStream in;
+	private IIntInputStream in;
 	
 	// size of packet after special bytes have been escaped
 	private XBeePacketLength length;
@@ -71,16 +68,57 @@ public class PacketParser implements IIntArrayInputStream {
 
 	private XBeeResponse response;
 	private ApiId apiId;
+	private int intApiId;
+	
+	private static Map<Integer, Class<? extends XBeeResponse>> handlerMap = new HashMap<Integer, Class<? extends XBeeResponse>>();
+	
+	// TODO reuse this object for all packets
 	
 	// experiment to preserve original byte array for transfer over network (Starts with length)
 	private IntArrayOutputStream rawBytes = new IntArrayOutputStream();
+	
+	static {
+		// TODO put all response handlers in specific packet and load all.  implement static handlesApi method
+		handlerMap.put(ApiId.AT_RESPONSE.getValue(), AtCommandResponse.class);
+		handlerMap.put(ApiId.MODEM_STATUS_RESPONSE.getValue(), ModemStatusResponse.class);
+		handlerMap.put(ApiId.REMOTE_AT_RESPONSE.getValue(), RemoteAtResponse.class);
+		handlerMap.put(ApiId.RX_16_IO_RESPONSE.getValue(), RxResponseIoSample.class);
+		handlerMap.put(ApiId.RX_64_IO_RESPONSE.getValue(), RxResponseIoSample.class);
+		handlerMap.put(ApiId.RX_16_RESPONSE.getValue(), RxResponse16.class);
+		handlerMap.put(ApiId.RX_64_RESPONSE.getValue(), RxResponse64.class);
+		handlerMap.put(ApiId.TX_STATUS_RESPONSE.getValue(), TxStatusResponse.class);
+		handlerMap.put(ApiId.ZNET_EXPLICIT_RX_RESPONSE.getValue(), ZNetExplicitRxResponse.class);
+		handlerMap.put(ApiId.ZNET_IO_NODE_IDENTIFIER_RESPONSE.getValue(), ZNetNodeIdentificationResponse.class);
+		handlerMap.put(ApiId.ZNET_IO_SAMPLE_RESPONSE.getValue(), ZNetRxIoSampleResponse.class);
+		handlerMap.put(ApiId.ZNET_RX_RESPONSE.getValue(), ZNetRxResponse.class);
+		handlerMap.put(ApiId.ZNET_TX_STATUS_RESPONSE.getValue(), ZNetTxStatusResponse.class);
+	}
+	
+	static void registerResponseHandler(int apiId, Class<? extends XBeeResponse> clazz) {
+		if (handlerMap.get(apiId) == null) {
+			log.info("Registering response handler " + clazz.getCanonicalName() + " for apiId: " + apiId);
+		} else {
+			log.warn("Overriding existing implementation: " + handlerMap.get(apiId).getCanonicalName() + ", with " + clazz.getCanonicalName() + " for apiId: " + apiId);
+		}
+		
+		handlerMap.put(apiId, clazz);
+	}
+	
+	static void unRegisterResponseHandler(int apiId) {
+		if (handlerMap.get(apiId) != null) {
+			log.info("Unregistering response handler " + handlerMap.get(apiId).getCanonicalName() + " for apiId: " + apiId);
+			handlerMap.remove(apiId);
+		} else {
+			throw new IllegalArgumentException("No response handler for: " + apiId);
+		}
+	}
 	
 	public PacketParser(InputStream in) {
 		this.in = new InputStreamWrapper(in);
 	}
 	
 	// for parsing a packet from a byte array
-	public PacketParser(IIntArrayInputStream in) {
+	public PacketParser(IIntInputStream in) {
 		this.in = in;
 	}
 	
@@ -106,7 +144,7 @@ public class PacketParser implements IIntArrayInputStream {
 			
 			// total packet length = stated length + 1 start byte + 1 checksum byte + 2 length bytes
 			
-			int intApiId = this.read("API ID");
+			intApiId = this.read("API ID");
 			
 			this.apiId = ApiId.get(intApiId);
 			
@@ -119,36 +157,19 @@ public class PacketParser implements IIntArrayInputStream {
 			// TODO parse I/O data page 12. 82 API Identifier Byte for 64 bit address A/D data (83 is for 16bit A/D data)
 			// TODO XBeeResponse should implement an abstract parse method
 			
-			if (apiId == ApiId.MODEM_STATUS_RESPONSE) {
-				parseModemStatusResponse();
-			} else if (apiId == ApiId.RX_16_RESPONSE) {
-				parseRxResponse();
-			} else if (apiId == ApiId.RX_16_IO_RESPONSE) {
-				parseRxResponse();
-			} else if (apiId == ApiId.RX_64_RESPONSE) {
-				parseRxResponse();
-			} else if (apiId == ApiId.RX_64_IO_RESPONSE) {
-				parseRxResponse();
-			} else if (apiId == ApiId.AT_RESPONSE) {
-				parseAtResponse();
-			} else if (apiId == ApiId.TX_STATUS_RESPONSE) {
-				parseTxStatusResponse();
-			} else if (apiId == ApiId.REMOTE_AT_RESPONSE) {
-				parseRemoteAtResponse();
-			} else if (apiId == ApiId.ZNET_TX_STATUS_RESPONSE) { 
-				parseZNetTxStatusResponse();
-			} else if (apiId == ApiId.ZNET_RX_RESPONSE) {
-				parseZNetRxResponse();
-			} else if (apiId == ApiId.ZNET_EXPLICIT_RX_RESPONSE) {
-				parseZNetRxResponse();
-			} else if (apiId == ApiId.ZNET_IO_SAMPLE_RESPONSE) {
-				parseZNetRxResponse();
-			} else if (apiId == ApiId.ZNET_IO_NODE_IDENTIFIER_RESPONSE) {
-				parseZNetNodeIdentifierResponse();		
-			} else {
-				// a new or unsupported api id
-				log.info("Encountered unknown API type: " + ByteUtils.toBase16(intApiId) + ".  returning GenericResponse");
-				parseGeneric(intApiId);
+			for (Integer handlerApiId : handlerMap.keySet()) {
+				if (intApiId == handlerApiId) {
+					log.debug("Found response handler for apiId [" + ByteUtils.toBase16(intApiId) + "]: " + handlerMap.get(handlerApiId).getCanonicalName());		
+					response = (XBeeResponse) handlerMap.get(handlerApiId).newInstance();
+					response.parse(this);
+					break;
+				}
+			}
+			
+			if (response == null) {
+				log.info("Did not find a response handler for ApiId [" + ByteUtils.toBase16(intApiId) + "].  Returning GenericResponse");
+				response = new GenericResponse();
+				response.parse(this);
 			}
 			
 			response.setChecksum(this.read("Checksum"));
@@ -265,235 +286,13 @@ public class PacketParser implements IIntArrayInputStream {
 
 		return b;
 	}
-
-	private void parseRemoteAtResponse() throws IOException {
-		
-		response = new RemoteAtResponse();
-		
-		((RemoteAtResponse)response).setFrameId(this.read("Remote AT Response Frame Id"));
-		
-		((RemoteAtResponse)response).setRemoteAddress64(this.parseAddress64());
-		
-		((RemoteAtResponse)response).setRemoteAddress16(this.parseAddress16());
-		
-		char cmd1 = (char)this.read("Command char 1");
-		char cmd2 = (char)this.read("Command char 2");
-		//((RemoteAtResponse)response).setCommand(new String(new char[] {cmd1, cmd2}));
-		((RemoteAtResponse)response).setChar1(cmd1);
-		((RemoteAtResponse)response).setChar2(cmd2);
-		
-		int status = this.read("AT Response Status");
-		((RemoteAtResponse)response).setStatus(RemoteAtResponse.Status.get(status));
-		
-		((RemoteAtResponse)response).setValue(this.readRemainingBytes());
-	}
-	
-	private void parseAtResponse() throws IOException {
-		//log.debug("AT Response");
-		
-		response = new AtCommandResponse();
-		
-		((AtCommandResponse)response).setFrameId(this.read("AT Response Frame Id"));
-		((AtCommandResponse)response).setChar1(this.read("AT Response Char 1"));
-		((AtCommandResponse)response).setChar2(this.read("AT Response Char 2"));
-		((AtCommandResponse)response).setStatus(Status.get(this.read("AT Response Status")));
-							
-		((AtCommandResponse)response).setValue(this.readRemainingBytes());
-	}
-
-	private void parseZNetTxStatusResponse() throws IOException {
-		
-		response = new ZNetTxStatusResponse();
-		
-		((ZNetTxStatusResponse)response).setFrameId(this.read("ZNet Tx Status Frame Id"));
-
-		((ZNetTxStatusResponse)response).setRemoteAddress16(this.parseAddress16());
-		((ZNetTxStatusResponse)response).setRetryCount(this.read("ZNet Tx Status Tx Count"));
-		
-		int deliveryStatus = this.read("ZNet Tx Status Delivery Status");
-		((ZNetTxStatusResponse)response).setDeliveryStatus(ZNetTxStatusResponse.DeliveryStatus.get(deliveryStatus));
-		
-		int discoveryStatus = this.read("ZNet Tx Status Discovery Status");
-		((ZNetTxStatusResponse)response).setDiscoveryStatus(ZNetTxStatusResponse.DiscoveryStatus.get(discoveryStatus));
-	}
-
-	private void parseZNetRxResponse() throws IOException {
-		
-		// TODO this needs OO refactoring
-		if (this.apiId == ApiId.ZNET_IO_SAMPLE_RESPONSE) {
-			response = new ZNetRxIoSampleResponse();
-		} else if (this.apiId == ApiId.ZNET_RX_RESPONSE){
-			response = new ZNetRxResponse();	
-		} else {
-			response = new ZNetExplicitRxResponse();
-		}
-		
-		((ZNetRxBaseResponse)response).setRemoteAddress64(this.parseAddress64());
-		((ZNetRxBaseResponse)response).setRemoteAddress16(this.parseAddress16());
-		
-		if (this.apiId == ApiId.ZNET_EXPLICIT_RX_RESPONSE) {
-			((ZNetExplicitRxResponse)response).setSourceEndpoint(this.read("Reading Source Endpoint"));
-			((ZNetExplicitRxResponse)response).setDestinationEndpoint(this.read("Reading Destination Endpoint"));
-			DoubleByte clusterId = new DoubleByte();
-			clusterId.setMsb(this.read("Reading Cluster Id MSB"));
-			clusterId.setLsb(this.read("Reading Cluster Id LSB"));
-			((ZNetExplicitRxResponse)response).setClusterId(clusterId);
-			
-			DoubleByte profileId = new DoubleByte();
-			profileId.setMsb(this.read("Reading Profile Id MSB"));
-			profileId.setMsb(this.read("Reading Profile Id LSB"));
-			((ZNetExplicitRxResponse)response).setProfileId(profileId);
-		}
-		
-		int option = this.read("ZNet RX Response Option");
-		((ZNetRxBaseResponse)response).setOption(ZNetRxBaseResponse.Option.get(option));
-		
-		if (this.apiId == ApiId.ZNET_IO_SAMPLE_RESPONSE) {
-			parseZNetIoSampleResponse((ZNetRxIoSampleResponse)response);
-		} else {		
-			((ZNetRxResponse)response).setData(this.readRemainingBytes());			
-		}
-	}
-	
-	private void parseZNetNodeIdentifierResponse() throws IOException {
-			
-		response = new ZNetNodeIdentificationResponse();	
-		
-		((ZNetNodeIdentificationResponse)response).setRemoteAddress64(this.parseAddress64());
-		((ZNetNodeIdentificationResponse)response).setRemoteAddress16(this.parseAddress16());
-		
-		int option = this.read("Option");
-		((ZNetNodeIdentificationResponse)response).setOption(ZNetNodeIdentificationResponse.Option.get(option));		
-
-		// again with the addresses
-		((ZNetNodeIdentificationResponse)response).setRemoteAddress64_2(this.parseAddress64());
-		((ZNetNodeIdentificationResponse)response).setRemoteAddress16_2(this.parseAddress16());
-		
-		StringBuffer ni = new StringBuffer();
-		
-		int ch = 0;
-		
-		// NI is terminated with 0
-		while ((ch = this.read("Node Identifier")) != 0) {
-			ni.append((char)ch);			
-		}
-		
-		((ZNetNodeIdentificationResponse)response).setNodeIdentifier(ni.toString());
-		((ZNetNodeIdentificationResponse)response).setParentAddress(this.parseAddress16());		
-		
-		int deviceType = this.read("Device Type");
-		
-		((ZNetNodeIdentificationResponse)response).setDeviceType(ZNetNodeIdentificationResponse.DeviceType.get(deviceType));		
-		
-		int sourceAction = this.read("Source Action");
-		((ZNetNodeIdentificationResponse)response).setSourceAction(ZNetNodeIdentificationResponse.SourceAction.get(sourceAction));	
-		
-		DoubleByte profileId = new DoubleByte();
-		profileId.setMsb(this.read("Profile MSB"));
-		profileId.setLsb(this.read("Profile LSB"));
-		((ZNetNodeIdentificationResponse)response).setProfileId(profileId);
-		
-		DoubleByte mfgId = new DoubleByte();
-		mfgId.setMsb(this.read("MFG MSB"));
-		mfgId.setLsb(this.read("MFG LSB"));
-		((ZNetNodeIdentificationResponse)response).setMfgId(mfgId);
-	}
-	
-	private void parseZNetIoSampleResponse(ZNetRxIoSampleResponse response) throws IOException {
-		// TODO expose as interface
-		response.parse(this);
-	}
-	
-	private void parseModemStatusResponse() throws IOException {		
-		response = new ModemStatusResponse();
-		((ModemStatusResponse)response).setStatus(ModemStatusResponse.Status.get(this.read("Modem Status")));
-	}
-	
-	private void parseGeneric(int intApiId) throws IOException {
-		//eat packet bytes -- they will be save to bytearray and stored in response
-		this.readRemainingBytes();
-		response = new GenericResponse();
-		// TODO gotta save it because it isn't know to the enum apiId won't
-		((GenericResponse)response).setGenericApiId(intApiId);
-	}	
-	
-	/**
-	 * 
-	 * @throws IOException
-	 */
-	private void parseRxResponse() throws IOException {
-		//TODO untested after 64-bit refactoring
-		if (apiId == ApiId.RX_16_RESPONSE || apiId == ApiId.RX_64_RESPONSE) {
-			if (apiId == ApiId.RX_16_RESPONSE) {
-				response = new RxResponse16();	
-				((RxBaseResponse)response).setSourceAddress(this.parseAddress16());
-			} else {
-				response = new RxResponse64();
-				((RxBaseResponse)response).setSourceAddress(this.parseAddress64());
-			}
-		} else {
-			response = new RxResponseIoSample();
-			
-			if (apiId == ApiId.RX_16_IO_RESPONSE) {
-				((RxBaseResponse)response).setSourceAddress(this.parseAddress16());	
-			} else {
-				((RxBaseResponse)response).setSourceAddress(this.parseAddress64());
-			}	
-		}
-		
-		int rssi = this.read("RSSI");
-		
-		// rssi is a negative dbm value
-		((RxBaseResponse)response).setRssi(-rssi);
-		
-		int options = this.read("Options");
-		
-		((RxBaseResponse)response).setOptions(options);
-		
-		if (apiId == ApiId.RX_16_RESPONSE || apiId == ApiId.RX_64_RESPONSE) {
-			int[] payload = new int[length.getLength() - this.getFrameDataBytesRead()];
-			
-			int bytesRead = this.getFrameDataBytesRead();
-			
-			for (int i = 0; i < length.getLength() - bytesRead; i++) {
-				payload[i] = this.read("Payload byte " + i);
-				//log.debug("rx data payload [" + i + "] " + payload[i]);
-			}				
-			
-			((RxResponse)response).setData(payload);
-		} else {
-			// I/O sample
-			log.debug("this is a I/O sample!");
-			((RxResponseIoSample)response).parse(this);
-		}
-	}
-	
-	private void parseTxStatusResponse() throws IOException {
-		//log.debug("TxStatus");
-		
-		response = new TxStatusResponse();
-		
-		// parse TxStatus
-		
-		// frame id
-		int frameId = this.read("TxStatus Frame Id");
-		((TxStatusResponse)response).setFrameId(frameId);
-		
-		//log.debug("frame id is " + frameId);
-
-		// Status: 0=Success, 1= No Ack, 2= CCA Failure, 3= Purge
-		int status = this.read("TX Status");
-		((TxStatusResponse)response).setStatus(TxStatusResponse.Status.get(status));
-		
-		//log.debug("status is " + status);
-	}
 		
 	/**
 	 * Reads all remaining bytes except for checksum
 	 * @return
 	 * @throws IOException
 	 */
-	private int[] readRemainingBytes() throws IOException {
+	public int[] readRemainingBytes() throws IOException {
 		
 		// minus one since we don't read the checksum
 		int[] value = new int[this.getRemainingBytes() - 1];
@@ -569,5 +368,17 @@ public class PacketParser implements IIntArrayInputStream {
 
 	public int getChecksum() {
 		return checksum.getChecksum();
+	}
+
+	public XBeePacketLength getLength() {
+		return length;
+	}
+
+	public ApiId getApiId() {
+		return apiId;
+	}
+	
+	public int getIntApiId() {
+		return this.intApiId;
 	}
 }

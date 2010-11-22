@@ -296,7 +296,7 @@ public class ByteUtils {
 		return msb + lsb;
 	}
 	
-	public static int parse10BitAnalog(IIntArrayInputStream in, int pos) throws IOException {
+	public static int parse10BitAnalog(IIntInputStream in, int pos) throws IOException {
 		int adcMsb = in.read("Analog " + pos + " MSB");
 		int adcLsb = in.read("Analog " + pos + " LSB");
 		

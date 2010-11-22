@@ -59,6 +59,10 @@ public class ErrorResponse extends XBeeResponse {
 		this.exception = exception;
 	}
 
+	public void parse(IPacketParser parser) {
+		// nothing to do
+	}
+	
 	public String toString() {
 		return super.toString() + ",errorMsg=" + this.errorMsg + ",exception=" + this.exception;
 	}

@@ -24,14 +24,15 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import com.rapplogic.xbee.api.AtCommandResponse;
+import com.rapplogic.xbee.api.IPacketParser;
 import com.rapplogic.xbee.api.NoRequestResponse;
 import com.rapplogic.xbee.api.XBeeParseException;
 import com.rapplogic.xbee.util.ByteUtils;
-import com.rapplogic.xbee.util.IIntArrayInputStream;
+import com.rapplogic.xbee.util.IIntInputStream;
 import com.rapplogic.xbee.util.IntArrayInputStream;
 
 /**
- * Series 2 XBee.  Represents an I/O Sample resposne sent from a remote radio.
+ * Series 2 XBee.  Represents an I/O Sample response sent from a remote radio.
  * Provides access to the XBee's 4 Analog (0-4), 11 Digital (0-7,10-12), and 1 Supply Voltage pins
  * <p/>
  * Note: Series 2 XBee does not support multiple samples (IT) per packet
@@ -57,7 +58,7 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse implements NoRequ
 	public ZNetRxIoSampleResponse() {
 		
 	}
-
+	
 	public static ZNetRxIoSampleResponse parseIsSample(AtCommandResponse response) throws IOException {
 		
 		if (!response.getCommand().equals("IS")) {
@@ -66,9 +67,15 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse implements NoRequ
 		
 		IntArrayInputStream in = new IntArrayInputStream(response.getValue());
 		ZNetRxIoSampleResponse sample = new ZNetRxIoSampleResponse();
-		sample.parse(in);
+		sample.parseIoSample(in);
 		
 		return sample;
+	}
+	
+	public void parse(IPacketParser parser) throws IOException {
+		this.parseAddress(parser);
+		this.parseOption(parser);
+		this.parseIoSample((IIntInputStream)parser);
 	}
 	
 	/**
@@ -78,17 +85,17 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse implements NoRequ
 	 * @param ps
 	 * @throws IOException
 	 */
-	public void parse(IIntArrayInputStream ps) throws IOException {
+	public void parseIoSample(IIntInputStream parser) throws IOException {
 		// eat sample size.. always 1
-		int size = ps.read("ZNet RX IO Sample Size");
+		int size = parser.read("ZNet RX IO Sample Size");
 		
 		if (size != 1) {
 			throw new XBeeParseException("Sample size is not supported if > 1 for ZNet I/O");
 		}
 		
-		this.setDigitalChannelMaskMsb(ps.read("ZNet RX IO Sample Digital Mask 1"));
-		this.setDigitalChannelMaskLsb(ps.read("ZNet RX IO Sample Digital Mask 2"));
-		this.setAnalogChannelMask(ps.read("ZNet RX IO Sample Analog Channel Mask"));
+		this.setDigitalChannelMaskMsb(parser.read("ZNet RX IO Sample Digital Mask 1"));
+		this.setDigitalChannelMaskLsb(parser.read("ZNet RX IO Sample Digital Mask 2"));
+		this.setAnalogChannelMask(parser.read("ZNet RX IO Sample Analog Channel Mask"));
 		
 		// zero out n/a bits
 		this.analogChannelMask = this.analogChannelMask & 0x8f; //10001111
@@ -99,8 +106,8 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse implements NoRequ
 		if (this.containsDigital()) {
 			log.info("response contains digital data");
 			// next two bytes are digital
-			this.setDioMsb(ps.read("ZNet RX IO DIO MSB"));
-			this.setDioLsb(ps.read("ZNet RX IO DIO LSB"));
+			this.setDioMsb(parser.read("ZNet RX IO DIO MSB"));
+			this.setDioLsb(parser.read("ZNet RX IO DIO LSB"));
 		} else {
 			log.info("response does not contain digital data");
 		}
@@ -112,13 +119,13 @@ public class ZNetRxIoSampleResponse extends ZNetRxBaseResponse implements NoRequ
 		for (int i = 0; i < 4; i++) {
 			if (this.isAnalogEnabled(i)) {
 				log.info("response contains analog[" + i + "]");
-				analog[i] = ByteUtils.parse10BitAnalog(ps, enabledCount);
+				analog[i] = ByteUtils.parse10BitAnalog(parser, enabledCount);
 				enabledCount++;
 			}			
 		}
 		
 		if (this.isSupplyVoltageEnabled()) {
-			analog[SUPPLY_VOLTAGE_INDEX] = ByteUtils.parse10BitAnalog(ps, enabledCount);
+			analog[SUPPLY_VOLTAGE_INDEX] = ByteUtils.parse10BitAnalog(parser, enabledCount);
 			enabledCount++;
 		}
 		

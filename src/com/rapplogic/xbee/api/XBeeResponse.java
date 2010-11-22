@@ -19,6 +19,7 @@
 
 package com.rapplogic.xbee.api;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -131,6 +132,17 @@ public abstract class XBeeResponse implements Serializable {
 	public void finish() {
 		
 	}
+	
+	/**
+	 * All subclasses must implement to parse the packet from the input stream.
+	 * The subclass must parse all bytes in the packet starting after the API_ID, and
+	 * up to but not including the checksum.  Reading either more or less bytes that expected will
+	 * result in an error.
+	 * 
+	 * @param parser
+	 * @throws IOException
+	 */
+	protected abstract void parse(IPacketParser parser) throws IOException;
 	
 	@Override
 	public int hashCode() {

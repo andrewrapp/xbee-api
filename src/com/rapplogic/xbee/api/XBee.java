@@ -162,8 +162,13 @@ public class XBee implements IXBee {
 		}
 	}
 	
-	// TODO
-//	public void registerResponseHandler(XBeeResponse);
+	public static void registerResponseHandler(int apiId, Class<? extends XBeeResponse> clazz) {
+		PacketParser.registerResponseHandler(apiId, clazz);
+	}
+	
+	public static void unRegisterResponseHandler(int apiId) {
+		PacketParser.unRegisterResponseHandler(apiId);
+	}
 	
 	/**
 	 * Allows a protocol specific implementation of XBeeConnection to be used instead of the default RXTX connection.

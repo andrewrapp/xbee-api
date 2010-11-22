@@ -19,6 +19,7 @@
 
 package com.rapplogic.xbee.api;
 
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -127,6 +128,15 @@ public class AtCommandResponse extends XBeeFrameIdResponse {
 		return String.valueOf((char)this.char1) + String.valueOf((char)this.char2);
 	}
 	
+	public void parse(IPacketParser parser) throws IOException {	
+		this.setFrameId(parser.read("AT Response Frame Id"));
+		this.setChar1(parser.read("AT Response Char 1"));
+		this.setChar2(parser.read("AT Response Char 2"));
+		this.setStatus(Status.get(parser.read("AT Response Status")));
+							
+		this.setValue(parser.readRemainingBytes());		
+	}
+
 	public String toString() {
 		return "command=" + this.getCommand() +
 			",status=" + this.getStatus() + ",value=" + 

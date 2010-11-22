@@ -20,6 +20,7 @@
 package com.rapplogic.xbee.api;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * XBee interface
@@ -57,4 +58,6 @@ public interface IXBee {
 	public boolean isConnected();
 	
 	public void clearResponseQueue();
+	
+	public List<? extends XBeeResponse> collectResponses(int wait, CollectTerminator terminator) throws XBeeException;
 }

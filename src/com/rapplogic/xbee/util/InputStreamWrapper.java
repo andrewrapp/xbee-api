@@ -3,7 +3,7 @@ package com.rapplogic.xbee.util;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class InputStreamWrapper implements IIntArrayInputStream {
+public class InputStreamWrapper implements IIntInputStream {
 
 	private InputStream in;
 	

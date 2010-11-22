@@ -22,7 +22,7 @@ package com.rapplogic.xbee.util;
 /**
  *  //TODO replace with nio.IntBuffer
  */
-public class IntArrayInputStream implements IIntArrayInputStream {
+public class IntArrayInputStream implements IIntInputStream {
 
 	private int[] source;
 	private int pos;

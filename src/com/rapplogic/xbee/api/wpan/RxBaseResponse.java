@@ -19,9 +19,13 @@
 
 package com.rapplogic.xbee.api.wpan;
 
+import java.io.IOException;
+
+import com.rapplogic.xbee.api.IPacketParser;
 import com.rapplogic.xbee.api.XBeeAddress;
 import com.rapplogic.xbee.api.XBeeResponse;
 import com.rapplogic.xbee.util.ByteUtils;
+import com.rapplogic.xbee.util.IIntInputStream;
 
 /**
  * Series 1 XBee.  Common elements of 16 and 64 bit Address Receive packets
@@ -73,11 +77,22 @@ public abstract class RxBaseResponse extends XBeeResponse {
 	public XBeeAddress getSourceAddress() {
 		return sourceAddress;
 	}
-
+	
 	public void setSourceAddress(XBeeAddress sourceAddress) {
 		this.sourceAddress = sourceAddress;
 	}
 	
+	protected void parseBase(IPacketParser parser) throws IOException {
+		int rssi = parser.read("RSSI");
+		
+		// rssi is a negative dbm value
+		this.setRssi(-rssi);
+		
+		int options = parser.read("Options");
+		
+		this.setOptions(options);
+	}
+
 	public String toString() {
 		return super.toString() + ",sourceAddress=" + this.getSourceAddress() + ",rssi=" + this.getRssi() + ",options=" + this.getOptions() +
 			",isAddressBroadcast=" + this.isAddressBroadcast() + ",isPanBroadcast=" + this.isPanBroadcast();
