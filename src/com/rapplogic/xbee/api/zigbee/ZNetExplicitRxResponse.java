@@ -88,7 +88,7 @@ public class ZNetExplicitRxResponse extends ZNetRxResponse {
 		
 		DoubleByte profileId = new DoubleByte();
 		profileId.setMsb(parser.read("Reading Profile Id MSB"));
-		profileId.setMsb(parser.read("Reading Profile Id LSB"));
+		profileId.setLsb(parser.read("Reading Profile Id LSB"));
 		this.setProfileId(profileId);
 		
 		this.parseOption(parser);

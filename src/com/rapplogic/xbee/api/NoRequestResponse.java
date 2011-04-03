@@ -1,7 +1,8 @@
 package com.rapplogic.xbee.api;
 
 /**
- * Indicates a Response that is initiated by a radio (i.e. not sent in response to a request)
+ * This filter is used to capture only RX packets that are not a response to a TX packet.
+ * This includes I/O samples, RX packets, modem status etc.
  * 
  * @author andrew
  *

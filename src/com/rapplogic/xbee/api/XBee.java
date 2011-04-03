@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 
 import com.rapplogic.xbee.RxTxSerialComm;
 import com.rapplogic.xbee.XBeeConnection;
+import com.rapplogic.xbee.api.HardwareVersion.RadioType;
 import com.rapplogic.xbee.util.ByteUtils;
 
 /**
@@ -48,11 +49,6 @@ public class XBee implements IXBee {
 	private InputStreamThread parser;	
 	private XBeeConfiguration conf;
 	private RadioType type;
-	
-	public enum RadioType {
-		SERIES1,
-		SERIES2;
-	}
 	
 	public XBee() {
 		this(new XBeeConfiguration().withMaxQueueSize(100).withStartupChecks(true));
@@ -77,7 +73,7 @@ public class XBee implements IXBee {
 		// Perform startup checks
 		try {				
 			AtCommandResponse ap = this.sendAtCommand(new AtCommand("AP"));
-			
+
 			if (!ap.isOk()) {
 				throw new XBeeException("Attempt to query AP parameter failed");
 			}
@@ -99,31 +95,12 @@ public class XBee implements IXBee {
 
 			ap = this.sendAtCommand(new AtCommand("HV"));
 			
-			if (!ap.isOk()) {
-				throw new XBeeException("Attempt to query HV parameter failed");
-			}
+			RadioType radioType = HardwareVersion.parse(ap);
 			
-			if (ap.isOk()) {
-				switch (ap.getValue()[0]) {
-				case 0x17:
-					log.info("XBee radio is Series 1");
-					this.type = RadioType.SERIES1;
-					break;
-				case 0x18:
-					log.info("XBee radio is Series 1 Pro");
-					this.type = RadioType.SERIES1;
-					break;
-				case 0x19:
-					log.info("XBee radio is Series 2");
-					this.type = RadioType.SERIES2;
-					break;
-				case 0x1a:
-					log.info("XBee radio is Series 2 Pro");
-					this.type = RadioType.SERIES2;
-					break;
-				default:
-					log.warn("Unknown radio type (HV): " + ap.getValue()[0]);
-				}
+			log.info("XBee radio is " + radioType);	
+			
+			if (radioType == RadioType.UNKNOWN) {
+				log.warn("Unknown radio type (HV): " + ap.getValue()[0]);
 			}	
 			
 			AtCommandResponse vr = this.sendAtCommand(new AtCommand("VR"));

@@ -25,7 +25,7 @@ import java.io.IOException;
 //TODO Now supported by series 1 XBee. parseIoSample now needs to handle series 1 and 2
 
 /**
- * Supported by both series 1 (10C8 firmware and later) and series 2.  To be moved into common package in the future.
+ * Supported by both series 1 (10C8 firmware and later) and series 2.
  * Represents a response, corresponding to a RemoteAtRequest.
  * <p/>
  * API ID: 0x97
