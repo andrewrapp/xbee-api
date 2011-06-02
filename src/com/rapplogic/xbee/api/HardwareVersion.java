@@ -49,7 +49,7 @@ public class HardwareVersion {
 	
 	public static RadioType parse(AtCommandResponse response) throws XBeeException {
 		
-		if (response.getCommand().equals("HV")) {
+		if (!response.getCommand().equals("HV")) {
 			throw new IllegalArgumentException("This is only applicable to the HV command");
 		}
 		
