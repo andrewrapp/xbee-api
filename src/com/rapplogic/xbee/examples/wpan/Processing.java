@@ -1,4 +1,4 @@
-package com.rapplogic.xbee.api.wpan;
+package com.rapplogic.xbee.examples.wpan;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -8,6 +8,7 @@ import org.apache.log4j.PropertyConfigurator;
 import com.rapplogic.xbee.api.PacketListener;
 import com.rapplogic.xbee.api.XBee;
 import com.rapplogic.xbee.api.XBeeResponse;
+import com.rapplogic.xbee.api.wpan.RxResponseIoSample;
 
 public class Processing {
 	XBee xbee;
