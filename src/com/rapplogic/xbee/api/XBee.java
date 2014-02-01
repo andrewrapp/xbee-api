@@ -111,7 +111,7 @@ public class XBee implements IXBee {
 			
 			this.clearResponseQueue();
 		} catch (XBeeTimeoutException ex) {
-			throw new XBeeException("AT command timed-out while attempt to set/read in API mode.  The XBee radio must be in API mode (AP=2) to use with this library");
+			throw new XBeeException("AT command timed-out while attempt to set/read in API mode.  Check that the XBee radio is in API mode (AP=2); it will not function propertly in AP=1");
 		}		
 	}
 	
@@ -238,15 +238,18 @@ public class XBee implements IXBee {
 		// TODO call request listener with byte array
 		
 		if (!this.isConnected()) {
-			throw new RuntimeException("XBee is not connected");
+			throw new XBeeNotConnectedException();
 		}
 		
 		if (log.isInfoEnabled()) {
-			log.info("sending packet to XBee " + ByteUtils.toBase16(packet));	
+			log.info("Sending packet to XBee " + ByteUtils.toBase16(packet));	
 		}
 
-        for (int aPacket : packet) {
-        	xbeeConnection.getOutputStream().write(aPacket);
+        for (int packetByte : packet) {
+        	// if connection lost
+        	//Caused by: com.rapplogic.xbee.api.XBeeException
+        	//Caused by: java.io.IOException: Input/output error in writeArray
+        	xbeeConnection.getOutputStream().write(packetByte);
         }
 
         xbeeConnection.getOutputStream().flush();
@@ -405,6 +408,12 @@ public class XBee implements IXBee {
 	}
 	
 	private XBeeResponse getResponseTimeout(Integer timeout) throws XBeeException, XBeeTimeoutException {
+		
+		// seeing this with xmpp
+		if (!this.isConnected()) {
+			throw new XBeeNotConnectedException();
+		}
+		
 		XBeeResponse response;
 		try {
 			if (timeout != null) {
@@ -436,6 +445,12 @@ public class XBee implements IXBee {
 	 * @throws XBeeException
 	 */
 	public List<? extends XBeeResponse> collectResponses(int wait, CollectTerminator terminator) throws XBeeException {
+
+		// seeing this with xmpp
+		if (!this.isConnected()) {
+			throw new XBeeNotConnectedException();
+		}
+		
 		long start = System.currentTimeMillis();
 		long callStart = 0;
 		int waitTime;
@@ -499,6 +514,11 @@ public class XBee implements IXBee {
 	 * @return
 	 */
 	public int getResponseQueueSize() {
+		// seeing this with xmpp
+		if (!this.isConnected()) {
+			throw new XBeeNotConnectedException();
+		}
+		
 		return parser.getResponseQueue().size();
 	}
 	
@@ -594,6 +614,11 @@ public class XBee implements IXBee {
 	 * Removes all packets off of the response queue
 	 */
 	public void clearResponseQueue() {
+		// seeing this with xmpp
+		if (!this.isConnected()) {
+			throw new XBeeNotConnectedException();
+		}
+		
 		parser.getResponseQueue().clear();
 	}
 }

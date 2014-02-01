@@ -155,7 +155,6 @@ public class PacketParser implements IIntInputStream, IPacketParser {
 			log.info("Handling ApiId: " + apiId);
 			
 			// TODO parse I/O data page 12. 82 API Identifier Byte for 64 bit address A/D data (83 is for 16bit A/D data)
-			// TODO XBeeResponse should implement an abstract parse method
 			
 			for (Integer handlerApiId : handlerMap.keySet()) {
 				if (intApiId == handlerApiId) {

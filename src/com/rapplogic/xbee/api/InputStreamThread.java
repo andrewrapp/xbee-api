@@ -124,7 +124,7 @@ public class InputStreamThread implements Runnable {
 		}
 		// trim the queue
 		while (responseQueue.size() >= conf.getMaxQueueSize()) {
-			log.debug("Response queue has reached the maximum size of " + conf.getMaxQueueSize() + " packets.  Trimming a packet from head of queue to make room");
+			log.info("Response queue has reached the maximum size of " + conf.getMaxQueueSize() + " packets.  Trimming a packet from head of queue to make room");
 			responseQueue.poll();
 		}
 		

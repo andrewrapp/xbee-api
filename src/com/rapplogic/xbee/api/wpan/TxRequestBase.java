@@ -43,8 +43,7 @@ public abstract class TxRequestBase extends XBeeRequest {
 	private int maxPayloadSize;
 	
 	public enum Option {
-		
-		// TODO rename as unicast (delete _option for all)
+	
 		UNICAST (0),
 		DISABLE_ACK (1),
 		BROADCAST(4);

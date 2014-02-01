@@ -114,67 +114,64 @@ public class ZNetSenderExample {
 		
 		XBee xbee = new XBee();
 		
-		try {
-			// replace with port and baud rate of your XBee. this is the com port of my coordinator
-			xbee.open("/dev/tty.usbserial-A6005uPi", 9600);
+		// replace with port and baud rate of your XBee. this is the com port of my coordinator
+		//coord
+		xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
+		// coord (21A7)
+		//XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x8b, 0x98, 0xfe);
+		
+		// replace with end device's 64-bit address (SH + SL)
+		// router (firmware 23A7)
+		XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x8b, 0x98, 0xff);
+		 
+		// create an array of arbitrary data to send
+		int[] payload = new int[] { 'X', 'B', 'e', 'e' };
+		
+		// first request we just send 64-bit address.  we get 16-bit network address with status response
+		ZNetTxRequest request = new ZNetTxRequest(addr64, payload);
+		
+		log.debug("zb request is " + request.getXBeePacket().getPacket());
+		
+		log.info("sending tx " + request);
+		
+		while (true) {
+			log.info("request packet bytes (base 16) " + ByteUtils.toBase16(request.getXBeePacket().getPacket()));
 			
-			// replace with end device's 64-bit address (SH + SL)
-//			XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x0a, 0x3e, 0x02);
-			// my other remote
-			XBeeAddress64 addr64 = new XBeeAddress64(0, 0x13, 0xa2, 0, 0x40, 0x30, 0x3a, 0x23);
-			 
-			// create an array of arbitrary data to send
-			int[] payload = new int[] { 'X', 'B', 'e', 'e' };
+			long start = System.currentTimeMillis();
+			//log.info("sending tx packet: " + request.toString());
 			
-			// first request we just send 64-bit address.  we get 16-bit network address with status response
-			ZNetTxRequest request = new ZNetTxRequest(addr64, payload);
-			
-			log.debug("zb request is " + request.getXBeePacket().getPacket());
-			
-			log.info("sending tx " + request);
-			
-			while (true) {
-				log.info("request packet bytes (base 16) " + ByteUtils.toBase16(request.getXBeePacket().getPacket()));
+			try {
+				ZNetTxStatusResponse response = (ZNetTxStatusResponse) xbee.sendSynchronous(request, 10000);
+				// update frame id for next request
+				request.setFrameId(xbee.getNextFrameId());
 				
-				long start = System.currentTimeMillis();
-				//log.info("sending tx packet: " + request.toString());
+				log.info("received response " + response);
 				
-				try {
-					ZNetTxStatusResponse response = (ZNetTxStatusResponse) xbee.sendSynchronous(request, 10000);
-					// update frame id for next request
-					request.setFrameId(xbee.getNextFrameId());
-					
-					log.info("received response " + response);
-					
-					//log.debug("status response bytes:" + ByteUtils.toBase16(response.getPacketBytes()));
+				//log.debug("status response bytes:" + ByteUtils.toBase16(response.getPacketBytes()));
 
-					if (response.getDeliveryStatus() == ZNetTxStatusResponse.DeliveryStatus.SUCCESS) {
-						// the packet was successfully delivered
-						if (response.getRemoteAddress16().equals(XBeeAddress16.ZNET_BROADCAST)) {
-							// specify 16-bit address for faster routing?.. really only need to do this when it changes
-							request.setDestAddr16(response.getRemoteAddress16());
-						}							
-					} else {
-						// packet failed.  log error
-						// it's easy to create this error by unplugging/powering off your remote xbee.  when doing so I get: packet failed due to error: ADDRESS_NOT_FOUND  
-						log.error("packet failed due to error: " + response.getDeliveryStatus());
-					}
-					
-					// I get the following message: Response in 75, Delivery status is SUCCESS, 16-bit address is 0x08 0xe5, retry count is 0, discovery status is SUCCESS 
-					log.info("Response in " + (System.currentTimeMillis() - start) + ", Delivery status is " + response.getDeliveryStatus() + ", 16-bit address is " + ByteUtils.toBase16(response.getRemoteAddress16().getAddress()) + ", retry count is " +  response.getRetryCount() + ", discovery status is " + response.getDeliveryStatus());					
-				} catch (XBeeTimeoutException e) {
-					log.warn("request timed out");
+				if (response.getDeliveryStatus() == ZNetTxStatusResponse.DeliveryStatus.SUCCESS) {
+					// the packet was successfully delivered
+					if (response.getRemoteAddress16().equals(XBeeAddress16.ZNET_BROADCAST)) {
+						// specify 16-bit address for faster routing?.. really only need to do this when it changes
+						request.setDestAddr16(response.getRemoteAddress16());
+					}							
+				} else {
+					// packet failed.  log error
+					// it's easy to create this error by unplugging/powering off your remote xbee.  when doing so I get: packet failed due to error: ADDRESS_NOT_FOUND  
+					log.error("packet failed due to error: " + response.getDeliveryStatus());
 				}
-	
-				try {
-					// wait a bit then send another packet
-					Thread.sleep(10000);
-				} catch (InterruptedException e) {
-				}
+				
+				// I get the following message: Response in 75, Delivery status is SUCCESS, 16-bit address is 0x08 0xe5, retry count is 0, discovery status is SUCCESS 
+				log.info("Response in " + (System.currentTimeMillis() - start) + ", Delivery status is " + response.getDeliveryStatus() + ", 16-bit address is " + ByteUtils.toBase16(response.getRemoteAddress16().getAddress()) + ", retry count is " +  response.getRetryCount() + ", discovery status is " + response.getDeliveryStatus());					
+			} catch (XBeeTimeoutException e) {
+				log.warn("request timed out");
 			}
 
-		} finally {
-			xbee.close();
+			try {
+				// wait a bit then send another packet
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+			}
 		}
 	}
 	

@@ -228,6 +228,10 @@ public class ZNetNodeIdentificationResponse extends XBeeResponse {
 		int option = parser.read("Option");
 		this.setOption(ZNetNodeIdentificationResponse.Option.get(option));		
 
+		// TODO Verify address order - spec unclear at time of writing
+//		this.setRemoteAddress16_2(parser.parseAddress16());
+//		this.setRemoteAddress64_2(parser.parseAddress64());
+
 		// again with the addresses
 		this.setRemoteAddress64_2(parser.parseAddress64());
 		this.setRemoteAddress16_2(parser.parseAddress16());

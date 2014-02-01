@@ -48,8 +48,8 @@ public class ZNetReceiverExample {
 
 		try {			
 			// replace with the com port of your receiving XBee (typically your end device)
-//			xbee.open("/dev/tty.usbserial-A6005uRz", 9600);
-			xbee.open("/dev/tty.usbserial-A6005v5M", 9600);
+			// router
+			xbee.open("/dev/tty.usbserial-A6005uPi", 9600);
 			
 			while (true) {
 

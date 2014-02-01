@@ -46,6 +46,21 @@ public class AtCommand extends XBeeRequest {
 	private String command;
 	private int[] value;
 	
+//	// common i/o pin settings.  it is up to the developer to ensure the setting is applicable to the pin (e.g. not all pins support analog input)
+//	public enum IoSetting {
+//		DISABLED (new int[] {0x0}),
+//		ANALOG_INPUT (new int[] {0x2}),
+//		DIGITAL_INPUT (new int[] {0x3}),
+//		DIGITAL_OUTPUT_LOW (new int[] {0x4}),
+//		DIGITAL_OUTPUT_HIGH (new int[] {0x5});
+//		
+//	    private final int[] value;
+//	    
+//	    IoSetting(int[] value) {
+//	        this.value = value;
+//	    }
+//	}
+	
 	public AtCommand(String command) {
 		this(command, null, DEFAULT_FRAME_ID);
 	}

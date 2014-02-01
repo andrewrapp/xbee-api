@@ -100,6 +100,7 @@ public class IoSamplesExample {
 					if (response.getApiId() == ApiId.RX_16_IO_RESPONSE) {
 						RxResponseIoSample ioSample = (RxResponseIoSample)response;
 						
+						log.info("Received I/O sample from " + ioSample.getSourceAddress());
 						// optionally output the rssi strength
 						//log.info("rssi is " + ioSample.getRssi());
 						

@@ -61,6 +61,10 @@ public class RemoteAtRequest extends AtCommand {
 		this.remoteAddr16 = remoteAddress16;
 		this.applyChanges = applyChanges;
 	}
+
+	public RemoteAtRequest(int frameId, XBeeAddress64 remoteAddress64, XBeeAddress16 remoteAddress16, boolean applyChanges, String command, int value) {
+		this(frameId, remoteAddress64, remoteAddress16, applyChanges, command, new int[] {value});
+	}
 	
 	/**
 	 * Creates a Remote AT request for querying the current value of an AT command on a remote XBee
@@ -88,6 +92,10 @@ public class RemoteAtRequest extends AtCommand {
 		this(XBeeRequest.DEFAULT_FRAME_ID, dest64, XBeeAddress16.ZNET_BROADCAST, true, command, value);
 	}
 
+	public RemoteAtRequest(XBeeAddress64 dest64, String command, int value) {
+		this(XBeeRequest.DEFAULT_FRAME_ID, dest64, XBeeAddress16.ZNET_BROADCAST, true, command, new int[] {value});
+	}
+	
 	/**
 	 * Abbreviated Constructor for querying the value of an AT command on a remote XBee.
 	 * This defaults to the DEFAULT_FRAME_ID, and true for apply changes
@@ -127,6 +135,10 @@ public class RemoteAtRequest extends AtCommand {
 	 */
 	public RemoteAtRequest(XBeeAddress16 remoteAddress16, String command, int[] value) {
 		this(XBeeRequest.DEFAULT_FRAME_ID, XBeeAddress64.BROADCAST, remoteAddress16, true, command, value);
+	}
+
+	public RemoteAtRequest(XBeeAddress16 remoteAddress16, String command, int value) {
+		this(XBeeRequest.DEFAULT_FRAME_ID, XBeeAddress64.BROADCAST, remoteAddress16, true, command, new int[] {value});
 	}
 	
 	public int[] getFrameData() {		
