@@ -552,7 +552,7 @@ public class XBee implements IXBee {
 
 	/**
 	 * Indicates if serial port connection has been established.
-	 * The open method may be called if true it returned
+	 * The open method may be called if this returns true
 	 * 
 	 * @return
 	 */
