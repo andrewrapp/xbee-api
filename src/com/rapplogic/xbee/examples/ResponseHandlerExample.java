@@ -10,7 +10,7 @@ public class ResponseHandlerExample {
 
 	public ResponseHandlerExample() {
 		XBee xbee = new XBee();
-		xbee.registerResponseHandler(0x88, MyResponse.class);
+		XBee.registerResponseHandler(0x88, MyResponse.class);
 //		xbee.open(..);
 	}
 	
