@@ -24,7 +24,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.rapplogic.xbee.util.IIntInputStream;
+import org.apache.log4j.Logger;
 
 /**
  * RF module status messages are sent from the module in response to specific conditions. 
@@ -36,6 +36,8 @@ import com.rapplogic.xbee.util.IIntInputStream;
  */
 public class ModemStatusResponse extends XBeeResponse implements NoRequestResponse {
 		
+	private final static Logger log = Logger.getLogger(ModemStatusResponse.class);
+	
 	public enum Status {
 		HARDWARE_RESET (0),
 		WATCHDOG_TIMER_RESET (1),
@@ -43,7 +45,13 @@ public class ModemStatusResponse extends XBeeResponse implements NoRequestRespon
 		DISASSOCIATED (3),
 		SYNCHRONIZATION_LOST (4),
 		COORDINATOR_REALIGNMENT (5),
-		COORDINATOR_STARTED (6);
+		COORDINATOR_STARTED (6),
+		NETWORK_SEC_KEY_UPDATED (7),
+		VOLTAGE_SUPPLY_EXCEEDED (0x0D),
+		MODEM_CONFIG_CHANGED (0x11),
+		STACK_ERROR (0x80),
+		UNKNOWN(-1);
+		
 		
 		private static final Map<Integer,Status> lookup = new HashMap<Integer,Status>();
 		
@@ -83,7 +91,20 @@ public class ModemStatusResponse extends XBeeResponse implements NoRequestRespon
 	}
 
 	protected void parse(IPacketParser parser) throws IOException {
-		this.setStatus(ModemStatusResponse.Status.get(parser.read("Modem Status")));
+		int value = parser.read("Modem Status");
+		
+		if (value >= 0x80) {
+			this.setStatus(ModemStatusResponse.Status.STACK_ERROR);
+		} else {
+			ModemStatusResponse.Status status = ModemStatusResponse.Status.get(value);
+			
+			if (status == null) {
+				log.warn("Unknown status " + value);
+				this.setStatus(ModemStatusResponse.Status.UNKNOWN);
+			} else {
+				this.setStatus(status);
+			}
+		}
 	}
 	
 	public String toString() {

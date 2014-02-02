@@ -24,6 +24,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.rapplogic.xbee.api.IPacketParser;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeFrameIdResponse;
@@ -39,8 +41,31 @@ import com.rapplogic.xbee.api.XBeeFrameIdResponse;
  */
 public class ZNetTxStatusResponse extends XBeeFrameIdResponse {
 	
+	private final static Logger log = Logger.getLogger(ZNetTxStatusResponse.class);
+
 	public enum DeliveryStatus {
+//		0x00 = Success
+//		0x01 = MAC ACK Failure
+//		0x02 = CCA Failure
+//		0x15 = Invalid destination
+//		endpoint
+//		0x21 = Network ACK Failure
+//		0x22 = Not Joined to Network
+//		0x23 = Self-addressed
+//		0x24 = Address Not Found
+//		0x25 = Route Not Found
+//		0x26 = Broadcast source failed to hear a neighbor relay 
+//		the message 
+//		0x2B = Invalid binding table index
+//		0x2C = Resource error lack of free buffers, timers, etc.
+//		0x2D = Attempted broadcast with APS transmission
+//		0x2E = Attempted unicast with APS transmission, but 
+//		EE=0
+//		0x32 = Resource error lack of free
+//		0x74 = Data payload too large
+		
 		SUCCESS (0),
+		MAC_FAILURE (1),
 		CCA_FAILURE (0x02),
 		INVALID_DESTINATION_ENDPOINT (0x15),
 		NETWORK_ACK_FAILURE (0x21),
@@ -48,8 +73,15 @@ public class ZNetTxStatusResponse extends XBeeFrameIdResponse {
 		SELF_ADDRESSED (0x23),
 		ADDRESS_NOT_FOUND (0x24),
 		ROUTE_NOT_FOUND (0x25),
-		PAYLOAD_TOO_LARGE(0x74); // ZB Pro firmware only
-
+		BROADCAST_SOURCE_NEIGHBOR_FAILURE (0x26),
+		INVALID_BINDING_TABLE_INDEX (0x2B),
+		RESOURCE_ERROR_LACK_FREE_BUFFERS (0x2C),
+		ATTEMPTED_BROADCAST_WITH_APS_TX (0x2D),
+		ATTEMPTED_UNICAST_WITH_APS_TX_EE_ZERO (0x2E),
+		RESOURCE_ERROR_LACK_FREE_BUFFERS_0x32 (0x32), // WUT, SAME AS 2C
+		PAYLOAD_TOO_LARGE(0x74), // ZB Pro firmware only
+		UNKNOWN(-1);
+		
 		private static final Map<Integer,DeliveryStatus> lookup = new HashMap<Integer,DeliveryStatus>();
 		
 		static {
@@ -74,10 +106,23 @@ public class ZNetTxStatusResponse extends XBeeFrameIdResponse {
 	}
 
 	public enum DiscoveryStatus {
+//		0x00 = No Discovery	Overhead
+//		0x01 = Address Discovery
+//		0x02 = Route Discovery
+//		0x03 = Address and Route
+//		0x40 = Extended Timeout Discovery
+				
+		// NOTE 0x40 IS A bit field so going to be painful with enums
+		
 		NO_DISCOVERY (0),
 		ADDRESS_DISCOVERY (1),
 		ROUTE_DISCOVERY (2),
-		ADDRESS_AND_ROUTE_DISCOVERY(3);
+		ADDRESS_AND_ROUTE_DISCOVERY (3),
+		EXTENDED_TIMEOUT_DISCOVERY (0x40),
+		EXTENDED_TIMEOUT_DISCOVERY_0x41 (0x41),
+		EXTENDED_TIMEOUT_DISCOVERY_0x42 (0x42),
+		EXTENDED_TIMEOUT_DISCOVERY_0x43 (0x43),
+		UNKNOWN(-1);
 
 		private static final Map<Integer,DiscoveryStatus> lookup = new HashMap<Integer,DiscoveryStatus>();
 		
@@ -163,10 +208,22 @@ public class ZNetTxStatusResponse extends XBeeFrameIdResponse {
 		this.setRetryCount(parser.read("ZNet Tx Status Tx Count"));
 		
 		int deliveryStatus = parser.read("ZNet Tx Status Delivery Status");
-		this.setDeliveryStatus(ZNetTxStatusResponse.DeliveryStatus.get(deliveryStatus));
 		
+		if (DeliveryStatus.get(deliveryStatus) != null) {
+			this.setDeliveryStatus(DeliveryStatus.get(deliveryStatus));	
+		} else {
+			log.warn("Unknown delivery status " + deliveryStatus);
+			this.setDeliveryStatus(DeliveryStatus.UNKNOWN);
+		}
+
 		int discoveryStatus = parser.read("ZNet Tx Status Discovery Status");
-		this.setDiscoveryStatus(ZNetTxStatusResponse.DiscoveryStatus.get(discoveryStatus));
+		
+		if (DiscoveryStatus.get(discoveryStatus) != null) {
+			this.setDiscoveryStatus(DiscoveryStatus.get(discoveryStatus));	
+		} else {
+			log.warn("Unknown discovery status " + discoveryStatus);
+			this.setDiscoveryStatus(DiscoveryStatus.UNKNOWN);
+		}
 	}
 	
 	public String toString() {

@@ -24,6 +24,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.rapplogic.xbee.api.IPacketParser;
 import com.rapplogic.xbee.api.XBeeAddress16;
 import com.rapplogic.xbee.api.XBeeAddress64;
@@ -42,9 +44,32 @@ import com.rapplogic.xbee.api.XBeeResponse;
  */
 public abstract class ZNetRxBaseResponse extends XBeeResponse {
 
+	private final static Logger log = Logger.getLogger(ZNetRxBaseResponse.class);
+	
 	public enum Option {
+//		0x01 - Packet Acknowledged
+//		0x02 - Packet was a broadcast packet
+//		0x20 - Packet encrypted with APS encryption
+//		0x40 - Packet was sent from an end device (if known)
+//		Note: Option values can be combined. For example, a 
+//		0x40 and a 0x01 will show as a 0x41. Other possible 
+//		values 0x21, 0x22, 0x41, 0x42, 0x60, 0x61, 0x62.
+		
+		// TODO ugh this is mess now with bitfield indicators
+		// TODO ditch the enum, and replace with a class that has isBroadcast(), isPacketAcknowledged() etc
+		
 		PACKET_ACKNOWLEDGED (0x01),
-		BROADCAST_PACKET (0x02);
+		BROADCAST_PACKET (0x02),
+		PACKET_ENCRYPTED_WITH_APS (0x20),
+		PACKET_SENT_FROM_END_DEVICE(0x40),
+		PACKET_ACKNOWLEDGED_0x21 (0x21),
+		PACKET_ACKNOWLEDGED_0x41 (0x41),
+		PACKET_ACKNOWLEDGED_0x61 (0x61),
+		PACKET_ENCRYPTED_WITH_APS_PACKET_SENT_FROM_END_DEVICE (0x60),
+		BROADCAST_PACKET_0x22 (0x22),
+		BROADCAST_PACKET_0x42 (0x42),
+		BROADCAST_PACKET_0x62 (0x62),
+		UNKNOWN(-1);
 		
 		private static final Map<Integer,Option> lookup = new HashMap<Integer,Option>();
 		
@@ -108,9 +133,18 @@ public abstract class ZNetRxBaseResponse extends XBeeResponse {
 		this.setRemoteAddress16(parser.parseAddress16());		
 	}
 
+	protected static Option getOption(int option) {
+		if (Option.get(option) != null) {
+			return Option.get(option);	
+		} else {
+			log.warn("Unknown response option " + option);
+			return Option.UNKNOWN;
+		}		
+	}
+	
 	protected void parseOption(IPacketParser parser) throws IOException {
 		int option = parser.read("ZNet RX Response Option");
-		this.setOption(ZNetRxBaseResponse.Option.get(option));		
+		this.setOption(this.getOption(option));		
 	}
 	
 	public String toString() {

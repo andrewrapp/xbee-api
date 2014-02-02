@@ -154,6 +154,13 @@ public class RemoteAtRequest extends AtCommand {
 		// 16-bit address
 		out.write(remoteAddr16.getAddress());
 		
+		// TODO S2B remote command options
+		// TODO 0x40 is a bit field, ugh
+//		0x01 - Disable retries and route repair
+//		0x02 - Apply changes.
+//		0x20 - Enable APS encryption (if EE=1)
+//		0x40 - Use the extended transmission timeout
+		
 		if (applyChanges) {
 			out.write(2);	
 		} else {

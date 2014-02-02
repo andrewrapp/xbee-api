@@ -35,8 +35,14 @@ import com.rapplogic.xbee.util.ByteUtils;
  *
  */
 public class AtCommandResponse extends XBeeFrameIdResponse {
-	
+				
 	public enum Status {
+//		0 = OK
+//		1 = ERROR
+//		2 = Invalid Command
+//		3 = Invalid Parameter
+//		4 = Remote Command Transmission Failed
+				
 		OK (0),
 		ERROR (1),
 		INVALID_COMMAND (2),

@@ -64,11 +64,20 @@ public class ZNetTxRequest extends XBeeRequest {
 	private int maxPayloadSize;
 	
 	//TODO frameId should go last in all Request constructors since it is not specific to any one request
-	
+		
 	public enum Option {
+	
+		// TODO handle new options. option needs to be an int so you can do  Option.UNICAST | Option.DISABLE_RETRIES | Option.USE_EXTENDED_TIMEOUT etc
+		
+//		0x01 - Disable retries and route repair
+//		0x20 - Enable APS encryption (if EE=1)
+//		0x40 - Use the extended transmission timeout
 		
 		UNICAST (0),
-		BROADCAST (8);
+		BROADCAST (8),
+		DISABLE_RETRIES (1),
+		ENABLE_APS_ENCRYPTION (0x20),
+		USE_EXTENDED_TIMEOUT (0x40);
 		
 		private static final Map<Integer,Option> lookup = new HashMap<Integer,Option>();
 		
