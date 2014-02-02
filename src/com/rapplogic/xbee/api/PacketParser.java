@@ -140,7 +140,7 @@ public class PacketParser implements IIntInputStream, IPacketParser {
 			// length of api structure, starting here (not including start byte or length bytes, or checksum)
 			this.length = new XBeePacketLength(msbLength, lsbLength);
 
-			log.debug("packet length is " + ByteUtils.formatByte(length.getLength()));
+			log.debug("packet length is " + String.format("[0x%03X]", length.getLength()));
 			
 			// total packet length = stated length + 1 start byte + 1 checksum byte + 2 length bytes
 			
