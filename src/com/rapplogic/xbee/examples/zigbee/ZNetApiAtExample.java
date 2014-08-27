@@ -59,7 +59,9 @@ public class ZNetApiAtExample {
 //			this.configureCoordinator(xbee);
 //			this.configureEndDevice(xbee);
 		} finally {
-			xbee.close();
+			if (xbee != null && xbee.isConnected()) {
+				xbee.close();		
+			}
 		}
 	}
 

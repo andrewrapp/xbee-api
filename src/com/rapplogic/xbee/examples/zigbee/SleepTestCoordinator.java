@@ -52,7 +52,9 @@ public class SleepTestCoordinator {
 			
 			Thread.sleep(2000);
 			
-			xbee.close();
+			if (xbee != null && xbee.isConnected()) {
+				xbee.close();		
+			}
 		} else {
 			System.err.println("arg should be on or off");
 		}

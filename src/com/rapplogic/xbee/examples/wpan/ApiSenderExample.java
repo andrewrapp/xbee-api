@@ -121,7 +121,9 @@ public class ApiSenderExample {
 				Thread.sleep(sleep);
 			}
 		} finally {
-			xbee.close();
+			if (xbee != null && xbee.isConnected()) {
+				xbee.close();		
+			}
 		}
 	}
 

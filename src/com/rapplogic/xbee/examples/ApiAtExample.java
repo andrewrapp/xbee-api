@@ -24,6 +24,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 import com.rapplogic.xbee.api.AtCommand;
 import com.rapplogic.xbee.api.XBee;
+import com.rapplogic.xbee.api.XBeeConfiguration;
 import com.rapplogic.xbee.api.XBeeException;
 
 /** 
@@ -43,7 +44,7 @@ public class ApiAtExample {
 	 
 	private final static Logger log = Logger.getLogger(ApiAtExample.class);
 	
-	private XBee xbee = new XBee();
+	private XBee xbee = new XBee(new XBeeConfiguration().withStartupChecks(false));
 	
 	public ApiAtExample() throws XBeeException {
 			
@@ -64,7 +65,9 @@ public class ApiAtExample {
 		} catch (Exception e) {
 			log.error("at command failed", e);
 		} finally {
-			xbee.close();
+			if (xbee != null && xbee.isConnected()) {
+				xbee.close();		
+			}
 		}
 	}
 	

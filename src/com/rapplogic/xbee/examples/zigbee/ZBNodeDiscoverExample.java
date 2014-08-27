@@ -83,7 +83,9 @@ public class ZBNodeDiscoverExample {
 				}
 			}
 		} finally {
-			xbee.close();
+			if (xbee != null && xbee.isConnected()) {
+				xbee.close();		
+			}
 		}
 	}
 	

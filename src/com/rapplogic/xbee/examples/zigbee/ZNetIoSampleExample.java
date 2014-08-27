@@ -53,7 +53,9 @@ public class ZNetIoSampleExample implements PacketListener {
 			// wait forever
 			synchronized(this) { this.wait(); }
 		} finally {
-			xbee.close();
+			if (xbee != null && xbee.isConnected()) {
+				xbee.close();		
+			}
 		}
 	}
 	

@@ -86,8 +86,8 @@ public class ZNetReceiverExample {
 				}
 			}
 		} finally {
-			if (xbee.isConnected()) {
-				xbee.close();
+			if (xbee != null && xbee.isConnected()) {
+				xbee.close();		
 			}
 		}
 	}

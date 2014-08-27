@@ -85,7 +85,9 @@ public class ZNetExplicitSenderExample {
 				}
 			}
 		} finally {
-			xbee.close();
+			if (xbee != null && xbee.isConnected()) {
+				xbee.close();		
+			}
 		}
 	}
 	

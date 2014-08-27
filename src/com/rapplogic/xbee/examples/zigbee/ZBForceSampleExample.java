@@ -80,7 +80,9 @@ public class ZBForceSampleExample {
 				Thread.sleep(2000);
 			}
 		} finally {
-			xbee.close();
+			if (xbee != null && xbee.isConnected()) {
+				xbee.close();		
+			}
 		}
 	}
 
