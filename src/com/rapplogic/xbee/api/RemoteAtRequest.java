@@ -98,7 +98,7 @@ public class RemoteAtRequest extends AtCommand {
 	
 	/**
 	 * Abbreviated Constructor for querying the value of an AT command on a remote XBee.
-	 * This defaults to the DEFAULT_FRAME_ID, and true for apply changes
+	 * This defaults to the DEFAULT_FRAME_ID, and false for apply changes
 	 * 
 	 * @param dest64
 	 * @param command
@@ -113,7 +113,7 @@ public class RemoteAtRequest extends AtCommand {
 	 * Creates a Remote AT instance for querying the value of an AT command on a remote XBee, 
 	 * by specifying the 16-bit address.  Uses the broadcast address for 64-bit address (00 00 00 00 00 00 ff ff)
 	 * <p/>
-	 * Defaults are: frame id: 1, applyChanges: true
+	 * Defaults are: frame id: 1, applyChanges: false
 	 * 
 	 * @param dest64
 	 * @param command
