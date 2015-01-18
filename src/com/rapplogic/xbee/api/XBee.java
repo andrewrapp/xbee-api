@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-import com.rapplogic.xbee.RxTxSerialComm;
+import com.rapplogic.xbee.SerialPortConnection;
 import com.rapplogic.xbee.XBeeConnection;
 import com.rapplogic.xbee.api.HardwareVersion.RadioType;
 import com.rapplogic.xbee.util.ByteUtils;
@@ -128,7 +128,7 @@ public class XBee implements IXBee {
 			
 			this.type = null;
 			
-			RxTxSerialComm serial = new RxTxSerialComm(); 
+			SerialPortConnection serial = new SerialPortConnection(); 
 			serial.openSerialPort(port, baudRate);
 			
 			this.initConnection(serial);

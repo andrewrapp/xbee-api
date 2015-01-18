@@ -70,9 +70,6 @@ public class InputStreamThread implements Runnable {
 		this.connection = connection;
 		this.conf = conf;
 		
-//		executor = Executors.newFixedThreadPool(1);
-//		executor.submit(this);
-
         // Create an executor to deliver incoming packets to listeners. We'll use a single
         // thread with an unbounded queue.
 		listenerPool = Executors.newSingleThreadExecutor();
@@ -189,17 +186,23 @@ public class InputStreamThread implements Runnable {
 		} catch(InterruptedException ie) {
 			// We've been told to stop -- the user called the close() method			
 			log.info("Packet parser thread was interrupted.  This occurs when close() is called");
+		} catch (Throwable t) {
+			log.error("Error in input stream thread.. exiting", t);
 		} finally {
-			if (connection != null) {
-				connection.close();
-			}
-			
-			if (listenerPool != null) {
-				try {
-					listenerPool.shutdownNow();
-				} catch (Throwable t) {
-					log.warn("Failed to shutdown listner thread pool", t);
+			try {
+				if (connection != null) {
+					connection.close();
 				}
+				
+				if (listenerPool != null) {
+					try {
+						listenerPool.shutdownNow();
+					} catch (Throwable t) {
+						log.warn("Failed to shutdown listner thread pool", t);
+					}
+				}				
+			} catch (Throwable t) {
+				log.error("Error in input stream thread finally", t);
 			}
 		}
 		

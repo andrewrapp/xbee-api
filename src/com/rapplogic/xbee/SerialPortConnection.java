@@ -44,16 +44,16 @@ import com.rapplogic.xbee.api.XBeeException;
  * @author andrew
  * 
  */
-public class RxTxSerialComm implements XBeeConnection, SerialPortEventListener {
+public class SerialPortConnection implements XBeeConnection, SerialPortEventListener {
 
-	private final static Logger log = Logger.getLogger(RxTxSerialComm.class);
+	private final static Logger log = Logger.getLogger(SerialPortConnection.class);
 	
 	private InputStream inputStream;
 	private OutputStream outputStream;
 
 	private SerialPort serialPort;
 	
-	public RxTxSerialComm() {
+	public SerialPortConnection() {
 	
 	}
 	

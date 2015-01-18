@@ -221,7 +221,21 @@ public class XBeePacket {
 	}
 	
 	/**
-	 * Returns true if the packet is valid
+	 * Must be called with unescapted packet
+	 * 
+	 * @param packet
+	 * @return
+	 */
+	public static int getPacketLength(int[] packet) {
+		if (packet.length < 3) {
+			return 0;
+		}
+		
+		return new XBeePacketLength(packet[1], packet[2]).getLength();
+	}
+	
+	/**
+	 * Returns true if the packet is valid, Verifies both TX (escaped) and RX (unescaped)
      *
 	 * @param packet
 	 * @return
@@ -233,15 +247,25 @@ public class XBeePacket {
 			if (packet[0] != SpecialByte.START_BYTE.getValue()) {
 				return false;
 			}
+			
+			// what's the min? I don't know but less than 3
+			if (packet.length < 4) {
+				return false;
+			}
 					
-			// first need to unescape packet
+			// first need to unescape packet, if necessary
 			int[] unEscaped = unEscapePacket(packet);
 
-			XBeePacketLength len = new XBeePacketLength(unEscaped[1], unEscaped[2]);
+			int len = getPacketLength(unEscaped);
+			
+			// doesn't account for escape bytes but will be caught in verify
+			if (packet.length < len + 4) {
+				return false;
+			}
 			
 			// stated packet length does not include start byte, length bytes, or checksum and is calculated before escaping
 			
-			int[] frameData = new int[len.get16BitValue()];
+			int[] frameData = new int[len];
 			
 			Checksum checksum = new Checksum();
 			
