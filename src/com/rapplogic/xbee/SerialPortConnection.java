@@ -114,24 +114,25 @@ public class SerialPortConnection implements XBeeConnection, SerialPortEventList
 	/**
 	 * Shuts down RXTX
 	 */
-	public void close() {
+	@Override
+	public void close() throws IOException {
 		try {
 			serialPort.getInputStream().close();
-		} catch (Exception e) {
-			log.warn("Exception while closing input stream", e);
+		} catch (NullPointerException e) {
+			
 		}
 
 		try {
 			serialPort.getOutputStream().close();
-		} catch (Exception e) {
-			log.warn("Exception while closing output stream", e);
+		} catch (NullPointerException e) {
+
 		}
 		
 		try {
 			// this call blocks while thread is attempting to read from inputstream
 			serialPort.close();
-		} catch (Exception e) {
-			log.warn("Exception while closing serial port");
+		} catch (NullPointerException e) {
+
 		}
 	}
 	

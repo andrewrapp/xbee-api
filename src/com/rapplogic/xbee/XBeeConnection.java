@@ -1,5 +1,6 @@
 package com.rapplogic.xbee;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -20,5 +21,5 @@ import java.io.OutputStream;
 public interface XBeeConnection {
 	public OutputStream getOutputStream();
 	public InputStream getInputStream();
-	public void close();
+	public void close() throws IOException; 
 }

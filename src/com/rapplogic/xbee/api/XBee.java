@@ -540,10 +540,13 @@ public class XBee implements IXBee {
 		}
 		
 		try {
-			this.xbeeConnection.getOutputStream().close();
+//			xbeeConnection.getOutputStream().close();
+			xbeeConnection.close();
 		} catch (IOException e) {
-			log.warn("Failed to close output stream", e);
+			log.warn("Failed to close connection", e);
 		}
+		
+
 		
 		this.type = null;
 		parser = null;

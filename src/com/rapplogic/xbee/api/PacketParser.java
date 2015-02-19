@@ -188,13 +188,15 @@ public class PacketParser implements IIntInputStream, IPacketParser {
 			((ErrorResponse)response).setErrorMsg(exception.getMessage());	
 			// but this isn't
 			((ErrorResponse)response).setException(e);
-		} finally {
+		}
+		
+		if (response != null) {
 			response.setLength(length);
 			response.setApiId(apiId);			
 			// preserve original byte array for transfer over networks
-			response.setRawPacketBytes(rawBytes.getIntArray());
+			response.setRawPacketBytes(rawBytes.getIntArray());			
 		}
-		
+
 		return response;
 	}
 	

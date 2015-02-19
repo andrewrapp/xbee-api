@@ -37,18 +37,26 @@ public class XBeeAddress64 extends XBeeAddress  {
 
 	/**
 	 * Parses an 64-bit XBee address from a string representation
-	 * Must be in the format "## ## ## ## ## ## ## ##" (i.e. don't use 0x prefix)
+	 * May be contain spaces ## ## ## ## ## ## ## ## or without ################ but cannot use the 0x prefix
+	 * ex: 0013A200408B98FF or 00 13 A2 00 40 8B 98 FF
 	 * 
 	 * @param addressStr
 	 */
-	public XBeeAddress64(String addressStr) {
-		StringTokenizer st = new StringTokenizer(addressStr, " ");
-		
+	public XBeeAddress64(String addressStr) {		
 		address = new int[8];
 		
-		for (int i = 0; i < address.length; i++) {
-			String byteStr = st.nextToken();
-			address[i] = Integer.parseInt(byteStr, 16);
+		if (addressStr.contains(" ")) {
+			StringTokenizer st = new StringTokenizer(addressStr, " ");
+			
+			for (int i = 0; i < address.length; i++) {
+				String byteStr = st.nextToken();
+				address[i] = Integer.parseInt(byteStr, 16);
+			}			
+		} else {
+			// secretly also handle no space format
+			for (int i = 0; i < address.length; i++) {
+				address[i] = Integer.parseInt(addressStr.substring(i*2, i*2+2), 16);
+			}			
 		}
 	}
 	

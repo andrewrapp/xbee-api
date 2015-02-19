@@ -136,21 +136,6 @@ public class XBeePacket {
 
 			log.debug("pre-escape packet size is " + preEscapeLength + ", post-escape packet size is " + packet.length);
 		}
-		
-		// 10/25/08 testing znet tx packet: max packet size that succeeded is 96.  when sending all escape bytes, pre-escape max is 94
-//		final int maxPacketSize = 94;
-		
-		// This seems like a nice idea but it depends on which radio type is involved and possibly several other factors.
-		// The packet size validation in the TX Request class should suffice.
-		// if you don't get an ACK response back, one explanation is your packet is too large
-
-		//		if (preEscapeLength > maxPacketSize) {
-//			throw new RuntimeException("This packet (pre escape) exceeds the max size of " + maxPacketSize);
-////			log.warn("p.48 indicates DI can handle 100 bytes: RF transmission will also commence after 100 Bytes (maximum packet size) are received in the DI buffer.");
-////			// WTF p.48 indicates DI can handle 100 bytes: RF transmission will also commence after 100 Bytes (maximum packet size) are received in the DI buffer.
-////			throw new RuntimeException("This packet exceeds the DI buffer limit of 34 bytes this API does not use Hardware Flow Control (XBee manual p.11)");
-////			log.warn("packet exceeds max length of 100");
-//		}
 	}
 	
 	/**
@@ -227,15 +212,11 @@ public class XBeePacket {
 	 * @return
 	 */
 	public static int getPacketLength(int[] packet) {
-		if (packet.length < 3) {
-			return 0;
-		}
-		
 		return new XBeePacketLength(packet[1], packet[2]).getLength();
 	}
 	
 	/**
-	 * Returns true if the packet is valid, Verifies both TX (escaped) and RX (unescaped)
+	 * Returns true if the packet is valid, Verifies both escaped and un-escaped packets
      *
 	 * @param packet
 	 * @return
@@ -247,23 +228,31 @@ public class XBeePacket {
 			if (packet[0] != SpecialByte.START_BYTE.getValue()) {
 				return false;
 			}
-			
-			// what's the min? I don't know but less than 3
-			if (packet.length < 4) {
+
+			if (packetEndsWithEscapeByte(packet)) {
+				// packet can never end on a escape byte since the following byte is xor to unescape and will result in a array out of bounds exception
+				// this is an incomplete packet
 				return false;
 			}
-					
-			// first need to unescape packet, if necessary
+			
+			// first need to un-escape packet since escape bytes complicate things
 			int[] unEscaped = unEscapePacket(packet);
-
+			
+			// in theory 3 bytes are the minimum for 0 byte packet with no escape bytes. any less it can't be valid
+			if (unEscaped.length < 3) {
+				return false;
+			}
+			
 			int len = getPacketLength(unEscaped);
 			
-			// doesn't account for escape bytes but will be caught in verify
-			if (packet.length < len + 4) {
+			// total packet length = stated length + 1 start byte + 1 checksum byte + 2 length bytes
+			// stated packet length does include escaping bytes, so actual packet size can be much larger, almost double
+			int expectedPacketLength = len + 4;
+			
+			// if we are less bytes than expected packet length it can't be valid
+			if (unEscaped.length != expectedPacketLength) {
 				return false;
 			}
-			
-			// stated packet length does not include start byte, length bytes, or checksum and is calculated before escaping
 			
 			int[] frameData = new int[len];
 			
@@ -287,17 +276,28 @@ public class XBeePacket {
 		return valid;
 	}
 	
+	public static boolean packetEndsWithEscapeByte(int[] packet) {
+		return (packet[packet.length - 1] == SpecialByte.ESCAPE.getValue());
+	}
+	
 	/**
 	 * 
 	 * @param packet
 	 * @return
+	 * @throws IncompletePacketException 
 	 */
 	public static int[] unEscapePacket(int[] packet) {
 	
 		int escapeBytes = 0;
+		
+		if (packetEndsWithEscapeByte(packet)) {
+			//packet can never end on a escape byte since the following byte is xor to unescape and will result in a array out of bounds exception
+			throw new RuntimeException("Invalid packet -- packet cannot end with an escape byte " + ByteUtils.toBase16(packet));
+		}
 
-        for (int aPacket : packet) {
-            if (aPacket == SpecialByte.ESCAPE.getValue()) {
+		// first check if escape byte exists, if not we don't allocate a new array
+        for (int b : packet) {
+            if (b == SpecialByte.ESCAPE.getValue()) {
                 escapeBytes++;
             }
         }
@@ -313,6 +313,10 @@ public class XBeePacket {
 		for (int i = 0; i < packet.length; i++) {
 			if (packet[i] == SpecialByte.ESCAPE.getValue()) {
 				// discard escape byte and un-escape following byte
+				if (i >= packet.length - 1) {
+					return packet;
+				}
+				
 				unEscapedPacket[pos] = 0x20 ^ packet[++i];
 			} else {
 				unEscapedPacket[pos] = packet[i];
