@@ -17,12 +17,17 @@ This is a Java API for communication with XBee/XBee-Pro series 1 (802.15.4) and 
 
 ## Documentation ##
 
-  * [Developer's Guide](DevelopersGuide.md)
-  * [Javadocs](http://xbee-api.googlecode.com/svn/trunk/docs/api/index.html)
-  * [Wiki Docs](http://code.google.com/p/xbee-api/w/list)
+Note: some image links may not render correctly from the googlecode export
+
+  * [Developer's Guide](https://github.com/andrewrapp/xbee-api/blob/wiki/DevelopersGuide.md)
+  * [Use Cases](https://github.com/andrewrapp/xbee-api/blob/wiki/XBeeUseCases.md)
+  * [XBee Configuration](https://github.com/andrewrapp/xbee-api/blob/wiki/XBeeConfiguration.md)
+  * [Choosing an XBee](https://github.com/andrewrapp/xbee-api/blob/wiki/ChoosingAnXBee.md)
+  * [Why API Mode](https://github.com/andrewrapp/xbee-api/blob/wiki/WhyApiMode.md)
+  * [XBee Pin Reference](https://github.com/andrewrapp/xbee-api/blob/wiki/XBeePins.md)
   * [Digi XBee Series 1/802.15.4/S1](http://www.digi.com/products/wireless-wired-embedded-solutions/zigbee-rf-modules/point-multipoint-rfmodules/xbee-series1-module#docs) [(Product Manual)](http://ftp1.digi.com/support/documentation/90000982_S.pdf)
   * [Digi XBee Series 2/ZB/S2](http://www.digi.com/products/wireless-wired-embedded-solutions/zigbee-rf-modules/zigbee-mesh-module/xbee-zb-module#docs) [(Product Manual)](http://ftp1.digi.com/support/documentation/90000976_V.pdf)
-
+ * [All wiki docs ported from googlecode](https://github.com/andrewrapp/xbee-api/tree/wiki)
 ## Learning/Books ##
 
   * [Wireless Sensor Networks: with ZigBee, XBee, Arduino, and Processing](http://www.amazon.com/gp/product/0596807732?ie=UTF8&tag=xbapra-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0596807732Building) (Kindle version available)
