@@ -1,0 +1,27 @@
+This project is currently packaged for Eclipse; this is primarily for convenience during development as you can change code and run quickly (Ctrl-F11).  Eventually it may make sense to package in a format more suitable for stand-alone deployment.
+
+This API has been developed with firmware version 1.0.A.5 (802.15.4), 1.x.4.1 (ZNet), and x.9.4.1 (ZB Pro).  Older versions may work but certain features may not be present, such as I/O Line Passing.  See Digi Firmware history for more information.  The following link describes how to update your XBee's firmware with the X-CTU software (PC only) http://ftp1.digi.com/support/firmware/howtoupdatefirmwareinmodules.htm
+
+Aside from the "xbee.transparent" package, this software is designed for use with XBee radios configured in API mode.  When using this software in API mode, you should configure your XBee for API mode "2" (escaped control bytes) as it may or may not work in AP mode "1".  This applies for both 802.15.4 and ZNet/ZB Pro radios.  If you see a message similar to this in the log, it likely means that your radio is not configured for API mode "2": "WARN: Found unescaped special byte base10=19,base16=0x13,base2=00010011 at position 10"
+
+The ZNet manual has the following to say about the WR AT command (writes to non-volitile memory): "The WR command should be used sparingly. The EM250 supports a limited number of write cycles.“ I have no idea how many "limited" means, but if you are doing development I recommend minimizing your use of WR, where possible.  I don't know if this issue also affects the 802.15.4 XBees.
+
+The API depends on the RXTX library for serial communication.  As a result it should work on any compatible platform.  I have included the native RXTX library for Windows Mac and Linux, which should cover the vast majority of users.  For other platforms supported by RXTX you will need to acquire the library and place it in the root of the project where Eclipse can locate it.  Note: the Mac librxtxSerial.jnilib that is packaged with rxtx-2.1-7-bins-[r2](https://code.google.com/p/xbee-api/source/detail?r=2).zip does not work.  It throws a PortInUseException exception even when the port is not being used.  This appears to be a known issue.  As a workaround I have included the librxtxSerial.jnilib version that is bundled with the Arduino software.
+
+If you are getting the following error, it's possible that there is another Java process that is using RXTX.  This occurs in Eclipse if you launch the app without terminating the previous process.  To remedy, you just need to close and restart Eclipse and the error should go away.  Or if you are running from the command-line, you will need to find and kill the process (e.g. ps -ef | grep java).
+```
+Error 0x5 at /home/user/rxtx-devel/build/../src/termios.c(2714): Access is denied.
+Error 0x5 at /home/user/rxtx-devel/build/../src/termios.c(482): Access is denied.
+```
+
+While developing for the 0.5 release, I upgraded my series 2 (ZNet 2.5) radios to the ZB (ZigBee PRO) firmware by following this [doc](ftp://ftp1.digi.com/support/images/ZNet%202.5%20to%20ZB%20Conversion%20Kit.zip).  I updated an API coordinator (1941) and an API end device (2941).  Everything was going swimmingly until I opened my end device in X-CTU, after flashing, and attempted to set a few configuration options.  It would fail consistently during the write operation.  I then contacted Digi support but they were unable to resolve the issue.  As it turned out, the radio was constantly going to sleep because the default sleep mode is 4 (cyclic sleep).  In fact, sleep mode 0 (disabled) is not even supported in this firmware.  Hans (a XBee API user), informed me of a clever solution to disable sleep by setting the sleep mode to 1 (pin hibernate) and grounding the sleep pin -- works great!  The Digi manual still incorrectly shows SM 0 as the default option.
+
+To send/receive Explicit packets, you must configure your radio with AO=1, and while in this configuration you cannot use non-Explicit packets (0x10 and 0x90).
+
+The Analog to Digital convertor (ADC) on ZigBee radios only measure voltages from 0 to 1.2 volts.  This is a bit odd given that the reference voltage is 3.3V.  I found that if you apply 3.3V to an ADC pin, it will set **all** enabled ADC pins to 1023.  Somewhere around 1.6V, it only sets the actual pin to 1023.  I can't find any documentation that mentions the 1.2V limitation.
+
+I have received feedback from several individuals that are using my software in their projects.  I appreciate hearing from users and will always attempt, time permitting, to respond to and help out with any possible issues.  My contact information is on the main project page.
+
+WARNING/DISCLAIMER: This software contains bugs and not all features have been tested.  I do attempt to test as much as possible but I simply don't have time to do a full regression test for each release.  That said, please report any issues encountered on the [issue tracker](http://code.google.com/p/xbee-api/issues/list) so that I can resolve them quickly.  Please keep in mind that I will likely make changes to the API that will break code of previous versions, although I will attempt to minimize these types of changes.
+
+For more information about XBee radios visit [Digi](http://www.digi.com/products/embeddedsolutions/zigbeesolutions/)
