@@ -29,6 +29,8 @@ Note: some image links may not render correctly from the googlecode export
   * [Digi XBee Series 2/ZB/S2](http://www.digi.com/products/wireless-wired-embedded-solutions/zigbee-rf-modules/zigbee-mesh-module/xbee-zb-module#docs) [(Product Manual)](http://ftp1.digi.com/support/documentation/90000976_V.pdf)
   * [All wiki docs ported from googlecode](https://github.com/andrewrapp/xbee-api/tree/wiki)
 
+[Google Group](https://groups.google.com/forum/#!forum/xbee-api)
+
 ## Learning/Books ##
   * [Wireless Sensor Networks: with ZigBee, XBee, Arduino, and Processing](http://www.amazon.com/gp/product/0596807732?ie=UTF8&tag=xbapra-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=0596807732Building) (Kindle version available)
   * [Making Things Talk: Using Sensors, Networks, and Arduino to see, hear, and feel your world](http://www.amazon.com/gp/product/1449392431/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=1449392431&linkCode=as2&tag=xbapra-20)
