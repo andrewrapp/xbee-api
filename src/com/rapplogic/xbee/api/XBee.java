@@ -51,7 +51,7 @@ public class XBee implements IXBee {
 	private RadioType type;
 	
 	public XBee() {
-		this(new XBeeConfiguration().withMaxQueueSize(100).withStartupChecks(true));
+		this(new XBeeConfiguration().withMaxQueueSize(100));
 	}
 	
 	public XBee(XBeeConfiguration conf) {
