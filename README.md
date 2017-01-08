@@ -6,6 +6,7 @@ This is a Java API for communication with XBee/XBee-Pro series 1 (802.15.4) and 
 **Note: This software requires API mode, by setting  AP=2. If you are using Series 2 XBee, you'll need to install API Firmware (coordinator, router or endpoint) with X-CTU since they ship with AT firmware.  This software will not work correctly with AP=1**  Refer to [XBeeConfiguration](https://github.com/andrewrapp/xbee-api/wiki/XBeeConfiguration) and WhyApiMode for more info.
 
 ## News ##
+  * 1/8/17 In Maven central https://search.maven.org/#artifactdetails%7Ccom.rapplogic%7Cxbee-api%7C0.9.1%7Cjar You'll still need the RXTX native module installed and referenced in java command with -Djava.library.path=/usr/lib/jni/
   * 2/19/15 I've created [xbee-socket](https://github.com/andrewrapp/xbee-socket) and [xbee-serial-server](https://github.com/andrewrapp/xbee-serial-server) projects for sharing a single xbee radio with multiple applications, over sockets. This is very beta. Also, [this](https://github.com/andrewrapp/xbee-api) code is now on github.
   * 2/1/14 Converted repository from Subversion to Git
   * 6/11/13 Yeah, you can use [xbee-api with your Raspberry Pi](http://rapplogic.blogspot.com/2013/06/xbee-on-raspberry-pi.html)
