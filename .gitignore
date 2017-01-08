@@ -1,2 +1,6 @@
-/bin
-/target
+**/*.iml
+**/*.idea
+**/project/project
+**/project/target
+**/target
+**/.DS_Store
