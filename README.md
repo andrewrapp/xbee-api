@@ -25,8 +25,8 @@ Note: some image links may not render correctly from the googlecode export
   * [Choosing an XBee](https://github.com/andrewrapp/xbee-api/blob/wiki/ChoosingAnXBee.md)
   * [Why API Mode](https://github.com/andrewrapp/xbee-api/blob/wiki/WhyApiMode.md)
   * [XBee Pin Reference](https://github.com/andrewrapp/xbee-api/blob/wiki/XBeePins.md)
-  * [Digi XBee Series 1/802.15.4/S1](http://www.digi.com/products/wireless-wired-embedded-solutions/zigbee-rf-modules/point-multipoint-rfmodules/xbee-series1-module#docs) [(Product Manual)](http://ftp1.digi.com/support/documentation/90000982_S.pdf)
-  * [Digi XBee Series 2/ZB/S2](http://www.digi.com/products/wireless-wired-embedded-solutions/zigbee-rf-modules/zigbee-mesh-module/xbee-zb-module#docs) [(Product Manual)](http://ftp1.digi.com/support/documentation/90000976_V.pdf)
+  * [Digi XBee Series 1/802.15.4/S1](https://www.digi.com/support/productdetail?pid=3257)
+  * [Digi XBee Series 2/ZB/S2](https://www.digi.com/support/productdetail?pid=3430)
   * [All wiki docs ported from googlecode](https://github.com/andrewrapp/xbee-api/tree/wiki)
 
 [Google Group](https://groups.google.com/forum/#!forum/xbee-api)
