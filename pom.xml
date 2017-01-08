@@ -3,32 +3,114 @@
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.rapplogic</groupId>
-	<artifactId>xbeeapi</artifactId>
+	<artifactId>xbee-api</artifactId>
 	<packaging>jar</packaging>
 	<version>0.9.1-SNAPSHOT</version>
-	<name>XBee-API</name>
+
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>A java library for communicating with XBee radios</description>
+	<url>https://github.com/andrewrapp/xbee-api/</url>
+
+	<licenses>
+		<license>
+			<name>GPL license, Version 3.0</name>
+			<url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Andrew Rapp</name>
+			<email>andrew.rapp+github.com@gmail.com</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:andrewrapp/xbee-api.git</connection>
+		<developerConnection>scm:git:git@github.com:andrewrapp/xbee-api.git</developerConnection>
+		<url>https://github.com/andrewrapp/xbee-api/</url>
+	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
 	</properties>
 
 	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<resources>
-			<resource>
-				<directory>resources</directory>
-			</resource>
-		</resources>
+		<!--<sourceDirectory>src</sourceDirectory>-->
+		<!--<resources>-->
+			<!--<resource>-->
+				<!--<directory>resources</directory>-->
+			<!--</resource>-->
+		<!--</resources>-->
 
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.3</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<stagingProfileId>19375019933d12</stagingProfileId>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<additionalparam>-Xdoclint:none</additionalparam>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
