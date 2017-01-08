@@ -3,13 +3,13 @@ xbee-api
 
 This is a Java API for communication with XBee/XBee-Pro series 1 (802.15.4) and series 2 (ZB/ZigBee Pro) OEM RF Modules, in API mode.  The objective of this project is to provide a flexible and simple to use API to interact with XBee radios.  In terms of flexibility, the goal is to not constrain you to a particular implementation (e.g. GUI, Web App, Processing etc.), but instead let you decide how to use it.  This software has been tested on Windows, Mac, and Linux and can run on any other platform that supports Java 5 or greater and RXTX, including the [Rasberry Pi](http://www.amazon.com/gp/product/B009SQQF9C/ref=as_li_qf_sp_asin_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B009SQQF9C&linkCode=as2&tag=xbapra-20)! If you're interested in interfacing XBees directly with Arduinos see [XBee Arduino](https://github.com/andrewrapp/xbee-arduino)
 
-**Note: This software requires API mode, by setting  AP=2. If you are using Series 2 XBee, you'll need to install API Firmware (coordinator, router or endpoint) with X-CTU (windows only) since they ship with AT firmware.  This software will not work correctly with AP=1**  Refer to [XBeeConfiguration](XBeeConfiguration.md) and WhyApiMode for more info.
+**Note: This software requires API mode, by setting  AP=2. If you are using Series 2 XBee, you'll need to install API Firmware (coordinator, router or endpoint) with X-CTU since they ship with AT firmware.  This software will not work correctly with AP=1**  Refer to [XBeeConfiguration](https://github.com/andrewrapp/xbee-api/wiki/XBeeConfiguration) and WhyApiMode for more info.
 
 ## News ##
   * 2/19/15 I've created [xbee-socket](https://github.com/andrewrapp/xbee-socket) and [xbee-serial-server](https://github.com/andrewrapp/xbee-serial-server) projects for sharing a single xbee radio with multiple applications, over sockets. This is very beta. Also, [this](https://github.com/andrewrapp/xbee-api) code is now on github.
   * 2/1/14 Converted repository from Subversion to Git
   * 6/11/13 Yeah, you can use [xbee-api with your Raspberry Pi](http://rapplogic.blogspot.com/2013/06/xbee-on-raspberry-pi.html)
-  * 4/3/11 I have created a [XBeeUseCases](http://code.google.com/p/xbee-api/wiki/XBeeUseCases) wiki that describes several use cases for communicating with XBees.
+  * 4/3/11 I have created a [XBeeUseCases](https://github.com/andrewrapp/xbee-api/wiki/XBeeUseCases) wiki that describes several use cases for communicating with XBees.
   * 11/7/10 The 0.9 release is now available!  This release includes a lot of new features and an extensive redesign of the internals.  See ReleaseNotes for details.
   * 8/13/10 I've added a [wiki](Processing.md) that describes how to use XBee-API with Processing
   * 3/29/09 I have released [XBee Arduino](http://code.google.com/p/xbee-arduino/).  This is a port of XBee API to the Arduino platform, allowing you to send/receive packets on Arduino.
