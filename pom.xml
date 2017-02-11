@@ -111,7 +111,8 @@
 				</executions>
 				<configuration>
 					<!--mvn 3.3.9: Exit code: 1 - javadoc: error - invalid flag: -Xdoclint:none-->
-					<!--<additionalparam>-Xdoclint:none</additionalparam>-->
+					<!-- need the following or fails on: get self-closing element not allowed -->
+					<additionalparam>-Xdoclint:none</additionalparam>
 				</configuration>
 			</plugin>
 
