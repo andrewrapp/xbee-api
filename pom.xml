@@ -5,7 +5,7 @@
 	<groupId>com.rapplogic</groupId>
 	<artifactId>xbee-api</artifactId>
 	<packaging>jar</packaging>
-	<version>0.9.3-SNAPSHOT</version>
+	<version>0.9.4-SNAPSHOT</version>
 
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>A java library for communicating with XBee radios</description>
@@ -81,7 +81,7 @@
 				<configuration>
 					<serverId>ossrh</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>false</autoReleaseAfterClose> <!-- if true does what you think; otherwise need to release via sonatype UI -->
+					<autoReleaseAfterClose>true</autoReleaseAfterClose> <!-- if true does what you think; otherwise need to release via sonatype UI -->
 				</configuration>
 			</plugin>
 
