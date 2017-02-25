@@ -19,7 +19,7 @@ public abstract class AbstractXBeeConnection implements XBeeConnection {
 
 	private final static Logger log = Logger.getLogger(XBeeConnection.class);
 	
-	// we write to this to provide xbee-api with RX packets 
+	// we write to this to provide xbee-api with RX packets
 	private PipedOutputStream pipeToInputStream = new PipedOutputStream();
 	// xbee api reads from this to parse packets
 	private PipedInputStream xbeeInputStream = new PipedInputStream();
@@ -37,7 +37,7 @@ public abstract class AbstractXBeeConnection implements XBeeConnection {
 	}
 
 	//Writes the byte to the input stream to be parsed
-	public void write(int b) throws IOException {
+	public void pipeToInputStream(int b) throws IOException {
 		pipeToInputStream.write(b);	
 		
 		// TODO ideally we don't notify until end of packet but this should be fine, it will just block on read

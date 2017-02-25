@@ -11,7 +11,7 @@ import java.io.OutputStream;
  * <p/>
  * You must implement read(int) and available() on the InputStream and
  * <p/>
- * write(int) and flush() on the OutputStream
+ * pipeToInputStream(int) and flush() on the OutputStream
  * <p/>
  * It's recommended to implement close
  *  
