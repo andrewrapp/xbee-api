@@ -50,8 +50,9 @@ public class SerialPortConnection implements XBeeConnection, SerialPortEventList
 	
 	private InputStream inputStream;
 	private OutputStream outputStream;
-
 	private SerialPort serialPort;
+	// so we don't fill the logs on non-terminating rxtx loop errors
+	private boolean logErrors = true;
 	
 	public SerialPortConnection() {
 	
@@ -164,8 +165,21 @@ public class SerialPortConnection implements XBeeConnection, SerialPortEventList
 						log.warn("We were notified of new data but available() is returning 0");
 					}
 				} catch (IOException ex) {
-					// it's best not to throw the exception because the RXTX thread may not be prepared to handle
-					log.error("RXTX error in serialEvent method", ex);
+					if (logErrors) {
+						// it's best not to throw the exception because the RXTX thread may not be prepared to handle
+						log.error("RXTX error in serialEvent method", ex);
+					}
+
+					logErrors = false;
+
+					// seems to be cable disconnected. these errors repeat at highfrequency and are not recoverable
+					// e.g. java.io.IOException: Input/output error in nativeavailable
+					try {
+						log.warn("Attempting to close serial port after i/o error " + ex.toString());
+						serialPort.close();
+					} catch (Exception e) {
+						log.warn("Unable to close serial port", e);
+					}
 				}
 			default:
 				log.debug("Ignoring serial port event type: " + event.getEventType());
