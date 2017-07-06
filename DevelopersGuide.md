@@ -398,7 +398,7 @@ You may add your custom log messages by.... log.debug(..)
 
 When you log an object, (e.g. log.debug(response)), it calls the toString() method of that object.  All request/response classes have implemented the toString method to output the contents of the object. This can be especially helpful when developing/testing.
 
-## Classpath / Navite Dependencies (RXTX) ##
+## Classpath / Native Dependencies (RXTX) ##
 
 This library requires RXTX, a non-Java native library, to communicate with the serial port. The -Djava.library.path arg must specify a directory that contains the navitve RXTX module for your operating system. On MacOs this is generally named librxtxSerial.jnilib; on linux librxtxSerial.so; and windows rxtxSerial.dll. Here's an example of starting an app that loads the native RXTX from /usr/lib/jni/ This is the location RXTX is installed on linux with apt-get rxtx. Note: on mac you'll need to use Java 6 and pass -d32 since RXTX has been abandoned and has not been built for 64-bit Java. I've included the native libraries (32-bit) in this the root of this project.
 
